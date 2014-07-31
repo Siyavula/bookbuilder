@@ -7,17 +7,20 @@ import hashlib
 import ast
 import subprocess
 import shutil
+import inspect
 
 import lxml
 from lxml import etree
-
 
 try:
     from termcolor import colored
 except ImportError:
     logging.error("Please install termcolor:\n sudo pip install termcolor")
 
-import XmlValidator
+from XmlValidator import XmlValidator
+
+specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
+                                        'spec.xml')
 
 DEBUG = False
 
@@ -154,14 +157,13 @@ class chapter(object):
         print("Validating {f}".format(f=self.file))
 
         # create an instance of the Validator
-        specpath = os.path.join(os.path.dirname(__file__), 'spec.xml')
-        xmlValidator = XmlValidator.XmlValidator(open(specpath, 'rt').read())
+        xmlValidator = XmlValidator(open(specpath, 'rt').read())
         with open(self.file, 'r') as xmlfile:
             xml = xmlfile.read()
             try:
                 xmlValidator.validate(xml)
                 self.valid = True
-            except XmlValidator.XmlValidationError as Err:
+            except XmlValidationError as Err:
                 print(Err)
                 self.valid = False
 
@@ -252,7 +254,6 @@ class chapter(object):
         # converted to images. We need to calculate the hashes in the same
         # way that the tohtml.py script does and copy the files from the
         # _plone_ignore_ folder to build/html
-
         with open(output_path, 'r') as f:
             html = etree.HTML(f.read())
 
@@ -268,9 +269,9 @@ class chapter(object):
         ''' Convert this chapter to latex
         '''
         print_debug_msg("Entered __tolatex {f}".format(f=self.file))
-        tolatexpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                   'tolatex.py')
-        myprocess = subprocess.Popen(["python", tolatexpath, self.file],
+#       tolatexpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+#                                  'tolatex.py')
+        myprocess = subprocess.Popen(["cnxmlplus2latex", self.file],
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         latex, err = myprocess.communicate()
@@ -306,9 +307,9 @@ class chapter(object):
         ''' Convert this chapter to latex
         '''
         print_debug_msg("Entered __tohtml {f}".format(f=self.file))
-        tohtmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                  'tohtml.py')
-        myprocess = subprocess.Popen(["python", tohtmlpath, self.file],
+#       tohtmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+#                                 'tohtml.py')
+        myprocess = subprocess.Popen(["cnxmlplus2html", self.file],
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         html, err = myprocess.communicate()
