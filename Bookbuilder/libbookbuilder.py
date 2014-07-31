@@ -18,9 +18,10 @@ except ImportError:
     logging.error("Please install termcolor:\n sudo pip install termcolor")
 
 from XmlValidator import XmlValidator
+from XmlValidator import XmlValidationError
 
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
-                                        'spec.xml')
+                        'spec.xml')
 
 DEBUG = False
 
