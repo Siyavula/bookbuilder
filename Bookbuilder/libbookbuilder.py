@@ -8,6 +8,7 @@ import ast
 import subprocess
 import shutil
 import inspect
+import sys
 
 import lxml
 from lxml import etree
@@ -19,6 +20,8 @@ except ImportError:
 
 from XmlValidator import XmlValidator
 from XmlValidator import XmlValidationError
+from Bookbuilder import pstikz2png
+from Bookbuilder.pstikz2png import LatexPictureError
 
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
                         'spec.xml')
@@ -245,16 +248,87 @@ class chapter(object):
                     print(msg)
             self.__copy_if_newer(src, dest)
 
+    def __render_pstikz(self, output_path):
+        ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
+            image to png. Insert replace div.alternate tags with <img> tags
+        '''
+        with open(output_path, 'r') as htmlout:
+            html = etree.HTML(htmlout.read())
+
+        # find all the pspicture and tikz elements
+        pspics = [p for p in html.findall('.//pre[@class="pspicture"]')]
+        tikzpics = [p for p in html.findall('.//pre[@class="tikzpicture"]')]
+        allpics = pspics + tikzpics
+
+        for i, pre in enumerate(allpics):
+            msg = "  Generating image {n} / {d}\r".format(n=i+1,
+                                                          d=len(allpics))
+            sys.stdout.write(msg)
+            sys.stdout.flush()
+            try:
+                pictype = pre.attrib['class']
+                pre_str = etree.tostring(pre)
+                # unescape the xml tags
+                pre_str = pre_str.replace('&lt;', '<').replace('&gt;', '>')
+                pre_xml = etree.XML(pre_str)
+
+                # find the hash of the code content
+                codetext = pre_xml.find('.//code').text
+                codetext = ''.join([c for c in codetext if ord(c) < 128])
+                codeHash = hashlib.md5(
+                   ''.join(codetext.encode('utf-8').split())).hexdigest()
+
+                # see if the output png exists at 
+                # build/html/pspictures/hash.png  OR
+                # build/html/tikzpictures/hash.png
+                pngpath = os.path.join(os.path.dirname(output_path), pictype,
+                                       codeHash+'.png')
+
+                # skip image generation if it exists
+                if os.path.exists(pngpath):
+                    continue
+
+                # send this object to pstick2png
+                try:
+                    if pre.attrib['class'] == 'pspicture':
+                        figpath = pstikz2png.pspicture2png(pre_xml, iDpi=150)
+                    elif pre.attrib['class'] == 'tikzpicture':
+                        figpath = pstikz2png.tikzpicture2png(pre_xml, iDpi=150)
+                except LatexPictureError:
+                    print(colored("\nLaTeX failure", "red"))
+                    print(etree.tostring(pre_xml, pretty_print=True))
+                    continue
+
+                if not os.path.exists('figure.png'):
+                    print("Problem :" + etree.tostring(pre_xml))
+
+                self.__copy_if_newer(figpath, pngpath)
+
+                # replace div.alternate with <img>
+                figure = etree.Element('figure')
+                img = etree.Element('img')
+                img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
+                figure.append(img)
+                pre_parent = pre.getparent()
+                pre_parent.getparent().replace(pre_parent, figure)
+                os.remove('figure.png')
+
+
+
+            except lxml.etree.XMLSyntaxError:
+                import ipdb
+                ipdb.set_trace()
+
+
+        with open(output_path, 'w') as htmlout:
+            htmlout.write(etree.tostring(html, method='xml'))
+
     def __copy_html_images(self, build_folder, output_path):
         ''' Find all images referenced in the converted html document and copy
         them to their correct relative places in the build/tex folder.
 
         '''
-        # if it is html the converted html will contain more images than
-        # the cnxmlplus references because pstricks and tikz figures are
-        # converted to images. We need to calculate the hashes in the same
-        # way that the tohtml.py script does and copy the files from the
-        # _plone_ignore_ folder to build/html
+        # copy images directly included in cnxmlplus to the output folder
         with open(output_path, 'r') as f:
             html = etree.HTML(f.read())
 
@@ -270,8 +344,6 @@ class chapter(object):
         ''' Convert this chapter to latex
         '''
         print_debug_msg("Entered __tolatex {f}".format(f=self.file))
-#       tolatexpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-#                                  'tolatex.py')
         myprocess = subprocess.Popen(["cnxmlplus2latex", self.file],
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
@@ -279,30 +351,30 @@ class chapter(object):
 
         return latex
 
-    def __check_if_html_images_rendered(self):
-        ''' Run a check on all the pstricks and tikzpicture elements
-        to see if they are in the _plone_ignore_folder
-        '''
-        with open(self.file, 'r') as f:
-            xml = etree.XML(f.read())
-            for c in xml.xpath('//comment()'):
-                c.getparent().remove(c)
-            for figtype in ['pspicture', 'tikzpicture']:
-                for code in xml.findall('.//{ft}/code'.format(ft=figtype)):
-                    codetext = code.text
-                    codetext = ''.join([c for c in codetext if ord(c) < 128])
-                    codeHash = hashlib.md5(
-                        ''.join(codetext.encode('utf-8').split())).hexdigest()
-                    imgpath = os.path.join('_plone_ignore_',
-                                           'cache',
-                                           figtype + 's',
-                                           codeHash + '.png')
-                    if not os.path.exists(imgpath):
-                        print(colored('Image did not render: ', 'red'), end='')
-                        print("{ft} on line {n}:".format(ft=figtype,
-                                                         n=code.sourceline))
-                        print(code.text)
-                        print("")
+#   def __check_if_html_images_rendered(self):
+#       ''' Run a check on all the pstricks and tikzpicture elements
+#       to see if they are in the _plone_ignore_folder
+#       '''
+#       with open(self.file, 'r') as f:
+#           xml = etree.XML(f.read())
+#           for c in xml.xpath('//comment()'):
+#               c.getparent().remove(c)
+#           for figtype in ['pspicture', 'tikzpicture']:
+#               for code in xml.findall('.//{ft}/code'.format(ft=figtype)):
+#                   codetext = code.text
+#                   codetext = ''.join([c for c in codetext if ord(c) < 128])
+#                   codeHash = hashlib.md5(
+#                       ''.join(codetext.encode('utf-8').split())).hexdigest()
+#                   imgpath = os.path.join('_plone_ignore_',
+#                                          'cache',
+#                                          figtype + 's',
+#                                          codeHash + '.png')
+#                   if not os.path.exists(imgpath):
+#                       print(colored('Image did not render: ', 'red'), end='')
+#                       print("{ft} on line {n}:".format(ft=figtype,
+#                                                        n=code.sourceline))
+#                       print(code.text)
+#                       print("")
 
     def __tohtml(self):
         ''' Convert this chapter to latex
@@ -345,9 +417,9 @@ class chapter(object):
                 # doesn't exist (it may have been deleted manually)
                 if (self.has_changed) or (not os.path.exists(output_path)):
                     mkdir_p(os.path.dirname(output_path))
-                    converted = conversion_functions[outformat]()
                     print("Converting {ch} to {form}".format(ch=self.file,
                                                              form=outformat))
+                    converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f:
                         f.write(converted)
 
@@ -364,8 +436,12 @@ class chapter(object):
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
                 elif outformat == 'html':
+                    # copy images included to the output folder
                     self.__copy_html_images(build_folder, output_path)
-                    self.__check_if_html_images_rendered()
+                    # read the output html, find all pstricks and tikz
+                    # code blocks and render them as pngs and include them
+                    # in <img> tags in the html
+                    self.__render_pstikz(output_path)
 
         return
 

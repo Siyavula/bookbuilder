@@ -12,6 +12,5 @@ setup(name='Bookbuilder',
       scripts=['bookbuilder'],
       install_requires=['docopt',
                         'lxml',
-                        'termcolor',
-                        'siyavula.transforms'],
+                        'termcolor'],
       )
