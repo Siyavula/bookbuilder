@@ -209,8 +209,8 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
 
-    code = iPictureElement.find('code').text.encode('utf-8')
-    code = code.replace('&amp;', '&').replace('&gt;', '>').replace('&lt;', '<')
+    code = iPictureElement.find('.//code').text.encode('utf-8')
+    code = code.replace(r'&amp;', '&').replace(r'&gt;', '>').replace(r'&lt;', '<')
 
     if code is None:
         raise ValueError, "Code cannot be empty."
@@ -232,7 +232,6 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     try:
         open(pdfPath,"rb")
     except IOError:
-        #sys.stderr.write(errorLog)
         raise LatexPictureError, "LaTeX failed to compile the image. %s" % latexPath
 
 

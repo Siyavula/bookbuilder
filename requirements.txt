@@ -4,6 +4,5 @@ termcolor
 # stuff for siyavula.transforms
 argparse==1.2.1
 distribute==0.6.24
--e git+https://github.com/Siyavula/siyavula.transforms.git@htmlconversion#egg=siyavula.transforms-dev
 -e git+https://github.com/Siyavula/cnxml-validator.git@develop#egg=cnxml-validator-dev
 wsgiref==0.1.2

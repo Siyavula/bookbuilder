@@ -27,7 +27,7 @@ Examples:
 
 """
 import logging
-
+import sys
 try:
     from docopt import docopt
 except ImportError:
@@ -51,6 +51,10 @@ if __name__ == "__main__":
     elif arguments['build']:
         print("Building book")
         formats = arguments['<format>']
+        for form in formats:
+            if form not in ['tex', 'html']:
+                print __doc__
+                sys.exit(1)
         if not formats:
             formats = ['tex', 'html']
 

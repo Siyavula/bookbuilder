@@ -211,8 +211,9 @@ class chapter(object):
                                 .format(src=src, dest=dest))
 
         else:
-            print(colored("WARNING! {src} cannot be found!"
-                          .format(src=src), "magenta"))
+            if not os.path.exists(dest):
+                print(colored("WARNING! {src} cannot be found!"
+                              .format(src=src), "magenta"))
 
     def __copy_tex_images(self, build_folder, output_path):
         ''' Find all images referenced in the cnxmlplus document and copy them
@@ -267,17 +268,12 @@ class chapter(object):
             sys.stdout.flush()
             try:
                 pictype = pre.attrib['class']
-                pre_str = etree.tostring(pre)
-                # unescape the xml tags
-                pre_str = pre_str.replace('&lt;', '<').replace('&gt;', '>')
-                pre_xml = etree.XML(pre_str)
-
                 # find the hash of the code content
-                codetext = pre_xml.find('.//code').text
+                codetext = pre.find('.//code').text
+#               codetext = pre.text.replace(r'&lt;/code&gt;' ,'').replace(r'&lt;code&gt;', '').strip()
                 codetext = ''.join([c for c in codetext if ord(c) < 128])
                 codeHash = hashlib.md5(
                    ''.join(codetext.encode('utf-8').split())).hexdigest()
-
                 # see if the output png exists at 
                 # build/html/pspictures/hash.png  OR
                 # build/html/tikzpictures/hash.png
@@ -291,16 +287,17 @@ class chapter(object):
                 # send this object to pstick2png
                 try:
                     if pre.attrib['class'] == 'pspicture':
-                        figpath = pstikz2png.pspicture2png(pre_xml, iDpi=150)
+                        figpath = pstikz2png.pspicture2png(pre, iDpi=150)
                     elif pre.attrib['class'] == 'tikzpicture':
-                        figpath = pstikz2png.tikzpicture2png(pre_xml, iDpi=150)
+                        figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
                 except LatexPictureError:
+                    import ipdb; ipdb.set_trace()
                     print(colored("\nLaTeX failure", "red"))
-                    print(etree.tostring(pre_xml, pretty_print=True))
+                    print(etree.tostring(pre, pretty_print=True))
                     continue
 
                 if not os.path.exists('figure.png'):
-                    print("Problem :" + etree.tostring(pre_xml))
+                    print("Problem :" + etree.tostring(pre))
 
                 self.__copy_if_newer(figpath, pngpath)
 
@@ -311,7 +308,11 @@ class chapter(object):
                 figure.append(img)
                 pre_parent = pre.getparent()
                 pre_parent.getparent().replace(pre_parent, figure)
-                os.remove('figure.png')
+                try:
+                    os.remove('figure.png')
+                except:
+                    import ipdb
+                    ipdb.set_trace()
 
 
 
@@ -335,7 +336,7 @@ class chapter(object):
         for img in html.findall('.//img'):
             src = img.attrib['src']
             dest = os.path.join(os.path.dirname(output_path), src)
-            if not os.path.exists(src):
+            if not os.path.exists(src) and (not os.path.exists(dest)):
                 print_debug_msg(src + " doesn't exist")
 
             self.__copy_if_newer(src, dest)
