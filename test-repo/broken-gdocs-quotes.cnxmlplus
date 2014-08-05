@@ -1,0 +1,9 @@
+<document xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:style="http://siyavula.com/cnxml/style/0.1">
+    <metadata>
+        <pspicture-generator-version>1.1</pspicture-generator-version>
+    </metadata>
+    <content>
+        <!-- Quote marks from GDocs breaks lxml --> 
+        <note type=”note”>todo-fractional exponents</note>
+    </content>
+</document>

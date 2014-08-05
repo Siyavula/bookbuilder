@@ -160,10 +160,16 @@ class chapter(object):
         '''
         print("Validating {f}".format(f=self.file))
 
-        # create an instance of the Validator
-        xmlValidator = XmlValidator(open(specpath, 'rt').read())
         with open(self.file, 'r') as xmlfile:
             xml = xmlfile.read()
+            # see if it is valid XML first
+            try:
+                etree.XML(xml)
+            except etree.XMLSyntaxError:
+                self.valid = False
+                return
+            # create an instance of the Validator
+            xmlValidator = XmlValidator(open(specpath, 'rt').read())
             try:
                 xmlValidator.validate(xml)
                 self.valid = True
@@ -266,60 +272,60 @@ class chapter(object):
                                                           d=len(allpics))
             sys.stdout.write(msg)
             sys.stdout.flush()
+
+            pictype = pre.attrib['class']
+            # find the hash of the code content
+            codetext = pre.find('.//code').text
+            codetext = ''.join([c for c in codetext if ord(c) < 128])
+            codeHash = hashlib.md5(
+                ''.join(codetext.encode('utf-8').split())).hexdigest()
+            # see if the output png exists at
+            # build/html/pspictures/hash.png  OR
+            # build/html/tikzpictures/hash.png
+            pngpath = os.path.join(os.path.dirname(output_path), pictype,
+                                   codeHash+'.png')
+
+            # skip image generation if it exists
+            if os.path.exists(pngpath):
+                continue
+
+            # send this object to pstick2png
             try:
-                pictype = pre.attrib['class']
-                # find the hash of the code content
-                codetext = pre.find('.//code').text
-#               codetext = pre.text.replace(r'&lt;/code&gt;' ,'').replace(r'&lt;code&gt;', '').strip()
-                codetext = ''.join([c for c in codetext if ord(c) < 128])
-                codeHash = hashlib.md5(
-                   ''.join(codetext.encode('utf-8').split())).hexdigest()
-                # see if the output png exists at 
-                # build/html/pspictures/hash.png  OR
-                # build/html/tikzpictures/hash.png
-                pngpath = os.path.join(os.path.dirname(output_path), pictype,
-                                       codeHash+'.png')
+                if pre.attrib['class'] == 'pspicture':
+                    figpath = pstikz2png.pspicture2png(pre, iDpi=150)
+                elif pre.attrib['class'] == 'tikzpicture':
+                    figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
+            except LatexPictureError:
+                print(colored("\nLaTeX failure", "red"))
+                print(etree.tostring(pre, pretty_print=True))
+                continue
 
-                # skip image generation if it exists
-                if os.path.exists(pngpath):
-                    continue
+            if not os.path.exists('figure.png'):
+                print("Problem :" + etree.tostring(pre))
 
-                # send this object to pstick2png
-                try:
-                    if pre.attrib['class'] == 'pspicture':
-                        figpath = pstikz2png.pspicture2png(pre, iDpi=150)
-                    elif pre.attrib['class'] == 'tikzpicture':
-                        figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
-                except LatexPictureError:
-                    import ipdb; ipdb.set_trace()
-                    print(colored("\nLaTeX failure", "red"))
-                    print(etree.tostring(pre, pretty_print=True))
-                    continue
+            self.__copy_if_newer(figpath, pngpath)
 
-                if not os.path.exists('figure.png'):
-                    print("Problem :" + etree.tostring(pre))
-
-                self.__copy_if_newer(figpath, pngpath)
-
-                # replace div.alternate with <img>
-                figure = etree.Element('figure')
-                img = etree.Element('img')
-                img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
-                figure.append(img)
-                pre_parent = pre.getparent()
-                pre_parent.getparent().replace(pre_parent, figure)
-                try:
-                    os.remove('figure.png')
-                except:
-                    import ipdb
-                    ipdb.set_trace()
-
-
-
-            except lxml.etree.XMLSyntaxError:
-                import ipdb
-                ipdb.set_trace()
-
+            # replace div.alternate with <img>
+            figure = etree.Element('figure')
+            img = etree.Element('img')
+            img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
+            figure.append(img)
+            pre_parent = pre.getparent()
+            pre_parent.getparent().replace(pre_parent, figure)
+            # clean up
+            for f in ["figure-autopp.cb",
+                      "figure.aux",
+                      "figure.cb",
+                      "figure.cb2",
+                      "figure.epsi",
+                      "figure.log",
+                      "figure.pdf",
+                      "figure-pics.pdf",
+                      "figure.png",
+                      "figure.ps",
+                      "figure.tex"]:
+                if os.path.exists(f):
+                    os.remove(f)
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(etree.tostring(html, method='xml'))
