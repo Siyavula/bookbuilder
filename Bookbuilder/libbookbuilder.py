@@ -285,25 +285,35 @@ class chapter(object):
             pngpath = os.path.join(os.path.dirname(output_path), pictype,
                                    codeHash+'.png')
 
+            # copy to local image cache in .bookbuilder/images
+            image_cache_path = os.path.join('.bookbuilder',
+                                            pictype,
+                                            codeHash+'.png')
+            rendered = False
             # skip image generation if it exists
-            if os.path.exists(pngpath):
-                continue
+            if os.path.exists(image_cache_path):
+                rendered = True
 
-            # send this object to pstick2png
-            try:
-                if pre.attrib['class'] == 'pspicture':
-                    figpath = pstikz2png.pspicture2png(pre, iDpi=150)
-                elif pre.attrib['class'] == 'tikzpicture':
-                    figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
-            except LatexPictureError:
-                print(colored("\nLaTeX failure", "red"))
-                print(etree.tostring(pre, pretty_print=True))
-                continue
+            if not rendered:
+                # send this object to pstikz2png
+                try:
+                    if pre.attrib['class'] == 'pspicture':
+                        figpath = pstikz2png.pspicture2png(pre, iDpi=150)
+                    elif pre.attrib['class'] == 'tikzpicture':
+                        figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
+                except LatexPictureError:
+                    print(colored("\nLaTeX failure", "red"))
+                    print(etree.tostring(pre, pretty_print=True))
+                    continue
+                # done. copy to image cache
+                self.__copy_if_newer(figpath, image_cache_path)
 
-            if not os.path.exists('figure.png'):
-                print("Problem :" + etree.tostring(pre))
+                if not os.path.exists('figure.png'):
+                    print("Problem :" + etree.tostring(pre))
+            else:
+                figpath = image_cache_path
 
-            self.__copy_if_newer(figpath, pngpath)
+            self.__copy_if_newer(image_cache_path, pngpath)
 
             # replace div.alternate with <img>
             figure = pre.getparent().getparent()
@@ -358,31 +368,6 @@ class chapter(object):
 
         return latex
 
-#   def __check_if_html_images_rendered(self):
-#       ''' Run a check on all the pstricks and tikzpicture elements
-#       to see if they are in the _plone_ignore_folder
-#       '''
-#       with open(self.file, 'r') as f:
-#           xml = etree.XML(f.read())
-#           for c in xml.xpath('//comment()'):
-#               c.getparent().remove(c)
-#           for figtype in ['pspicture', 'tikzpicture']:
-#               for code in xml.findall('.//{ft}/code'.format(ft=figtype)):
-#                   codetext = code.text
-#                   codetext = ''.join([c for c in codetext if ord(c) < 128])
-#                   codeHash = hashlib.md5(
-#                       ''.join(codetext.encode('utf-8').split())).hexdigest()
-#                   imgpath = os.path.join('_plone_ignore_',
-#                                          'cache',
-#                                          figtype + 's',
-#                                          codeHash + '.png')
-#                   if not os.path.exists(imgpath):
-#                       print(colored('Image did not render: ', 'red'), end='')
-#                       print("{ft} on line {n}:".format(ft=figtype,
-#                                                        n=code.sourceline))
-#                       print(code.text)
-#                       print("")
-
     def __tohtml(self):
         ''' Convert this chapter to latex
         '''
@@ -399,12 +384,9 @@ class chapter(object):
     def __toxhtml(self):
 
         xhtml = self.__tohtml()
-
         # Convert this html to xhtml
 
         return xhtml
-
-
 
     def convert(self, build_folder, output_format):
         ''' Convert the chapter to the specified output format and write the
@@ -457,11 +439,10 @@ class chapter(object):
                     # in <img> tags in the html
                     self.__render_pstikz(output_path)
 
-#               elif outformat == 'xhtml':
-#                   # call this function for html to make sure it is there
-#                   self.convert(build_folder, 'html')
-#                   # TODO copy html folder to xhtml
-#                   # and run a transform on that to xhtml
+                elif outformat == 'xhtml':
+                    # copy images from html folder
+                    self.__copy_html_images(build_folder, output_path)
+                    self.__render_pstikz(output_path)
 
         return
 
