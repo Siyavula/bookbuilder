@@ -306,12 +306,12 @@ class chapter(object):
             self.__copy_if_newer(figpath, pngpath)
 
             # replace div.alternate with <img>
-            figure = etree.Element('figure')
+            figure = pre.getparent().getparent()
             img = etree.Element('img')
             img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
+            img.attrib['alt'] = codeHash + '.png'
             figure.append(img)
-            pre_parent = pre.getparent()
-            pre_parent.getparent().replace(pre_parent, figure)
+            figure.remove(pre.getparent())
             # clean up
             for f in ["figure-autopp.cb",
                       "figure.aux",
@@ -396,6 +396,16 @@ class chapter(object):
 
         return html
 
+    def __toxhtml(self):
+
+        xhtml = self.__tohtml()
+
+        # Convert this html to xhtml
+
+        return xhtml
+
+
+
     def convert(self, build_folder, output_format):
         ''' Convert the chapter to the specified output format and write the
         the build folder: {build_folder}/{output_format}/self.file.{format}
@@ -403,15 +413,11 @@ class chapter(object):
 
         output_format: one  of 'tex', 'html'
         '''
-        conversion_functions = {'tex': self.__tolatex, 'html': self.__tohtml}
+        conversion_functions = {'tex': self.__tolatex,
+                                'html': self.__tohtml,
+                                'xhtml': self.__toxhtml}
 
         for outformat in output_format:
-            # make sure we're not trying anything funny here
-            try:
-                assert(outformat in ['tex', 'html'])
-            except AssertionError:
-                logging.error("Output format must be one of {f}"
-                              .format(f=','.join(self.output_formats)))
 
             # convert this chapter to the specified format
             # call the converted method
@@ -442,6 +448,7 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
+
                 elif outformat == 'html':
                     # copy images included to the output folder
                     self.__copy_html_images(build_folder, output_path)
@@ -449,6 +456,12 @@ class chapter(object):
                     # code blocks and render them as pngs and include them
                     # in <img> tags in the html
                     self.__render_pstikz(output_path)
+
+#               elif outformat == 'xhtml':
+#                   # call this function for html to make sure it is there
+#                   self.convert(build_folder, 'html')
+#                   # TODO copy html folder to xhtml
+#                   # and run a transform on that to xhtml
 
         return
 
