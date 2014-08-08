@@ -1,8 +1,6 @@
 import os
 import subprocess
 
-from lxml import etree
-
 pstricksTex = r'''
 \documentclass[10pt]{report}
 \renewcommand{\familydefault}{\sfdefault}
@@ -144,12 +142,12 @@ every node/.append style={font={\small}},
   mark=at position #1 with {\draw (-1pt,-3pt) -- (-1pt,3pt); \draw ( 1pt,-3pt) -- ( 1pt,3pt);}},postaction={decorate}},
 }
 
-\pgfplotsset{ 
+\pgfplotsset{
 axis lines =center,
-xlabel = $x$, 
-ylabel =$y$, 
+xlabel = $x$,
+ylabel =$y$,
 clip=false,
-axis equal image, 
+axis equal image,
 cycle list={black\\},
 ticklabel style={scale=1},
 xlabel style={at=(current axis.right of origin), anchor=west},
@@ -169,6 +167,7 @@ disabledatascaling,
 \end{tikzpicture}
 \end{document}
 '''
+
 
 def execute(args):
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -203,9 +202,6 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
 
     tempDir = os.curdir
     latexPath = os.path.join(tempDir, 'figure.tex')
-    dviPath = os.path.join(tempDir, 'figure.dvi')
-    psPath = os.path.join(tempDir, 'figure.ps')
-    epsPath = os.path.join(tempDir, 'figure.epsi')
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
 
@@ -225,15 +221,19 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
             pass
         with open(os.path.join(tempDir, path), 'wb') as fp:
             fp.write(pathFile.read())
-    texlivepath = [p for p in os.getenv('PATH').split(':') if 'texlive' in p][0]
+    try:
+        texlivepath = [p for p in os.getenv('PATH').split(':') if 'texlive' in p][0]
+    except IndexError:
+        # use the /usr/bin/pdflatex as fallback
+        texlivepath = '/usr/bin'
+
     errorLog, temp = execute(["{texlive}/pdflatex".format(texlive=texlivepath),
                               "-shell-escape", "-halt-on-error",
                               "-output-directory", tempDir, latexPath])
     try:
-        open(pdfPath,"rb")
+        open(pdfPath, "rb")
     except IOError:
         raise LatexPictureError, "LaTeX failed to compile the image. %s" % latexPath
-
 
     execute(['convert',
              '-density',
@@ -252,6 +252,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
 
 def tikzpicture2png(iTikzpictureElement, *args, **kwargs):
     return pstikz2png(iTikzpictureElement, tikzTex, *args, **kwargs)
+
 
 def pspicture2png(iPspictureElement, *args, **kwargs):
     return pstikz2png(iPspictureElement, pstricksTex, *args, **kwargs)

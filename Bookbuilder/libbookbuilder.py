@@ -22,7 +22,7 @@ from XmlValidator import XmlValidator
 from XmlValidator import XmlValidationError
 from Bookbuilder import pstikz2png
 from Bookbuilder.pstikz2png import LatexPictureError
-
+from . import htmlutils
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
                         'spec.xml')
 
@@ -385,6 +385,7 @@ class chapter(object):
 
         xhtml = self.__tohtml()
         # Convert this html to xhtml
+        xhtml = htmlutils.xhtml_cleanup(xhtml)
 
         return xhtml
 
