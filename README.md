@@ -191,4 +191,10 @@ your cnxmlplus files:
     drwxrwxr-x 2 user user   4096 Jul 25 14:36 images
 
 
+## Changes
 
+version 0.2: 12 August 2014
+
+    * tex output now contains links to PDF graphics, instead of code
+    * pstricks and tikz images are compiled via xelatex instead of pdflatex
+    * pdf images are cached together with png

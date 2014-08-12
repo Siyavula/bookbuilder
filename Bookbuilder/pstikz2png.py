@@ -11,7 +11,7 @@ pstricksTex = r'''
 \usepackage{graphicx}
 \usepackage{changebar}
 
-\usepackage{auto-pst-pdf}
+%\usepackage{auto-pst-pdf}
 \usepackage{pst-all}
 \usepackage{pst-eucl}
 \usepackage{pst-poly}
@@ -205,7 +205,11 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
 
-    code = iPictureElement.find('.//code').text.encode('utf-8')
+    # can send the raw string code or a <pre> element with <code> child
+    if isinstance(iPictureElement, str):
+        code = iPictureElement
+    else:
+        code = iPictureElement.find('.//code').text.encode('utf-8')
     code = code.replace(r'&amp;', '&').replace(r'&gt;', '>').replace(r'&lt;', '<')
 
     if code is None:
@@ -227,13 +231,16 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
         # use the /usr/bin/pdflatex as fallback
         texlivepath = '/usr/bin'
 
-    errorLog, temp = execute(["{texlive}/pdflatex".format(texlive=texlivepath),
+    errorLog, temp = execute(["{texlive}/xelatex".format(texlive=texlivepath),
                               "-shell-escape", "-halt-on-error",
                               "-output-directory", tempDir, latexPath])
     try:
         open(pdfPath, "rb")
     except IOError:
         raise LatexPictureError, "LaTeX failed to compile the image. %s" % latexPath
+
+    # crop the pdf image too
+    execute(['pdfcrop', pdfPath, pdfPath])
 
     execute(['convert',
              '-density',

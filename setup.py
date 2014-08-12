@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='Bookbuilder',
-      version='0.1',
+      version='0.2',
       description='Tools for generating Siyavula\'s publishing formats',
       author='Ewald Zietsman',
       author_email='ewald@siyavula.com',

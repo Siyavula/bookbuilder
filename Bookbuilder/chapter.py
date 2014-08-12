@@ -1,14 +1,10 @@
 from __future__ import print_function
 
 import os
-import errno
 import logging
 import hashlib
-import ast
 import subprocess
-import shutil
 import inspect
-import sys
 
 import lxml
 from lxml import etree
@@ -20,9 +16,11 @@ except ImportError:
 
 from XmlValidator import XmlValidator
 from XmlValidator import XmlValidationError
-from Bookbuilder import pstikz2png
-from Bookbuilder.pstikz2png import LatexPictureError
 from . import htmlutils
+import imageutils
+from utils import mkdir_p, copy_if_newer
+
+
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
                         'spec.xml')
 
@@ -33,20 +31,6 @@ def print_debug_msg(msg):
     '''prints a debug message if DEBUG is True'''
     if DEBUG:
         print(colored("DEBUG: {msg}".format(msg=msg), "yellow"))
-
-
-def mkdir_p(path):
-    ''' mkdir -p functionality
-    from:
-    http://stackoverflow.com/questions/600268/mkdir-p-functionality-in-python
-    '''
-    try:
-        os.makedirs(path)
-    except OSError as exc:  # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else:
-            raise
 
 
 class chapter(object):
@@ -194,33 +178,6 @@ class chapter(object):
 
         return processed_xml
 
-    def __copy_if_newer(self, src, dest):
-        ''' Copy a file from src to  dest if src is newer than dest '''
-        dest_dir = os.path.dirname(dest)
-        if not os.path.exists(dest_dir):
-            mkdir_p(dest_dir)
-
-        if os.path.exists(src):
-            # check whether src was modified more than a second after dest
-            # and only copy if that was the case
-            srcmtime = os.path.getmtime(src)
-            try:
-                destmtime = os.path.getmtime(dest)
-                if srcmtime - destmtime > 1:
-                    shutil.copy2(src, dest)
-                    print_debug_msg("Copying {src} --> {dest}"
-                                    .format(src=src, dest=dest))
-            except OSError:
-                # destination doesn't exist
-                shutil.copy2(src, dest)
-                print_debug_msg("Copying {src} --> {dest}"
-                                .format(src=src, dest=dest))
-
-        else:
-            if not os.path.exists(dest):
-                print(colored("WARNING! {src} cannot be found!"
-                              .format(src=src), "magenta"))
-
     def __copy_tex_images(self, build_folder, output_path):
         ''' Find all images referenced in the cnxmlplus document and copy them
         to their correct relative places in the build/tex folder.
@@ -253,92 +210,13 @@ class chapter(object):
                                   .format(dest=dest),
                                   "magenta")
                     print(msg)
-            self.__copy_if_newer(src, dest)
+            copy_if_newer(src, dest)
 
     def __render_pstikz(self, output_path):
         ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
             image to png. Insert replace div.alternate tags with <img> tags
         '''
-        with open(output_path, 'r') as htmlout:
-            html = etree.HTML(htmlout.read())
-
-        # find all the pspicture and tikz elements
-        pspics = [p for p in html.findall('.//pre[@class="pspicture"]')]
-        tikzpics = [p for p in html.findall('.//pre[@class="tikzpicture"]')]
-        allpics = pspics + tikzpics
-
-        for i, pre in enumerate(allpics):
-            msg = "  Generating image {n} / {d}\r".format(n=i+1,
-                                                          d=len(allpics))
-            sys.stdout.write(msg)
-            sys.stdout.flush()
-
-            pictype = pre.attrib['class']
-            # find the hash of the code content
-            codetext = pre.find('.//code').text
-            codetext = ''.join([c for c in codetext if ord(c) < 128])
-            codeHash = hashlib.md5(
-                ''.join(codetext.encode('utf-8').split())).hexdigest()
-            # see if the output png exists at
-            # build/html/pspictures/hash.png  OR
-            # build/html/tikzpictures/hash.png
-            pngpath = os.path.join(os.path.dirname(output_path), pictype,
-                                   codeHash+'.png')
-
-            # copy to local image cache in .bookbuilder/images
-            image_cache_path = os.path.join('.bookbuilder',
-                                            pictype,
-                                            codeHash+'.png')
-            rendered = False
-            # skip image generation if it exists
-            if os.path.exists(image_cache_path):
-                rendered = True
-
-            if not rendered:
-                # send this object to pstikz2png
-                try:
-                    if pre.attrib['class'] == 'pspicture':
-                        figpath = pstikz2png.pspicture2png(pre, iDpi=150)
-                    elif pre.attrib['class'] == 'tikzpicture':
-                        figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
-                except LatexPictureError:
-                    print(colored("\nLaTeX failure", "red"))
-                    print(etree.tostring(pre, pretty_print=True))
-                    continue
-                # done. copy to image cache
-                self.__copy_if_newer(figpath, image_cache_path)
-
-                if not os.path.exists('figure.png'):
-                    print("Problem :" + etree.tostring(pre))
-            else:
-                figpath = image_cache_path
-
-            self.__copy_if_newer(image_cache_path, pngpath)
-
-            # replace div.alternate with <img>
-            figure = pre.getparent().getparent()
-            img = etree.Element('img')
-            img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
-            img.attrib['alt'] = codeHash + '.png'
-            figure.append(img)
-            figure.remove(pre.getparent())
-            # clean up
-            for f in ["figure-autopp.cb",
-                      "figure.aux",
-                      "figure.cb",
-                      "figure.cb2",
-                      "figure.epsi",
-                      "figure.log",
-                      "figure.pdf",
-                      "figure-pics.pdf",
-                      "figure.png",
-                      "figure.ps",
-                      "figure.tex"]:
-                if os.path.exists(f):
-                    os.remove(f)
-
-        with open(output_path, 'w') as htmlout:
-            htmlout.write(etree.tostring(html, method='xml'))
+        imageutils.render_images(output_path)
 
     def __copy_html_images(self, build_folder, output_path):
         ''' Find all images referenced in the converted html document and copy
@@ -355,7 +233,7 @@ class chapter(object):
             if not os.path.exists(src) and (not os.path.exists(dest)):
                 print_debug_msg(src + " doesn't exist")
 
-            self.__copy_if_newer(src, dest)
+            copy_if_newer(src, dest)
 
     def __tolatex(self):
         ''' Convert this chapter to latex
@@ -431,6 +309,7 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
+                    self.__render_pstikz(output_path)
 
                 elif outformat == 'html':
                     # copy images included to the output folder
@@ -450,126 +329,3 @@ class chapter(object):
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)
         return "{number} {title}".format(number=chapno, title=self.title)
-
-
-class book(object):
-
-    ''' Class to represent a whole book
-    '''
-
-    def __init__(self):
-        self.repo_folder = os.path.abspath(os.curdir)
-        self.build_folder = os.path.join(self.repo_folder, 'build')
-
-        self.chapters = []
-        # Read the cache and update the cache_object
-        self.cache_object = self.read_cache()
-
-        # If the object is empty, then we need to go and discover the chapters
-        self._discover_chapters(self.cache_object)
-
-    def _discover_chapters(self, cache_object):
-        ''' Add all the .cnxmlplus files in the current folder'''
-
-        files = os.listdir(os.curdir)
-        cnxmlplusfiles = [
-            f for f in files if f.strip().endswith('.cnxmlplus')]
-        if len(cnxmlplusfiles) < 1:
-            logging.warn("No cnxmlplus files found in current folder")
-
-        cnxmlplusfiles.sort()
-
-        for cf in cnxmlplusfiles:
-            # see if this chapter occurs in the cache_object
-            if cf in cache_object['chapters'].keys():
-                # pass the previous hash to the chapter initialisation method
-                previous_hash = cache_object['chapters'][cf]['hash']
-                previous_validation_status = cache_object[
-                    'chapters'][cf]['previous_validation_status']
-                thischapter = chapter(
-                    cf, hash=previous_hash, valid=previous_validation_status)
-            else:
-                # pass the prev has has None so that validation is forced
-                thischapter = chapter(cf, hash=None)
-
-                # this chapter was not in the cache_object, add an empty dict
-                # for it
-                cache_object['chapters'][cf] = {}
-
-            # now update the cache_object
-            cache_object['chapters'][cf]['hash'] = thischapter.hash
-            cache_object['chapters'][cf][
-                'previous_validation_status'] = thischapter.valid
-            self.chapters.append(thischapter)
-
-        self.write_cache()
-
-    def show_status(self):
-        ''' Print a listing of the chapters in book
-        '''
-        print("\nCh.  Valid     File\n" + '-' * 79)
-        for chapter in self.chapters:
-            print(chapter.info())
-        print('-' * 79)
-
-    def read_cache(self):
-        ''' Read cache object inside the .bookbuilder/cache_object.txt
-
-        Returns:
-            None if cache_object.txt doesn't exist
-            cache_object of type dict if it does
-
-        '''
-
-        # check whether .bookbuilder folder exists
-        # and initialise it if it doesn't
-        if not os.path.exists('.bookbuilder'):
-            print("Creating .bookbuilder folder")
-            mkdir_p('.bookbuilder')
-
-        cache_object_path = os.path.join('.bookbuilder', 'cache_object.txt')
-
-        if not os.path.exists(cache_object_path):
-            # create one if it doesn't exist
-            cache_object = self.create_cache_object()
-
-            return cache_object
-        else:
-            with open(cache_object_path, 'r') as cop:
-                copcontent = cop.read()
-                if len(copcontent) == 0:
-                    cache_object = self.create_cache_object()
-                else:
-                    cache_object = ast.literal_eval(copcontent)
-
-                return cache_object
-
-    def write_cache(self):
-        ''' write cache object to the .bookbuilder folder
-
-        '''
-        cache_object_path = os.path.join('.bookbuilder', 'cache_object.txt')
-
-        with open(cache_object_path, 'w') as cop:
-            cop.write(self.cache_object.__str__())
-
-    def create_cache_object(self):
-        ''' create an empty cache_object dictionary
-        '''
-        # make it a dict
-        cache_object = {}
-
-        # create a key for chapters
-        cache_object['title'] = None
-        cache_object['chapters'] = {}
-
-        return cache_object
-
-    def convert(self, formats=['tex', 'html']):
-        ''' Convert all the chapters to the given output formats.
-
-        Default output format is both tex and html
-        '''
-
-        for chapter in self.chapters:
-            chapter.convert(self.build_folder, formats)
