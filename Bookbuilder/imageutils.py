@@ -22,6 +22,24 @@ def get_code_hash(codetext):
     return codeHash
 
 
+def cleanup_after_latex():
+    ''' clean up after the image generation
+    '''
+    for f in ["figure-autopp.cb",
+              "figure.aux",
+              "figure.cb",
+              "figure.cb2",
+              "figure.epsi",
+              "figure.log",
+              "figure.pdf",
+              "figure-pics.pdf",
+              "figure.png",
+              "figure.ps",
+              "figure.tex"]:
+        if os.path.exists(f):
+            os.remove(f)
+
+
 def run_latex(pictype, codehash, codetext):
     ''' Run the image generation for pstricks and tikz images
     '''
@@ -48,7 +66,7 @@ def run_latex(pictype, codehash, codetext):
 
         # done. copy to image cache
         utils.copy_if_newer(figpath, image_cache_path)
-        # copy the pdf also.
+        # copy the pdf also but run pdfcrop first
         utils.copy_if_newer(figpath.replace('.png', '.pdf'),
                             image_cache_path.replace('.png', '.pdf'))
 
@@ -100,20 +118,52 @@ def render_images(output_path):
             img.attrib['alt'] = codeHash + '.png'
             figure.append(img)
             figure.remove(pre.getparent())
-            # clean up
-            for f in ["figure-autopp.cb",
-                      "figure.aux",
-                      "figure.cb",
-                      "figure.cb2",
-                      "figure.epsi",
-                      "figure.log",
-                      "figure.pdf",
-                      "figure-pics.pdf",
-                      "figure.png",
-                      "figure.ps",
-                      "figure.tex"]:
-                if os.path.exists(f):
-                    os.remove(f)
+
+            cleanup_after_latex()
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(etree.tostring(html, method='xml'))
+
+    elif output_path.endswith(".tex"):
+        environments = ['pspicture', 'tikzpicture']
+        with open(output_path, 'r') as texout:
+            tex = texout.read()
+        allpics = tex.count(r'\begin{pspicture}') +\
+            tex.count(r'\begin{tikzpicture}')
+        piccount = 0
+        for pictype in environments:
+            texsplit = tex.split(r'\begin{{{env}}}'.format(env=pictype))
+            for i, chunk in enumerate(texsplit[1:]):
+                msg = "  Generating image {n} / {d}\r".format(n=piccount+1,
+                                                              d=allpics)
+                piccount += 1
+                sys.stdout.write(msg)
+                sys.stdout.flush()
+
+                env_end = chunk.find(r'\end{{{env}}}'.format(env=pictype))
+                # get code text and hash
+                codetext = chunk[0:env_end]
+                codeHash = get_code_hash(codetext)
+                # place where image will go.
+                pdfpath = os.path.join(os.path.dirname(output_path), pictype,
+                                       codeHash+'.pdf')
+                # This returns the png path
+                image_cache_path = run_latex(pictype, codeHash, codetext)
+                pdf_cache_path = image_cache_path.replace('.png', '.pdf')
+                # copy generated pdf to tex folder.
+                utils.copy_if_newer(pdf_cache_path, pdfpath)
+
+                # replace environment with \includegraphics
+                newenv = \
+                    r'\includegraphics{{{f}}}'.format(
+                        f=os.path.join(pictype,
+                                       codeHash + '.pdf'))
+                endlength = len(r'\end{{{env}}}'.format(env=pictype))
+                texsplit[i+1] = newenv + chunk[env_end + endlength:]
+
+            tex = ''.join(texsplit)
+
+        with open(output_path, 'w') as texout:
+            texout.write(tex)
+
+

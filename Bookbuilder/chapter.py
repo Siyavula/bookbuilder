@@ -309,6 +309,7 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
+                    self.__render_pstikz(output_path)
 
                 elif outformat == 'html':
                     # copy images included to the output folder
