@@ -62,16 +62,15 @@ def run_latex(pictype, codehash, codetext):
         except LatexPictureError:
             print(colored("\nLaTeX failure", "red"))
             print(codetext)
-            pass
+            figpath = None
+            sys.exit(1)
 
-        # done. copy to image cache
-        utils.copy_if_newer(figpath, image_cache_path)
-        # copy the pdf also but run pdfcrop first
-        utils.copy_if_newer(figpath.replace('.png', '.pdf'),
-                            image_cache_path.replace('.png', '.pdf'))
-
-        if not os.path.exists('figure.png'):
-            print("Problem :\n" + codetext)
+        if figpath:
+            # done. copy to image cache
+            utils.copy_if_newer(figpath, image_cache_path)
+            # copy the pdf also but run pdfcrop first
+            utils.copy_if_newer(figpath.replace('.png', '.pdf'),
+                                image_cache_path.replace('.png', '.pdf'))
     else:
         figpath = image_cache_path
 
