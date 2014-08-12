@@ -63,7 +63,6 @@ def run_latex(pictype, codehash, codetext):
             print(colored("\nLaTeX failure", "red"))
             print(codetext)
             figpath = None
-            sys.exit(1)
 
         if figpath:
             # done. copy to image cache
