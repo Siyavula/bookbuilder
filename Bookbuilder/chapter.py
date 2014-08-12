@@ -4,9 +4,7 @@ import os
 import logging
 import hashlib
 import subprocess
-import shutil
 import inspect
-import sys
 
 import lxml
 from lxml import etree
@@ -18,10 +16,9 @@ except ImportError:
 
 from XmlValidator import XmlValidator
 from XmlValidator import XmlValidationError
-import pstikz2png
-from pstikz2png import LatexPictureError
 from . import htmlutils
-from utils import mkdir_p
+import imageutils
+from utils import mkdir_p, copy_if_newer
 
 
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
@@ -181,33 +178,6 @@ class chapter(object):
 
         return processed_xml
 
-    def __copy_if_newer(self, src, dest):
-        ''' Copy a file from src to  dest if src is newer than dest '''
-        dest_dir = os.path.dirname(dest)
-        if not os.path.exists(dest_dir):
-            mkdir_p(dest_dir)
-
-        if os.path.exists(src):
-            # check whether src was modified more than a second after dest
-            # and only copy if that was the case
-            srcmtime = os.path.getmtime(src)
-            try:
-                destmtime = os.path.getmtime(dest)
-                if srcmtime - destmtime > 1:
-                    shutil.copy2(src, dest)
-                    print_debug_msg("Copying {src} --> {dest}"
-                                    .format(src=src, dest=dest))
-            except OSError:
-                # destination doesn't exist
-                shutil.copy2(src, dest)
-                print_debug_msg("Copying {src} --> {dest}"
-                                .format(src=src, dest=dest))
-
-        else:
-            if not os.path.exists(dest):
-                print(colored("WARNING! {src} cannot be found!"
-                              .format(src=src), "magenta"))
-
     def __copy_tex_images(self, build_folder, output_path):
         ''' Find all images referenced in the cnxmlplus document and copy them
         to their correct relative places in the build/tex folder.
@@ -240,95 +210,13 @@ class chapter(object):
                                   .format(dest=dest),
                                   "magenta")
                     print(msg)
-            self.__copy_if_newer(src, dest)
+            copy_if_newer(src, dest)
 
     def __render_pstikz(self, output_path):
         ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
             image to png. Insert replace div.alternate tags with <img> tags
         '''
-        with open(output_path, 'r') as htmlout:
-            html = etree.HTML(htmlout.read())
-
-        # find all the pspicture and tikz elements
-        pspics = [p for p in html.findall('.//pre[@class="pspicture"]')]
-        tikzpics = [p for p in html.findall('.//pre[@class="tikzpicture"]')]
-        allpics = pspics + tikzpics
-
-        for i, pre in enumerate(allpics):
-            msg = "  Generating image {n} / {d}\r".format(n=i+1,
-                                                          d=len(allpics))
-            sys.stdout.write(msg)
-            sys.stdout.flush()
-
-            pictype = pre.attrib['class']
-            # find the hash of the code content
-            codetext = pre.find('.//code').text
-            codetext = ''.join([c for c in codetext if ord(c) < 128])
-            codeHash = hashlib.md5(
-                ''.join(codetext.encode('utf-8').split())).hexdigest()
-            # see if the output png exists at
-            # build/html/pspictures/hash.png  OR
-            # build/html/tikzpictures/hash.png
-            pngpath = os.path.join(os.path.dirname(output_path), pictype,
-                                   codeHash+'.png')
-
-            # copy to local image cache in .bookbuilder/images
-            image_cache_path = os.path.join('.bookbuilder',
-                                            pictype,
-                                            codeHash+'.png')
-            rendered = False
-            # skip image generation if it exists
-            if os.path.exists(image_cache_path):
-                rendered = True
-
-            if not rendered:
-                # send this object to pstikz2png
-                try:
-                    if pre.attrib['class'] == 'pspicture':
-                        figpath = pstikz2png.pspicture2png(pre, iDpi=150)
-                    elif pre.attrib['class'] == 'tikzpicture':
-                        figpath = pstikz2png.tikzpicture2png(pre, iDpi=150)
-                except LatexPictureError:
-                    print(colored("\nLaTeX failure", "red"))
-                    print(etree.tostring(pre, pretty_print=True))
-                    continue
-                # done. copy to image cache
-                self.__copy_if_newer(figpath, image_cache_path)
-                # copy the pdf also.
-                self.__copy_if_newer(figpath.replace('.png', '.pdf'),
-                                     image_cache_path.replace('.png', '.pdf'))
-
-                if not os.path.exists('figure.png'):
-                    print("Problem :" + etree.tostring(pre))
-            else:
-                figpath = image_cache_path
-
-            self.__copy_if_newer(image_cache_path, pngpath)
-
-            # replace div.alternate with <img>
-            figure = pre.getparent().getparent()
-            img = etree.Element('img')
-            img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
-            img.attrib['alt'] = codeHash + '.png'
-            figure.append(img)
-            figure.remove(pre.getparent())
-            # clean up
-            for f in ["figure-autopp.cb",
-                      "figure.aux",
-                      "figure.cb",
-                      "figure.cb2",
-                      "figure.epsi",
-                      "figure.log",
-                      "figure.pdf",
-                      "figure-pics.pdf",
-                      "figure.png",
-                      "figure.ps",
-                      "figure.tex"]:
-                if os.path.exists(f):
-                    os.remove(f)
-
-        with open(output_path, 'w') as htmlout:
-            htmlout.write(etree.tostring(html, method='xml'))
+        imageutils.render_images(output_path)
 
     def __copy_html_images(self, build_folder, output_path):
         ''' Find all images referenced in the converted html document and copy
@@ -345,7 +233,7 @@ class chapter(object):
             if not os.path.exists(src) and (not os.path.exists(dest)):
                 print_debug_msg(src + " doesn't exist")
 
-            self.__copy_if_newer(src, dest)
+            copy_if_newer(src, dest)
 
     def __tolatex(self):
         ''' Convert this chapter to latex

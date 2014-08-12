@@ -205,7 +205,10 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
 
-    code = iPictureElement.find('.//code').text.encode('utf-8')
+    if isinstance(iPictureElement, str):
+        code = iPictureElement
+    else:
+        code = iPictureElement.find('.//code').text.encode('utf-8')
     code = code.replace(r'&amp;', '&').replace(r'&gt;', '>').replace(r'&lt;', '<')
 
     if code is None:
