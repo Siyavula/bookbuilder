@@ -216,7 +216,9 @@ class chapter(object):
         ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
             image to png. Insert replace div.alternate tags with <img> tags
         '''
-        imageutils.render_images(output_path)
+        rendered = imageutils.render_images(output_path)
+
+        return rendered
 
     def __copy_html_images(self, build_folder, output_path):
         ''' Find all images referenced in the converted html document and copy
@@ -309,7 +311,7 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
-                    self.__render_pstikz(output_path)
+                    self.has_changed = not self.__render_pstikz(output_path)
 
                 elif outformat == 'html':
                     # copy images included to the output folder
@@ -317,12 +319,12 @@ class chapter(object):
                     # read the output html, find all pstricks and tikz
                     # code blocks and render them as pngs and include them
                     # in <img> tags in the html
-                    self.__render_pstikz(output_path)
+                    self.has_changed = not self.__render_pstikz(output_path)
 
                 elif outformat == 'xhtml':
                     # copy images from html folder
                     self.__copy_html_images(build_folder, output_path)
-                    self.__render_pstikz(output_path)
+                    self.has_changed = not self.__render_pstikz(output_path)
 
         return
 

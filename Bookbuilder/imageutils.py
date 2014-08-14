@@ -60,7 +60,7 @@ def run_latex(data):
         except LatexPictureError:
             print(colored("\nLaTeX failure", "red"))
             print(codetext)
-            figpath = None
+            return None
 
         if figpath:
             # done. copy to image cache
@@ -81,6 +81,10 @@ def render_images(output_path):
     them as pdf and png. This function act as delegator for the pstikz2png
     module
     '''
+
+    # return this value at the end so that we can mark the file as valid
+    # or invalid
+    valid = True
 
     if output_path.endswith('html'):
         with open(output_path, 'r') as htmlout:
@@ -114,6 +118,9 @@ def render_images(output_path):
                                                    pooldata,
                                                    image_cache_paths)):
                 image_cache_path = icp
+                if not image_cache_path:
+                    valid = False
+                    continue
                 pictype, codeHash, codetext = pd
                 pngpath = os.path.join(os.path.dirname(output_path), pictype,
                                        codeHash+'.png')
@@ -158,6 +165,10 @@ def render_images(output_path):
                 for i, (chunk, pd, icp) in enumerate(zip(texsplit[1:],
                                                          pooldata,
                                                          image_cache_paths)):
+                    if not icp:
+                        valid = False
+                        continue
+
                     pictype, codeHash, codetext = pd
                     image_cache_path = icp
                     # place where image will go.
@@ -180,3 +191,5 @@ def render_images(output_path):
 
         with open(output_path, 'w') as texout:
             texout.write(tex)
+
+    return valid
