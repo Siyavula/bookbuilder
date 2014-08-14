@@ -167,9 +167,9 @@ def render_images(output_path):
                                                          image_cache_paths)):
                     if not icp:
                         valid = False
-                        continue
 
                     pictype, codeHash, codetext = pd
+                    env_end = chunk.find(r'\end{{{env}}}'.format(env=pictype))
                     image_cache_path = icp
                     # place where image will go.
                     pdfpath = os.path.join(os.path.dirname(output_path),
@@ -186,8 +186,7 @@ def render_images(output_path):
                                            codeHash + '.pdf'))
                     endlength = len(r'\end{{{env}}}'.format(env=pictype))
                     texsplit[i+1] = newenv + chunk[env_end + endlength:]
-
-            tex = ''.join(texsplit)
+                tex = ''.join(texsplit)
 
         with open(output_path, 'w') as texout:
             texout.write(tex)
