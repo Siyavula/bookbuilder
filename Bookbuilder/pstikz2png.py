@@ -1,5 +1,6 @@
 import os
 import subprocess
+import tempfile
 
 pstricksTex = r'''
 \documentclass[10pt]{report}
@@ -200,7 +201,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     One or two paths, the first to the PNG, the second to the EPS.
     """
 
-    tempDir = os.curdir
+    tempDir = tempfile.mkdtemp()
     latexPath = os.path.join(tempDir, 'figure.tex')
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')

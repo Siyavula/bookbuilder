@@ -1,6 +1,8 @@
 import os
-import sys
 import hashlib
+import multiprocessing
+import errno
+import shutil
 
 from lxml import etree
 from termcolor import colored
@@ -22,27 +24,21 @@ def get_code_hash(codetext):
     return codeHash
 
 
-def cleanup_after_latex():
+def cleanup_after_latex(figpath):
     ''' clean up after the image generation
     '''
-    for f in ["figure-autopp.cb",
-              "figure.aux",
-              "figure.cb",
-              "figure.cb2",
-              "figure.epsi",
-              "figure.log",
-              "figure.pdf",
-              "figure-pics.pdf",
-              "figure.png",
-              "figure.ps",
-              "figure.tex"]:
-        if os.path.exists(f):
-            os.remove(f)
+    tmpdir = os.path.dirname(figpath)
+    try:
+        shutil.rmtree(tmpdir)
+    except OSError as exc:
+        if exc.errno != errno.ENOENT:  # ENOENT - no such file or directory
+            raise  # re-raise exception
 
 
-def run_latex(pictype, codehash, codetext):
+def run_latex(data):
     ''' Run the image generation for pstricks and tikz images
     '''
+    pictype, codehash, codetext = data
     # copy to local image cache in .bookbuilder/images
     image_cache_path = os.path.join('.bookbuilder',
                                     pictype,
@@ -51,8 +47,10 @@ def run_latex(pictype, codehash, codetext):
     # skip image generation if it exists
     if os.path.exists(image_cache_path):
         rendered = True
+        print("    found image: {hash}    skipping".format(hash=codehash))
 
     if not rendered:
+        print("    generating image: {hash}".format(hash=codehash))
         # send this object to pstikz2png
         try:
             if pictype == 'pspicture':
@@ -63,7 +61,6 @@ def run_latex(pictype, codehash, codetext):
             print(colored("\nLaTeX failure", "red"))
             print(codetext)
             figpath = None
-            sys.exit(1)
 
         if figpath:
             # done. copy to image cache
@@ -71,6 +68,8 @@ def run_latex(pictype, codehash, codetext):
             # copy the pdf also but run pdfcrop first
             utils.copy_if_newer(figpath.replace('.png', '.pdf'),
                                 image_cache_path.replace('.png', '.pdf'))
+
+            cleanup_after_latex(figpath)
     else:
         figpath = image_cache_path
 
@@ -92,12 +91,9 @@ def render_images(output_path):
         tikzpics = [p for p in html.findall('.//pre[@class="tikzpicture"]')]
         allpics = pspics + tikzpics
 
+        # create a data list for the Pool map to work on
+        pooldata = []
         for i, pre in enumerate(allpics):
-            msg = "  Generating image {n} / {d}\r".format(n=i+1,
-                                                          d=len(allpics))
-            sys.stdout.write(msg)
-            sys.stdout.flush()
-
             pictype = pre.attrib['class']
             # find the hash of the code content
             codetext = pre.find('.//code').text
@@ -105,20 +101,33 @@ def render_images(output_path):
             # see if the output png exists at
             # build/html/pspictures/hash.png  OR
             # build/html/tikzpictures/hash.png
-            pngpath = os.path.join(os.path.dirname(output_path), pictype,
-                                   codeHash+'.png')
-            image_cache_path = run_latex(pictype, codeHash, codetext)
-            utils.copy_if_newer(image_cache_path, pngpath)
+            pooldata.append((pictype, codeHash, codetext))
 
-            # replace div.alternate with <img>
-            figure = pre.getparent().getparent()
-            img = etree.Element('img')
-            img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
-            img.attrib['alt'] = codeHash + '.png'
-            figure.append(img)
-            figure.remove(pre.getparent())
+        if pooldata:
+            # call parallel map
+            pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
+            image_cache_paths = pool.map(run_latex, pooldata)
+            pool.close()
+            pool.join()
 
-            cleanup_after_latex()
+            for i, (pre, pd, icp) in enumerate(zip(allpics,
+                                                   pooldata,
+                                                   image_cache_paths)):
+                image_cache_path = icp
+                pictype, codeHash, codetext = pd
+                pngpath = os.path.join(os.path.dirname(output_path), pictype,
+                                       codeHash+'.png')
+                utils.copy_if_newer(image_cache_path, pngpath)
+
+                # replace div.alternate with <img>
+                figure = pre.getparent().getparent()
+                img = etree.Element('img')
+                img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
+                img.attrib['alt'] = codeHash + '.png'
+                figure.append(img)
+                figure.remove(pre.getparent())
+
+#           cleanup_after_latex()
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(etree.tostring(html, method='xml'))
@@ -127,42 +136,47 @@ def render_images(output_path):
         environments = ['pspicture', 'tikzpicture']
         with open(output_path, 'r') as texout:
             tex = texout.read()
-        allpics = tex.count(r'\begin{pspicture}') +\
-            tex.count(r'\begin{tikzpicture}')
-        piccount = 0
+
         for pictype in environments:
             texsplit = tex.split(r'\begin{{{env}}}'.format(env=pictype))
-            for i, chunk in enumerate(texsplit[1:]):
-                msg = "  Generating image {n} / {d}\r".format(n=piccount+1,
-                                                              d=allpics)
-                piccount += 1
-                sys.stdout.write(msg)
-                sys.stdout.flush()
+            pooldata = []
 
+            for i, chunk in enumerate(texsplit[1:]):
                 env_end = chunk.find(r'\end{{{env}}}'.format(env=pictype))
                 # get code text and hash
                 codetext = chunk[0:env_end]
                 codeHash = get_code_hash(codetext)
-                # place where image will go.
-                pdfpath = os.path.join(os.path.dirname(output_path), pictype,
-                                       codeHash+'.pdf')
-                # This returns the png path
-                image_cache_path = run_latex(pictype, codeHash, codetext)
-                pdf_cache_path = image_cache_path.replace('.png', '.pdf')
-                # copy generated pdf to tex folder.
-                utils.copy_if_newer(pdf_cache_path, pdfpath)
+                pooldata.append((pictype, codeHash, codetext))
 
-                # replace environment with \includegraphics
-                newenv = \
-                    r'\includegraphics{{{f}}}'.format(
-                        f=os.path.join(pictype,
-                                       codeHash + '.pdf'))
-                endlength = len(r'\end{{{env}}}'.format(env=pictype))
-                texsplit[i+1] = newenv + chunk[env_end + endlength:]
+            if pooldata:
+                # call parallel map
+                pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
+                image_cache_paths = pool.map(run_latex, pooldata)
+                pool.close()
+                pool.join()
+
+                for i, (chunk, pd, icp) in enumerate(zip(texsplit[1:],
+                                                         pooldata,
+                                                         image_cache_paths)):
+                    pictype, codeHash, codetext = pd
+                    image_cache_path = icp
+                    # place where image will go.
+                    pdfpath = os.path.join(os.path.dirname(output_path),
+                                           pictype, codeHash+'.pdf')
+                    # This returns the png path
+                    pdf_cache_path = image_cache_path.replace('.png', '.pdf')
+                    # copy generated pdf to tex folder.
+                    utils.copy_if_newer(pdf_cache_path, pdfpath)
+
+                    # replace environment with \includegraphics
+                    newenv = \
+                        r'\includegraphics{{{f}}}'.format(
+                            f=os.path.join(pictype,
+                                           codeHash + '.pdf'))
+                    endlength = len(r'\end{{{env}}}'.format(env=pictype))
+                    texsplit[i+1] = newenv + chunk[env_end + endlength:]
 
             tex = ''.join(texsplit)
 
         with open(output_path, 'w') as texout:
             texout.write(tex)
-
-
