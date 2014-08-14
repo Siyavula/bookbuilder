@@ -280,6 +280,7 @@ class chapter(object):
                                 'html': self.__tohtml,
                                 'xhtml': self.__toxhtml}
 
+        self.render_problems = False
         for outformat in output_format:
 
             # convert this chapter to the specified format
@@ -291,7 +292,10 @@ class chapter(object):
             if self.valid:
                 # run the conversion only if the file has changed OR if it
                 # doesn't exist (it may have been deleted manually)
-                if (self.has_changed) or (not os.path.exists(output_path)):
+                if any((self.has_changed,
+                        not os.path.exists(output_path),
+                        self.render_problems)):
+
                     mkdir_p(os.path.dirname(output_path))
                     print("Converting {ch} to {form}".format(ch=self.file,
                                                              form=outformat))
@@ -311,7 +315,9 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
-                    self.has_changed = not self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
 
                 elif outformat == 'html':
                     # copy images included to the output folder
@@ -319,12 +325,16 @@ class chapter(object):
                     # read the output html, find all pstricks and tikz
                     # code blocks and render them as pngs and include them
                     # in <img> tags in the html
-                    self.has_changed = not self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
 
                 elif outformat == 'xhtml':
                     # copy images from html folder
                     self.__copy_html_images(build_folder, output_path)
-                    self.has_changed = not self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
 
         return
 
