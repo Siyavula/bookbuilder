@@ -1,6 +1,36 @@
 import os
 import subprocess
 import tempfile
+import re
+import htmlentitydefs
+
+##
+# Removes HTML or XML character references and entities from a text string.
+#
+# @param text The HTML (or XML) source text.
+# @return The plain text, as a Unicode string, if necessary.
+
+def unescape(text):
+    def fixup(m):
+        text = m.group(0)
+        if text[:2] == "&#":
+            # character reference
+            try:
+                if text[:3] == "&#x":
+                    return unichr(int(text[3:-1], 16))
+                else:
+                    return unichr(int(text[2:-1]))
+            except ValueError:
+                pass
+        else:
+            # named entity
+            try:
+                text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
+            except KeyError:
+                pass
+        return text # leave as is
+    return re.sub("&#?\w+;", fixup, text)
+
 
 pstricksTex = r'''
 \documentclass[10pt]{report}
@@ -168,6 +198,14 @@ disabledatascaling,
 \end{document}
 '''
 
+equationTex = u'''\\documentclass{standalone}
+\\usepackage{amsmath}
+\\usepackage{amsfonts}
+\\usepackage{amssymb}
+\\usepackage{keystroke}
+\\begin{document}
+__CODE__
+\\end{document}'''.encode('utf-8')
 
 def execute(args):
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -205,6 +243,8 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
 
+
+
     # can send the raw string code or a <pre> element with <code> child
     if isinstance(iPictureElement, str):
         code = iPictureElement
@@ -215,7 +255,9 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     if code is None:
         raise ValueError, "Code cannot be empty."
     with open(latexPath, 'wt') as fp:
-        fp.write(iLatex.replace('__CODE__', code.strip()))
+        temp = unescape(iLatex.replace('__CODE__', code.strip()))
+        temp = temp.encode('utf-8')
+        fp.write(temp)
 
     for path, pathFile in iIncludedFiles.iteritems():
         try:
@@ -237,7 +279,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     try:
         open(pdfPath, "rb")
     except IOError:
-        raise LatexPictureError, "LaTeX failed to compile the image. %s" % latexPath
+        raise LatexPictureError, "LaTeX failed to compile the image. %s \n%s" % (latexPath, iLatex.replace('__CODE__', code.strip()))
 
     # crop the pdf image too
     execute(['pdfcrop', pdfPath, pdfPath])
@@ -263,3 +305,6 @@ def tikzpicture2png(iTikzpictureElement, *args, **kwargs):
 
 def pspicture2png(iPspictureElement, *args, **kwargs):
     return pstikz2png(iPspictureElement, pstricksTex, *args, **kwargs)
+
+def equation2png(iPspictureElement, *args, **kwargs):
+    return pstikz2png(iPspictureElement, equationTex, *args, **kwargs)

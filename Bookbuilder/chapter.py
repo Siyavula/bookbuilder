@@ -269,6 +269,11 @@ class chapter(object):
 
         return xhtml
 
+    def __tomobile(self):
+        html = self.__toxhtml()
+
+        return html
+
     def convert(self, build_folder, output_format):
         ''' Convert the chapter to the specified output format and write the
         the build folder: {build_folder}/{output_format}/self.file.{format}
@@ -278,7 +283,8 @@ class chapter(object):
         '''
         conversion_functions = {'tex': self.__tolatex,
                                 'html': self.__tohtml,
-                                'xhtml': self.__toxhtml}
+                                'xhtml': self.__toxhtml,
+                                'mobile': self.__tomobile}
 
         self.render_problems = False
         for outformat in output_format:
@@ -288,6 +294,10 @@ class chapter(object):
             output_path = os.path.join(build_folder, outformat,
                                        self.file +
                                        '.{f}'.format(f=outformat))
+
+            if outformat == 'mobile':
+                output_path = output_path.replace(r'.mobile', '.html')
+
             # only try this on valid cnxmlplus files
             if self.valid:
                 # run the conversion only if the file has changed OR if it
@@ -330,6 +340,13 @@ class chapter(object):
                         self.render_problems = True
 
                 elif outformat == 'xhtml':
+                    # copy images from html folder
+                    self.__copy_html_images(build_folder, output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
+
+                elif outformat == 'mobile':
                     # copy images from html folder
                     self.__copy_html_images(build_folder, output_path)
                     rendered = self.__render_pstikz(output_path)
