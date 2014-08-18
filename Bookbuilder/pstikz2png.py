@@ -203,7 +203,6 @@ equationTex = u'''\\documentclass[preview]{standalone}
 \\usepackage{amsfonts}
 \\usepackage{amssymb}
 \\usepackage{keystroke}
-\\usepackage{unicode-math}
 \\begin{document}
 __CODE__
 \\end{document}'''.encode('utf-8')
