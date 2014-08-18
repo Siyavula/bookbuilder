@@ -198,11 +198,12 @@ disabledatascaling,
 \end{document}
 '''
 
-equationTex = u'''\\documentclass{standalone}
+equationTex = u'''\\documentclass[preview]{standalone}
 \\usepackage{amsmath}
 \\usepackage{amsfonts}
 \\usepackage{amssymb}
 \\usepackage{keystroke}
+\\usepackage{unicode-math}
 \\begin{document}
 __CODE__
 \\end{document}'''.encode('utf-8')
@@ -282,18 +283,18 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
         raise LatexPictureError, "LaTeX failed to compile the image. %s \n%s" % (latexPath, iLatex.replace('__CODE__', code.strip()))
 
     # crop the pdf image too
-    execute(['pdfcrop', pdfPath, pdfPath])
+    execute(['pdfcrop', '--margins', '1', pdfPath, pdfPath])
 
     execute(['convert',
              '-density',
              '%i'%iDpi,
              pdfPath,
-             '-trim',
-             '-bordercolor',
-             'None',
-             '-border',
-             '10x10',
-             '+repage',
+#            '-trim',
+#            '-bordercolor',
+#            'None',
+#            '-border',
+#            '10x10',
+#            '+repage',
              pngPath])
 
     return pngPath
@@ -306,5 +307,15 @@ def tikzpicture2png(iTikzpictureElement, *args, **kwargs):
 def pspicture2png(iPspictureElement, *args, **kwargs):
     return pstikz2png(iPspictureElement, pstricksTex, *args, **kwargs)
 
+
+
 def equation2png(iPspictureElement, *args, **kwargs):
+    # check to see how many lines are in the code
+    iPspictureElement = iPspictureElement.replace(r'\[', '\(').replace(r'\]', '\)')
+    iPspictureElement = iPspictureElement.replace(r'&', r' &')
+    # remove tabs
+    iPspictureElement = iPspictureElement.replace('\t', '')
+    # remove leading spaces in equations
+#   iPspictureElement = '\n'.join([l.strip() for l in  iPspictureElement.split('\n')])
+
     return pstikz2png(iPspictureElement, equationTex, *args, **kwargs)

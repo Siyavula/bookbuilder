@@ -311,6 +311,7 @@ class chapter(object):
                                                              form=outformat))
                     converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f:
+                        # convert tabs to spaces
                         f.write(converted)
 
                 # file has not changed AND the file exists

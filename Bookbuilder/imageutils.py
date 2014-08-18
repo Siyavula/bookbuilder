@@ -1,4 +1,6 @@
+from __future__ import print_function
 import os
+import sys
 import hashlib
 import multiprocessing
 import errno
@@ -48,10 +50,10 @@ def run_latex(data):
     # skip image generation if it exists
     if os.path.exists(image_cache_path):
         rendered = True
-        print("    found image: {hash}    skipping".format(hash=codehash))
+        sys.stdout.write('s')
 
     if not rendered:
-        print("    generating image: {hash}".format(hash=codehash))
+        sys.stdout.write('.')
         # send this object to pstikz2png
         try:
             if pictype == 'pspicture':
@@ -78,6 +80,7 @@ def run_latex(data):
     else:
         figpath = image_cache_path
 
+    sys.stdout.flush()
     return image_cache_path
 
 
@@ -190,13 +193,13 @@ def _render_tex_images(tex, output_path):
 
 def _render_mobile_images(html, output_path):
     '''
-    Given TeX file as string, find pstricks and tikz images and generate
-    the PDF version, include in file as graphics, return as string
+    Given HTML file as string, equations and generate png images for them.
     '''
     valid = True
     pictype = 'equation'
     environments = [(r'\(', r'\)'),
-                    (r'\[', r'\]')]
+                    (r'\[', r'\]'),
+                    (r'\begin{align*}', r'\end{align*}')]
     for (env_start, env_end) in environments:
         htmlsplit = html.split(env_start)
         pooldata = []
@@ -289,5 +292,6 @@ def render_images(output_path):
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(html)
-
+    sys.stdout.write('\n')
+    sys.stdout.flush()
     return valid
