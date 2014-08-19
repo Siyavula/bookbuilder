@@ -128,6 +128,38 @@
                     </definition>
                 </section>
                 <section type="subsection">
+                    <title>Math Extension</title>
+                    <math_extension>
+                        <title>Other forms of potential energy</title>
+                        <body>
+                            <list list-type="enumerated">
+                                <item>
+                                    <para>elastic potential energy - potential energy is stored in a compressed or extended spring or rubber band. This potential energy is calculated by:</para>
+                                    <latex>\frac{1}{2}k{x}^{2}</latex>
+                                    <para>where k is a constant that is a measure of the stiffness of the spring or rubber band and x is the extension of the spring or rubber band.</para>
+                                </item>
+                                <item>
+                                    <para>Chemical potential energy is related to the making and breaking of chemical bonds. For example, a battery converts chemical energy into electrical energy.</para>
+                                </item>
+                                <item>
+                                    <para>The electrical potential energy of an electrically charged object is defined as the work that must be done to move it from an infinite distance away to its present location, in the absence of any non-electrical forces on the object. This energy is non-zero if there is another electrically charged object nearby otherwise it is given by:</para>
+
+
+                                    <latex>k\frac{{q}_{1}{q}_{2}}{d}</latex>
+
+
+                                    <para>where k is Coulomb's constant. For example, an electric motor lifting an elevator converts electrical energy into gravitational potential energy.</para>
+                                </item>
+                                <item>
+                                    <para>Nuclear energy is the energy released when the nucleus of an atom is split or fused. A nuclear reactor converts nuclear energy into heat.</para>
+                                </item>
+                            </list>
+                            <para>Some of these forms of energy will be studied in later chapters.</para>
+                        </body>
+                    </math_extension>
+
+                </section>
+                <section type="subsection">
                     <title>Theorem</title>
                     <theorem>
                         <title>Perpendicular line from circle centre bisects chord</title>
