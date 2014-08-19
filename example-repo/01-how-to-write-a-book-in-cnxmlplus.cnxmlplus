@@ -386,7 +386,7 @@
                                     <latex>(-\infty;7]</latex>
                                 </problem>
                                 <solution>
-                                    <correct><latex>\left\{x:x\in&#8477;,x \leq 7\right\}</latex></correct>
+                                    <correct><latex>\left\{x:x\in\mathbb{R},x \leq 7\right\}</latex></correct>
                                 </solution>
                             </entry>
                             <entry>
@@ -395,7 +395,7 @@
                                     <latex>[13;4)</latex>
                                 </problem>
                                 <solution>
-                                    <correct><latex>\left\{y:y\in&#8477;, -13 \leq y &lt; 4\right\}</latex></correct>
+                                    <correct><latex>\left\{y:y\in\mathbb{R}, -13 \leq y &lt; 4\right\}</latex></correct>
                                 </solution>
                             </entry>
                             <entry>
@@ -404,7 +404,7 @@
                                     <latex>(35;\infty)</latex>
                                 </problem>
                                 <solution>
-                                    <correct><latex>\left\{z:z\in&#8477;, z &gt; 35\right\}</latex></correct>
+                                    <correct><latex>\left\{z:z\in\mathbb{R}, z &gt; 35\right\}</latex></correct>
                                 </solution>
                             </entry>
                             <entry>
@@ -413,7 +413,7 @@
                                     <latex>[\frac{3}{4};21)</latex>
                                 </problem>
                                 <solution>
-                                    <correct><latex>\left\{t:t\in&#8477;, \frac{3}{4} \leq t &lt; 21\right\}</latex></correct>
+                                    <correct><latex>\left\{t:t\in\mathbb{R}, \frac{3}{4} \leq t &lt; 21\right\}</latex></correct>
                                 </solution>
                             </entry>
                             <entry>
@@ -422,7 +422,7 @@
                                     <latex>[-\frac{1}{2};\frac{1}{2}]</latex>
                                 </problem>
                                 <solution>
-                                    <correct><latex>\left\{p:p\in&#8477;, -\frac{1}{2} \leq p \leq \frac{1}{2}\right\}</latex></correct>
+                                    <correct><latex>\left\{p:p\in\mathbb{R}, -\frac{1}{2} \leq p \leq \frac{1}{2}\right\}</latex></correct>
                                 </solution>
                             </entry>
                             <entry>
@@ -431,7 +431,7 @@
                                     <latex>(-\sqrt{3};\infty)</latex>
                                 </problem>
                                 <solution>
-                                    <correct><latex>\left\{m:m\in&#8477;, m &gt; -\sqrt{3}\right\}</latex></correct>
+                                    <correct><latex>\left\{m:m\in\mathbb{R}, m &gt; -\sqrt{3}\right\}</latex></correct>
                                 </solution>
                             </entry>
                         </problem-set>
@@ -442,7 +442,7 @@
                             <entry>
                                 <shortcode>00fa</shortcode>
                                 <problem>
-                                    <latex>\left\{p:p\in&#8477;, p \leq 6 \right\}</latex>
+                                    <latex>\left\{p:p\in\mathbb{R}, p \leq 6 \right\}</latex>
                                 </problem>
                                 <solution>
                                     <correct><latex>(-\infty;6]</latex></correct>
@@ -451,7 +451,7 @@
                             <entry>
                                 <shortcode>00fa</shortcode>
                                 <problem>
-                                    <latex>\left\{k:k\in&#8477;,-5 &lt; k &lt; 5\right\}</latex>
+                                    <latex>\left\{k:k\in\mathbb{R},-5 &lt; k &lt; 5\right\}</latex>
                                 </problem>
                                 <solution>
                                     <correct><latex>(-5;5)</latex></correct>
@@ -460,7 +460,7 @@
                             <entry>
                                 <shortcode>00fa</shortcode>
                                 <problem>
-                                    <latex>\left\{x:x\in&#8477;,x &gt; \frac{1}{5}\right\}</latex>
+                                    <latex>\left\{x:x\in\mathbb{R},x &gt; \frac{1}{5}\right\}</latex>
                                 </problem>
                                 <solution>
                                     <correct><latex>(\frac{1}{5};\infty)</latex></correct>
@@ -469,7 +469,7 @@
                             <entry>
                                 <shortcode>00fa</shortcode>
                                 <problem>
-                                    <latex>\left\{z:z\in&#8477;,21 \leq x &lt; 41\right\}</latex>
+                                    <latex>\left\{z:z\in\mathbb{R},21 \leq x &lt; 41\right\}</latex>
                                 </problem>
                                 <solution>
                                     <correct><latex>[21;41)</latex></correct>
@@ -606,8 +606,113 @@
                         </tikzpicture>
                         <caption>This is the caption</caption>
                     </figure>
+                </section> <!-- end subsection -->
+                <section type="subsection">
+                    <title>Teacher's Guide stuff</title>
+
+                    <teachers-guide>
+                        <para>This is a Teacher's guide environment</para>
+
+                        <para>and it contains a bulleted list</para>
+
+                        <list list-type="bulleted" id="import-auto-idm15102736">
+                            <item>Understand the principle of free falling under gravity with a constant acceleration for an upwards and downwards motion.</item>
+                            <item>Know that it's only vertical displacement no horizontal displacement.</item>
+                            <item>Always move only under the influence of only gravity.</item>
+                            <item>The meaning of time symmetry and the magnitude of velocity.</item>
+                            <item>Do an experiment to measure the position and time during a motion.</item>
+                            <item>Calculations done on projectiles by knowing how to use a single set of equations.</item>
+                            <item>Graphical representations of the equations of motion - Draw graphs for the projectiles motions.</item>
+                            <item>Deduct equations and determine the position, displacement, velocity or acceleration from the graphs.</item>
+                            <item>Describe the motion of the object from the graphs.</item>
+                        </list>
+                        <para>and a numbered list</para>
+
+                        <list list-type="enumerated" id="import-auto-idm15102736">
+                            <item>Understand the principle of free falling under gravity with a constant acceleration for an upwards and downwards motion.</item>
+                            <item>Know that it's only vertical displacement no horizontal displacement.</item>
+                            <item>Always move only under the influence of only gravity.</item>
+                            <item>The meaning of time symmetry and the magnitude of velocity.</item>
+                            <item>Do an experiment to measure the position and time during a motion.</item>
+                            <item>Calculations done on projectiles by knowing how to use a single set of equations.</item>
+                            <item>Graphical representations of the equations of motion - Draw graphs for the projectiles motions.</item>
+                            <item>Deduct equations and determine the position, displacement, velocity or acceleration from the graphs.</item>
+                            <item>Describe the motion of the object from the graphs.</item>
+                        </list>
+                        
+                        <para>The next environment is a linked-concept environment.</para>
+                        <linked-concepts>
+                            <concept><text>Units and unit conversions</text><subject>science</subject><grade>10</grade><chapter>science skills</chapter></concept>
+                            <concept><text>Rectilinear motion</text><subject>science</subject><grade>10</grade><chapter>TODO</chapter></concept>
+                            <concept><text>Linear equations</text><subject>maths</subject><grade>10</grade><chapter>TODO</chapter></concept>
+                            <concept><text>Quadratic equations</text><subject>maths</subject><grade>10</grade><chapter>TODO</chapter></concept>
+                        </linked-concepts>
+
+                    </teachers-guide>
+                </section> <!-- end subsection -->
+                <section type="subsection">
+                    <title>Tables</title>
+            <table>
+              <tgroup cols="3">
+                <colspec colname="c1" colnum="1"/>
+                <colspec colname="c2" colnum="2"/>
+                <colspec colname="c3" colnum="3"/>
+                <tbody>
+                  <row>
+                    <entry>Graph
+                    </entry>
+                    <entry>Slope
+                    </entry>
+                    <entry>
+                    Area
+                    </entry>
+                </row>
+                  <row>
+                    <entry>Displacement vs time
+                    </entry>
+                    <entry><latex>\vec{v}</latex>
+                    </entry>
+                    <entry>-
+                    </entry>
+                </row>
+                  <row>
+                    <entry>Velocity vs time
+                    </entry>
+                    <entry><latex>\vec{a}</latex>
+                    </entry>
+                    <entry><latex>\Delta \vec{x}</latex>
+                    </entry>
+                </row>
+                  <row>
+                    <entry>Acceleration vs time
+                    </entry>
+                    <entry>-
+                    </entry>
+                    <entry><latex>\vec{v}</latex>
+                    </entry>
+                </row>
+            </tbody>
+            </tgroup>
+            </table>
                 </section>
             </section> <!-- end section -->
+            <summary>
+                <para>This is a summary</para>
+                <para>
+                    Donec et augue non ipsum dapibus pellentesque. Etiam pulvinar nisl
+                    ac eleifend euismod. Nunc dictum convallis vestibulum. Sed erat
+                    dolor, ullamcorper et tristique eget, ultrices sed mauris. Nullam
+                    quis nibh non nunc pharetra pulvinar quis at dui. Pellentesque
+                    habitant morbi tristique senectus et netus et malesuada fames ac
+                    turpis egestas. Morbi fermentum volutpat convallis. Vestibulum
+                    tristique nisi id nunc faucibus pretium. Pellentesque orci metus,
+                    ultrices eget justo a, ultrices tincidunt enim. Sed vitae mauris
+                    quis dolor feugiat semper. Sed consectetur tellus nibh, a iaculis
+                    enim convallis eget. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit. Fusce pharetra erat enim, et vulputate enim congue
+                    nec.
+                </para>
+            </summary>
         </section> <!-- end chapter -->
     </content>
 </document>

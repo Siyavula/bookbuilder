@@ -258,6 +258,7 @@ class chapter(object):
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         html, err = myprocess.communicate()
+        html = htmlutils.add_mathjax(html)
 
         return html
 
