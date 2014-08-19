@@ -238,9 +238,15 @@ def _render_mobile_images(html, output_path):
                 # copy generated pdf to tex folder.
                 utils.copy_if_newer(image_cache_path, pngpath)
 
-                # replace environment with \includegraphics
+                # replace environment with img tag
+                # must specify block or inline
+                if env_start == r'\(':
+                    imgclass = 'math-inline'
+                else:
+                    imgclass = 'math-block'
                 newenv = \
-                    r'<img src="{f}"/>'.format(
+                    r'<img class="{imgclass}" src="{f}"/>'.format(
+                        imgclass=imgclass,
                         f=os.path.join(pictype,
                                        codeHash + '.png'))
                 endlength = len(env_end)
