@@ -109,6 +109,12 @@
                     We can add  various environments to chapters, sections, subsections and subsubsections:
                 </para>
                 <section type="subsection">
+                    <title>Quotes</title>
+                    <quote>
+                        This is a quote from some famous person.
+                    </quote>
+                </section>
+                <section type="subsection">
                     <title>Definitions</title>
                     <definition>
                          <term>Markup language</term>
@@ -120,6 +126,68 @@
                             and formatting for display or printing.
                              </meaning>
                     </definition>
+                </section>
+                <section type="subsection">
+                    <title>Theorem</title>
+                    <theorem>
+                        <title>Perpendicular line from circle centre bisects chord</title>
+                        <statement>
+                            <para>If a line is drawn from the centre of a circle perpendicular to a chord, then it bisects the chord.</para>
+                            <para>(Reason: <latex>\perp</latex> from centre bisects chord) </para>
+                        </statement>
+                        <given>
+                            <para>Circle with centre <latex>O</latex> and line <latex>OP</latex> perpendicular to chord <latex>AB</latex>.</para>
+                            <pspicture>
+                                <code>
+                                    (-2.6,-2.6)(2.6,2.6)
+                                    \pscircle{2.5}
+                                    \psline(-2,-1.5)(2,-1.5)
+                                    \psline(0,0)(0,-1.5)
+                                    \psline[linestyle=dashed](0,0)(-2,-1.5)
+                                    \psline[linestyle=dashed](0,0)(2,-1.5)
+                                    \rput(0,-1.5){\psline(0.2,0)(0.2,0.2)(0,0.2)}
+                                    \psdot(0,0)
+                                    \uput[l](-2,-1.5){\(A\)}
+                                    \uput[r](2,-1.5){\(B\)}
+                                    \uput[u](0,0){\(O\)}
+                                    \uput[d](0,-1.5){\(P\)}
+                                </code>
+                            </pspicture>
+                        </given>
+                        <required><latex>AP = PB</latex></required>
+                        <proof>
+                            <para>Draw <latex>OA</latex> and <latex>OB</latex>.</para>
+                            <para>In <latex>\triangle OPA</latex> and in <latex>\triangle OPB</latex>,
+                                <latex display="block">
+                                    \begin{align*}
+                                    OA^2 &amp;= OP^2 + AP^2 &amp; \text{(Pythagoras)} \\
+                                    OB^2 &amp;= OP^2 + BP^2 &amp; \text{(Pythagoras)} 
+                                    \end{align*}
+                                </latex>   
+                                and
+                                <latex display="block">
+                                    \begin{align*}
+                                    OA  &amp;= OB &amp; \text{(equal radii)} \\
+                                    \therefore AP^2 &amp;= BP^2 &amp; \\
+                                    \therefore AP &amp;= BP &amp; 
+                                    \end{align*}
+                                </latex>
+                                Therefore <latex>OP</latex> bisects <latex>AB</latex>.</para>
+                            <para><emphasis effect="bold">Alternative proof:</emphasis></para>
+                            <para>In <latex>\triangle OPA</latex> and in <latex>\triangle OPB</latex>,
+                                <latex display="block">
+                                    \begin{align*}
+                                    O\hat{P}A &amp;= O\hat{P}B &amp; (\text{given } OP \perp AB) \\
+                                    OA &amp;= OB &amp; \text{(equal radii)} \\
+                                    OP &amp;= OP &amp; \text{(common side)}  \\
+                                    \therefore \triangle OPA &amp; \equiv  \triangle OPB &amp; \text{(RHS)}  \\
+                                    \therefore AP &amp;= PB &amp; 
+                                    \end{align*}
+                                </latex>
+                                Therefore <latex>OP</latex> bisects <latex>AB</latex>.</para>
+                        </proof>
+                    </theorem>
+
                 </section>
                 <section type="subsection">
                     <title>Mathematical identities</title>
