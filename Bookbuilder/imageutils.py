@@ -65,7 +65,6 @@ def run_latex(data):
 
         except LatexPictureError as E:
             print(colored("\nLaTeX failure", "red"))
-            print(codetext)
             print(E)
             return None
 
@@ -167,6 +166,7 @@ def _render_tex_images(tex, output_path):
                                                      image_cache_paths)):
                 if not icp:
                     valid = False
+                    continue
 
                 pictype, codeHash, codetext = pd
                 env_end = chunk.find(r'\end{{{env}}}'.format(env=pictype))

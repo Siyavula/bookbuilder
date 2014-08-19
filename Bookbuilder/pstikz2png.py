@@ -10,6 +10,7 @@ import htmlentitydefs
 # @param text The HTML (or XML) source text.
 # @return The plain text, as a Unicode string, if necessary.
 
+
 def unescape(text):
     def fixup(m):
         text = m.group(0)
@@ -207,6 +208,7 @@ equationTex = u'''\\documentclass[preview]{standalone}
 __CODE__
 \\end{document}'''.encode('utf-8')
 
+
 def execute(args):
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = p.communicate()
@@ -242,8 +244,6 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     latexPath = os.path.join(tempDir, 'figure.tex')
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
-
-
 
     # can send the raw string code or a <pre> element with <code> child
     if isinstance(iPictureElement, str):
@@ -313,8 +313,5 @@ def equation2png(iPspictureElement, *args, **kwargs):
     iPspictureElement = iPspictureElement.replace(r'\[', '\(').replace(r'\]', '\)')
     iPspictureElement = iPspictureElement.replace(r'&', r' &')
     # remove tabs
-    iPspictureElement = iPspictureElement.replace('\t', '')
-    # remove leading spaces in equations
-#   iPspictureElement = '\n'.join([l.strip() for l in  iPspictureElement.split('\n')])
-
+    iPspictureElement = iPspictureElement.replace('\t', ' ')
     return pstikz2png(iPspictureElement, equationTex, *args, **kwargs)
