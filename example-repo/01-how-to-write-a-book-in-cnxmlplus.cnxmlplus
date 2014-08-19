@@ -128,6 +128,38 @@
                     </definition>
                 </section>
                 <section type="subsection">
+                    <title>Videos, Presentations and Simulations</title>
+                    <video>
+                        <shortcode>27RG</shortcode>
+                        <title>Chapter introduction</title>
+                        <url>http://www.youtube.com/embed/2WS1sG9fhOk</url>
+                        <width>300</width>
+                        <height>245</height>
+                        <url>http://www.youtube.com/watch?feature=player_embedded&amp;v=2WS1sG9fhOk</url>
+                    </video>
+
+                    <presentation>
+                        <shortcode>27SC</shortcode>
+                        <url>http://www.slideshare.net/slideshow/embed_code/34431272</url>
+                    </presentation>
+
+                    <simulation>
+                        <shortcode>27K2</shortcode>
+                        <title>PhET simulation on motion</title>
+                        <url>http://phet.colorado.edu/en/simulation/projectile-motion</url>
+                        <embed>&lt;div style="position: relative; width: 300px; height: 198px;"&gt;&lt;a
+                            href="http://phet.colorado.edu/sims/projectile-motion/projectile-motion_en.html" style="text-decoration:
+                            none;" rel="external"&gt;&lt;img
+                            src="http://phet.colorado.edu/sims/projectile-motion/projectile-motion-screenshot.png" alt="Projectile
+                            Motion" style="border: none;" width="300" height="198"/&gt;&lt;div style="position: absolute; width: 200px;
+                            height: 80px; left: 50px; top: 59px; background-color: #FFF; opacity: 0.6; filter: alpha(opacity =
+                            60);"&gt;&lt;/div&gt;&lt;table style="position: absolute; width: 200px; height: 80px; left: 50px; top:
+                            59px;"&gt;&lt;tr&gt;&lt;td style="text-align: center; color: #000; font-size: 24px; font-family:
+                            Arial,sans-serif;"&gt;Click to Run&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/a&gt;&lt;/div&gt;</embed>
+                    </simulation>
+
+                </section>
+                <section type="subsection">
                     <title>Math Extension</title>
                     <math_extension>
                         <title>Other forms of potential energy</title>
