@@ -1,0 +1,614 @@
+<document xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:style="http://siyavula.com/cnxml/style/0.1">
+    <its:rules xmlns:its="http://www.w3.org/2005/11/its" version="1.0">
+        <its:translateRule translate="no" selector="//link"/>
+        <its:translateRule translate="no" selector="//url"/>
+        <its:translateRule translate="no" selector="//latex"/>
+        <its:translateRule translate="no" selector="//number"/>
+        <its:translateRule translate="no" selector="//unit"/>
+        <its:translateRule translate="no" selector="//unit_number"/>
+        <its:translateRule translate="no" selector="//percentage"/>
+        <its:translateRule translate="no" selector="//symbol"/>
+        <its:translateRule translate="no" selector="//currency"/>
+        <its:translateRule translate="no" selector="//chem_compound"/>
+        <its:translateRule translate="no" selector="//spec_note"/>
+        <its:translateRule translate="no" selector="//nuclear_notation"/>
+        <its:translateRule translate="no" selector="//mass_number"/>
+        <its:translateRule translate="no" selector="//atomic_number"/>
+        <its:translateRule translate="no" selector="//code"/>
+        <its:translateRule translate="no" selector="//m:math"/>
+        <its:translateRule translate="no" selector="//shortcode"/>
+        <its:translateRule translate="no" selector="//metadata"/>
+        <its:translateRule translate="no" selector="//image"/>
+        <its:translateRule translate="no" selector="//video"/>
+        <its:translateRule translate="no" selector="//figure/type"/>
+        <its:translateRule translate="no" selector="//simulation"/>
+    </its:rules>
+    <metadata>
+        <pspicture-generator-version>1.1</pspicture-generator-version>
+    </metadata>
+    <content>
+        <section type="chapter">
+            <title>This is a chapter title</title>
+
+            <para>
+                Donec et augue non ipsum dapibus pellentesque. Etiam pulvinar nisl
+                ac eleifend euismod. Nunc dictum convallis vestibulum. Sed erat
+                dolor, ullamcorper et tristique eget, ultrices sed mauris. Nullam
+                quis nibh non nunc pharetra pulvinar quis at dui. Pellentesque
+                habitant morbi tristique senectus et netus et malesuada fames ac
+                turpis egestas. Morbi fermentum volutpat convallis. Vestibulum
+                tristique nisi id nunc faucibus pretium. Pellentesque orci metus,
+                ultrices eget justo a, ultrices tincidunt enim. Sed vitae mauris
+                quis dolor feugiat semper. Sed consectetur tellus nibh, a iaculis
+                enim convallis eget. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Fusce pharetra erat enim, et vulputate enim congue
+                nec.
+            </para>
+
+            <section type='section'>
+                <title>This is a section.</title>
+                <para>
+                    Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                    et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                    sem tortor, elementum id tempus vel, varius id massa. Sed
+                    faucibus arcu at augue dictum dignissim. Donec justo dui,
+                    volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                    semper sapien turpis, mattis euismod lectus imperdiet eu.
+                    Praesent lobortis mollis ante eu interdum. Integer libero
+                    ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                    justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                    auctor placerat odio eget dapibus. Nullam porta hendrerit
+                    nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                    elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                    id dui vestibulum sollicitudin.
+                </para>
+
+                <section type='subsection'>
+                    <title>This is a subsection.</title>
+
+                    <para>
+                        Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                        et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                        sem tortor, elementum id tempus vel, varius id massa. Sed
+                        faucibus arcu at augue dictum dignissim. Donec justo dui,
+                        volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                        semper sapien turpis, mattis euismod lectus imperdiet eu.
+                        Praesent lobortis mollis ante eu interdum. Integer libero
+                        ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                        justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                        auctor placerat odio eget dapibus. Nullam porta hendrerit
+                        nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                        elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                        id dui vestibulum sollicitudin.
+                    </para>
+
+                    <section type='subsubsection'>
+                        <title>This is a subsubsection.</title>
+
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </section> <!-- end subsubsection -->
+                </section><!-- end subsection -->
+            </section><!-- end section -->
+            <section type="section">
+                <title>This is another section</title>
+                <para>
+                    We can add  various environments to chapters, sections, subsections and subsubsections:
+                </para>
+                <section type="subsection">
+                    <title>Definitions</title>
+                    <definition>
+                         <term>Markup language</term>
+                         <meaning>
+                            A markup language is a set of tags and/or a set of rules
+                            for creating tags that can be embedded in digital text to
+                            provide additional information about the text in order to
+                            facilitate automated processing of it, including editing
+                            and formatting for display or printing.
+                             </meaning>
+                    </definition>
+                </section>
+                <section>
+                    <title>Various kinds of notes:</title>
+                    <note type="note">
+                        <para>
+                            This is a note
+                        </para>
+                    </note>
+                    <note type="tip">
+                        <para>
+                            This is a note
+                        </para>
+                    </note>
+                    <note type="important">
+                        <para>
+                            This is an "important" note
+                        </para>
+                    </note>
+                    <note type="warning">
+                        <para>
+                            This is a warning
+                        </para>
+                    </note>
+                    <note type="didyouknow">
+                        <para>
+                            This is a "Did You Know" note.
+                        </para>
+                    </note>
+                    <note type="visit">
+                        <para>
+                            This is a note containing links to visit.
+                        </para>
+                    </note>
+                </section>
+                <section type="section">
+                    <title>Activities of various kinds.</title>
+
+                    <activity type="activity">
+                         <title>This is an activity</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+
+                    <activity type="groupdiscussion">
+                         <title>This is a group discussion</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+
+                    <activity type="casestudy">
+                         <title>This is a Case Study</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+
+                    <activity type="project">
+                         <title>This is a Project</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+                </section>
+                <section type="subsection">
+                    <title>Experiments</title>
+                    <para>Experiments are also activities of a kind.</para>
+
+                    <activity type="f_experiment">
+                         <title>This is a Formal Experiment</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+                    <activity type="i_experiment">
+                         <title>This is an Informal Experiment</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+                    <activity type="g_experiment">
+                         <title>This is a General Experiment</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+                </section>
+                <section type="subsection">
+                    <title>Worked example</title>
+                    <worked_example>
+                        <title>Equal displacements [attribution: Sunil Kumar Singh]</title>
+                        <question>
+                            <para>A sequence of balls are successively dropped from the top of a tower. The time interval between
+                                the release of consecutive balls is equal. At the precise instant that the ninth ball (ball 9) is released, the
+                                first ball hits the ground. Which of the balls in the sequence is at <latex>\frac{3}{4}</latex> of the height, 
+                                <latex>h</latex>, of the tower when the first ball hits the ground?</para>
+                        </question>
+                        <answer>
+                            <workstep>
+                                <title>Understand what is happening</title>
+                                <para>A ball is dropped from a tower. After a time, <latex>t_i</latex>, a second ball is dropped. After another time interval, 
+                                    <latex>t_i</latex>, a third ball is dropped. This means that when ball 3 is dropped the total time that
+                                    has passed is <latex>2t_i</latex>.</para>
+                                <para>After a third time interval, 
+                                    <latex>t_i</latex>, a fourth ball is dropped. This means that at the instant that ball 4 is dropped the total time that has passed is <latex>3t_i</latex>.
+                                    This process continues until the ninth ball is dropped. At the same instant that the ninth ball is dropped, the first ball that was dropped strikes the ground. 
+                                    The ninth ball would have been
+                                    released after 8 time intervals, therefore it took the first ball a time interval of <latex>8t_i</latex> to hit the ground.</para>
+                            </workstep>
+                            <workstep>
+                                <title>Describe the events mathematically</title>
+                                <para>As this is a vertical motion problem where everything is falling towards the ground, it is
+                                    simplest to choose downwards as the positive direction.</para>
+                                <para>The first ball hits the ground when 
+                                    the ninth ball is dropped. This means that the first ball has fallen for a total time of 
+                                    <latex>(
+                                        <number>9</number>-
+                                        <number>1</number>)t_i = 
+                                        <number>8</number>t_i</latex>.
+                                    The displacement of the first ball is also described by the equation <latex>\Delta \vec{x}=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2</latex>. The balls are dropped so 
+                                    their initial velocity is zero, <latex>\vec{v}_{i}=0</latex> and the we know the time for the first ball to fall the height of the tower therefore, in the case 
+                                    of the first ball, we have:</para>
+                                <latex display="block">
+                                    \begin{align}
+                                    \Delta \vec{x} &amp;=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2 \\
+                                    h &amp;=\frac{1}{2}(<number>9.8</number>)(<number>8</number>t_i)^2 
+                                    \end{align}
+                                </latex>
+                                <para>
+                                    Let the <latex>n</latex>th ball be the ball that is at <latex>\frac{3}{4}</latex> of the height, <latex>h</latex>, of the tower when the first ball strikes the ground. The
+                                    <latex>n</latex>th ball will have fall for a time of <latex>(n-1)t_i</latex>. If it is <latex>\frac{3}{4}</latex> of the way up the tower it will have fall a distance of
+                                    <latex>\frac{1}{4}h</latex>. This motion is also described by <latex>\Delta \vec{x}=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2</latex>, and therefore we know, in the case of the
+                                    <latex>n</latex>th ball, we have:</para>
+                                <latex display="block">
+                                    \begin{align}
+                                    \Delta \vec{x} &amp;=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2 \\
+                                    \frac{1}{4}h &amp;=\frac{1}{2}(<number>9.8</number>)((n-<number>1</number>)t_i)^2 \\
+                                    h &amp;=2(<number>9.8</number>)((n-<number>1</number>)t_i)^2 
+                                    \end{align}
+                                </latex>
+                                <para>We can't solve for <latex>n</latex> from this final equation because it will contain <latex>h</latex> and <latex>t_i</latex>. We can use the two equations 
+                                    we have to eliminate <latex>h</latex>. Both equations are written in the form <latex>h=...</latex> therefore we can equate them eliminating <latex>h</latex>:</para>
+                                <latex display="block">
+                                    \begin{align}
+                                    \frac{1}{2}(<number>9.8</number>)(<number>8</number>t_i)^2 &amp; = 2(<number>9.8</number>)((n-<number>1</number>)t_i)^2 \\
+                                    \frac{1}{2}(<number>9.8</number>)<number>8</number>^2t_i^2 &amp; = 2(<number>9.8</number>)(n-<number>1</number>)^2t_i^2 \\
+                                    \left(\frac{2}{(<number>9.8</number>)t_i^2}\right)\times\frac{1}{2}(<number>9.8</number>)<number>8</number>^2t_i^2 &amp; = \left(\frac{2}{(<number>9.8</number>)t_i^2}\right)\times 2(<number>9.8</number>)(n-<number>1</number>)^2t_i^2 \\
+                                    <number>8</number>^2 &amp; = 4(n-<number>1</number>)^2 \\
+                                    <number>8</number> &amp; = 2(n-<number>1</number>) \\
+                                    <number>4</number> &amp; = (n-<number>1</number>) \\
+                                    n &amp; = 5  
+                                    \end{align}
+                                </latex>
+                                <note type="important">
+                                    <para>We know that <latex>n</latex> must be a positive integer which is why we use the positive roots when we take the square root above.</para>
+                                </note>
+                            </workstep>
+                            <workstep>
+                                <title>Write the final answer</title>
+                                <para>The fifth ball is at 
+                                    <latex>\frac{3}{4}</latex> of the height of the tower when the first ball strikes the ground.</para>
+                            </workstep>
+                        </answer>
+                    </worked_example>
+
+                </section>
+                <section type="subsection">
+                    <title>Exercises</title>
+                    <exercises>
+                        <title/>
+                        <problem-set>
+                            <header>
+                                <para>This is a Problem set</para>
+                                <para>Write the following in set notation:</para>
+                            </header>
+                            <entry>
+                                <shortcode>00f9</shortcode>
+                                <problem>
+                                    <latex>(-\infty;7]</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>\left\{x:x\in&#8477;,x \leq 7\right\}</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00f9</shortcode>
+                                <problem>
+                                    <latex>[13;4)</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>\left\{y:y\in&#8477;, -13 \leq y &lt; 4\right\}</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00f9</shortcode>
+                                <problem>
+                                    <latex>(35;\infty)</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>\left\{z:z\in&#8477;, z &gt; 35\right\}</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00f9</shortcode>
+                                <problem>
+                                    <latex>[\frac{3}{4};21)</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>\left\{t:t\in&#8477;, \frac{3}{4} \leq t &lt; 21\right\}</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00f9</shortcode>
+                                <problem>
+                                    <latex>[-\frac{1}{2};\frac{1}{2}]</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>\left\{p:p\in&#8477;, -\frac{1}{2} \leq p \leq \frac{1}{2}\right\}</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00f9</shortcode>
+                                <problem>
+                                    <latex>(-\sqrt{3};\infty)</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>\left\{m:m\in&#8477;, m &gt; -\sqrt{3}\right\}</latex></correct>
+                                </solution>
+                            </entry>
+                        </problem-set>
+                        <problem-set>
+                            <header>
+                                <para>Write the following in interval notation:</para>
+                            </header>
+                            <entry>
+                                <shortcode>00fa</shortcode>
+                                <problem>
+                                    <latex>\left\{p:p\in&#8477;, p \leq 6 \right\}</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>(-\infty;6]</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00fa</shortcode>
+                                <problem>
+                                    <latex>\left\{k:k\in&#8477;,-5 &lt; k &lt; 5\right\}</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>(-5;5)</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00fa</shortcode>
+                                <problem>
+                                    <latex>\left\{x:x\in&#8477;,x &gt; \frac{1}{5}\right\}</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>(\frac{1}{5};\infty)</latex></correct>
+                                </solution>
+                            </entry>
+                            <entry>
+                                <shortcode>00fa</shortcode>
+                                <problem>
+                                    <latex>\left\{z:z\in&#8477;,21 \leq x &lt; 41\right\}</latex>
+                                </problem>
+                                <solution>
+                                    <correct><latex>[21;41)</latex></correct>
+                                </solution>
+                            </entry>
+                            <multi-part>
+                                <shortcode>00fp</shortcode>
+                                <header>
+                                    <para>This is a multi-part exercise</para>
+                                    <para>Two parabolas are drawn: <latex>g: y=ax^2+p</latex> and <latex>h:y=bx^2+q</latex>.</para>
+                                    <tikzpicture>
+                                        <code>
+                                            \begin{axis}[
+                                            ymax=7, ymin=-3, xmax =5, xmin=-5,
+                                            ytick={0},xtick={0}, xlabel=$x$,ylabel=$y$]
+                                            \addplot [domain=-3:3,&lt;-&gt;] {x*x-2.25};
+                                            \addplot [domain=-3:3,&lt;-&gt;] {-x*x+5.75};
+                                            \addplot coordinates {(0.3,0.3)} node[label=below left:$0$] {};
+                                            \addplot  [fill] coordinates{ (0,-2.25) } circle (0.08);
+                                            \addplot  [fill] coordinates{ (0,5.75) } circle (0.08);
+                                            \addplot  [fill] coordinates{ (-2,1.75) } circle (0.08);
+                                            \addplot  [fill] coordinates{ (2,1.75) } circle (0.08);
+                                            \addplot coordinates {(0,-2.25)} node[below right] {$(0;-9)$};
+                                            \addplot coordinates {(0,5.75)} node[above right] {$(0;27)$};
+                                            \addplot coordinates {(-2,1.75)} node[above left] {$(-4;7)$};
+                                            \addplot coordinates {(2,1.75)} node[above right] {$(4;7)$};
+                                            \addplot coordinates {(3,-3.5)} node[above right] {$h$};
+                                            \addplot coordinates {(3,5.75)} node[above right] {$g$};
+                                            \end{axis}
+                                        </code>
+                                    </tikzpicture>
+                                </header>
+                                <entry>
+                                    <problem>
+                                        <para>Find the values of <latex>a</latex> and <latex>p</latex>.</para>
+                                    </problem>
+                                    <solution>
+                                        <para><latex>p</latex> is the <latex>y</latex>-intercept, therefore <latex>p=-9</latex></para>
+                                        <para>To find <latex>a</latex> we use one of the points on the graph (e.g. <latex>(4;7)</latex>):</para>
+                                        <para>
+                                            <latex display="block">
+                                                \begin{align}
+                                                y&amp;=ax^2-9\\
+                                                7&amp;= a(4^2) - 9\\
+                                                16a&amp;=16\\
+                                                \therefore a&amp;=1
+                                                \end{align}
+                                            </latex>
+                                        </para>
+                                        <correct><latex>a=1</latex>;<latex>p=-9</latex></correct>
+                                    </solution>
+                                </entry>
+                                <entry>
+                                    <problem>
+                                        <para>Find the values of <latex>b</latex> and <latex>q</latex>.</para>
+                                    </problem>
+                                    <solution>
+                                        <para><latex>q</latex> is the <latex>y</latex>-intercept, therefore  <latex>q = 23</latex></para>
+                                        <para>To find <latex>b</latex>, we use one of the points on the graph (e.g. <latex>(4;7)</latex>): </para>
+                                        <para>
+                                            <latex display="block">
+                                                \begin{align}
+                                                y&amp;=bx^{2} =23\\
+                                                7&amp;= b(4^{2}) +23\\
+                                                16b&amp;=-16\\
+                                                \therefore b&amp;=-1
+                                                \end{align}
+                                            </latex>
+                                        </para>
+                                        <correct><latex>b=-1</latex>;<latex>q=23</latex></correct>
+                                    </solution>
+                                </entry>
+                                <entry>
+                                    <problem>
+                                        <para>Find the values of <latex>x</latex> for which <latex>g(x) \geq h(x)</latex>.</para>
+                                    </problem>
+                                    <solution>
+                                        <para>This is the point where <latex>g</latex> lies above <latex>h</latex>. </para>
+                                        <para>From the graph we see that <latex>g</latex> lies above <latex>h</latex> when: <correct><latex>x \leq -4</latex> or <latex>x \geq 4</latex></correct> </para>
+                                    </solution>
+                                </entry>
+                                <entry>
+                                    <problem>
+                                        <para>For what values of <latex>x</latex> is <latex>g</latex> increasing?</para>
+                                    </problem>
+                                    <solution>
+                                        <para><latex>g</latex> increases from the turning point <latex>(0;-9)</latex>, i.e. for <correct><latex>x \geq 0</latex></correct>.</para>
+                                    </solution>
+                                </entry>
+                            </multi-part>
+                        </problem-set>
+                    </exercises>
+                </section> <!-- end subsection -->
+                <section type="subsection">
+                    <title>Figures</title>
+                    <para> This is a figure </para>
+                    <figure id="fig:mf:g:parabola10a">
+                        <type>figure</type>
+                        <tikzpicture>
+                            <code>
+                                \begin{scope}[xshift=-2cm]
+                                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*0.5});
+                                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                                \node [below] at (0,0) {$a &gt; 0$ (a positive smile)};
+                                \end{scope}
+                                \begin{scope}[xshift=2cm]
+                                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*-0.5+0.7});
+                                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                                \node [below] at (0,0) {$a &lt; 0$ (a negative frown)};
+                                \end{scope}
+                            </code>
+                        </tikzpicture>
+                    </figure>
+                    <para> This is a figure with a caption.</para>
+                    <figure id="fig:mf:g:parabola10b">
+                        <type>figure</type>
+                        <tikzpicture>
+                            <code>
+                                \begin{scope}[xshift=-2cm]
+                                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*0.5});
+                                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                                \node [below] at (0,0) {$a &gt; 0$ (a positive smile)};
+                                \end{scope}
+                                \begin{scope}[xshift=2cm]
+                                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*-0.5+0.7});
+                                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                                \node [below] at (0,0) {$a &lt; 0$ (a negative frown)};
+                                \end{scope}
+                            </code>
+                        </tikzpicture>
+                        <caption>This is the caption</caption>
+                    </figure>
+                </section>
+            </section> <!-- end section -->
+        </section> <!-- end chapter -->
+    </content>
+</document>
+
