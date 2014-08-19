@@ -121,6 +121,12 @@
                              </meaning>
                     </definition>
                 </section>
+                <section type="subsection">
+                    <title>Mathematical identities</title>
+                    <math_identity>
+                        <latex>\tan\theta = \dfrac{\sin\theta}{\cos\theta}</latex>
+                    </math_identity>
+                </section>
                 <section>
                     <title>Various kinds of notes:</title>
                     <note type="note">
@@ -275,6 +281,24 @@
                     </activity>
                     <activity type="g_experiment">
                          <title>This is a General Experiment</title>
+                        <para>
+                            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+                            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+                            sem tortor, elementum id tempus vel, varius id massa. Sed
+                            faucibus arcu at augue dictum dignissim. Donec justo dui,
+                            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+                            semper sapien turpis, mattis euismod lectus imperdiet eu.
+                            Praesent lobortis mollis ante eu interdum. Integer libero
+                            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+                            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+                            auctor placerat odio eget dapibus. Nullam porta hendrerit
+                            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+                            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+                            id dui vestibulum sollicitudin.
+                        </para>
+                    </activity>
+                    <activity type="investigation">
+                         <title>This is a Investigation</title>
                         <para>
                             Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
                             et quam pharetra, consectetur pretium leo dictum. Pellentesque
@@ -639,7 +663,7 @@
                             <item>Deduct equations and determine the position, displacement, velocity or acceleration from the graphs.</item>
                             <item>Describe the motion of the object from the graphs.</item>
                         </list>
-                        
+
                         <para>The next environment is a linked-concept environment.</para>
                         <linked-concepts>
                             <concept><text>Units and unit conversions</text><subject>science</subject><grade>10</grade><chapter>science skills</chapter></concept>
@@ -652,48 +676,48 @@
                 </section> <!-- end subsection -->
                 <section type="subsection">
                     <title>Tables</title>
-            <table>
-              <tgroup cols="3">
-                <colspec colname="c1" colnum="1"/>
-                <colspec colname="c2" colnum="2"/>
-                <colspec colname="c3" colnum="3"/>
-                <tbody>
-                  <row>
-                    <entry>Graph
-                    </entry>
-                    <entry>Slope
-                    </entry>
-                    <entry>
-                    Area
-                    </entry>
-                </row>
-                  <row>
-                    <entry>Displacement vs time
-                    </entry>
-                    <entry><latex>\vec{v}</latex>
-                    </entry>
-                    <entry>-
-                    </entry>
-                </row>
-                  <row>
-                    <entry>Velocity vs time
-                    </entry>
-                    <entry><latex>\vec{a}</latex>
-                    </entry>
-                    <entry><latex>\Delta \vec{x}</latex>
-                    </entry>
-                </row>
-                  <row>
-                    <entry>Acceleration vs time
-                    </entry>
-                    <entry>-
-                    </entry>
-                    <entry><latex>\vec{v}</latex>
-                    </entry>
-                </row>
-            </tbody>
-            </tgroup>
-            </table>
+                    <table>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1"/>
+                            <colspec colname="c2" colnum="2"/>
+                            <colspec colname="c3" colnum="3"/>
+                            <tbody>
+                                <row>
+                                    <entry>Graph
+                                    </entry>
+                                    <entry>Slope
+                                    </entry>
+                                    <entry>
+                                        Area
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>Displacement vs time
+                                    </entry>
+                                    <entry><latex>\vec{v}</latex>
+                                    </entry>
+                                    <entry>-
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>Velocity vs time
+                                    </entry>
+                                    <entry><latex>\vec{a}</latex>
+                                    </entry>
+                                    <entry><latex>\Delta \vec{x}</latex>
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>Acceleration vs time
+                                    </entry>
+                                    <entry>-
+                                    </entry>
+                                    <entry><latex>\vec{v}</latex>
+                                    </entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
                 </section>
             </section> <!-- end section -->
             <summary>
