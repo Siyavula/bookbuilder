@@ -17,7 +17,7 @@ Options:
 
     -h --help         # print help message
     --debug           # switch on debug messages
-    --parallel        # Render images in serial (for debugging)
+    --serial        # Render images in serial (for debugging)
 
 Examples:
     bookbuilder.py status
