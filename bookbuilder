@@ -13,7 +13,7 @@ Options:
 
     build <format>... # Transform chapters to specified output formats. If no
                       # formats are specified, all implemented formats will be
-                      # used. These can be one or more of (tex, html )
+                      # used. These can be one or more of (tex, html, xhtml )
 
     -h --help         # print help message
     --debug           # switch on debug messages
@@ -23,6 +23,8 @@ Examples:
     bookbuilder.py build
     bookbuilder.py build tex
     bookbuilder.py build tex html
+    bookbuilder.py build xhtml
+    Bookbuilder.py build mobile
 
 
 """
@@ -51,7 +53,7 @@ if __name__ == "__main__":
     elif arguments['build']:
         print("Building book")
         formats = arguments['<format>']
-        supported_formats = ['tex', 'html', 'xhtml']
+        supported_formats = ['tex', 'html', 'xhtml', 'mobile']
         for form in formats:
             if form not in supported_formats:
                 print __doc__

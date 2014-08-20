@@ -193,6 +193,12 @@ your cnxmlplus files:
 
 ## Changes
 
+version 0.3beta:
+
+    * Added parallel image generation
+    * Figures are generated in /tmp and these folders are cleaned up
+    * File rewrites are forced if they have image generation problems
+
 version 0.2: 12 August 2014
 
     * tex output now contains links to PDF graphics, instead of code

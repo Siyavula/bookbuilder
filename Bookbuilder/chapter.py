@@ -216,7 +216,9 @@ class chapter(object):
         ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
             image to png. Insert replace div.alternate tags with <img> tags
         '''
-        imageutils.render_images(output_path)
+        rendered = imageutils.render_images(output_path)
+
+        return rendered
 
     def __copy_html_images(self, build_folder, output_path):
         ''' Find all images referenced in the converted html document and copy
@@ -256,6 +258,7 @@ class chapter(object):
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         html, err = myprocess.communicate()
+        html = htmlutils.add_mathjax(html)
 
         return html
 
@@ -267,6 +270,11 @@ class chapter(object):
 
         return xhtml
 
+    def __tomobile(self):
+        html = self.__toxhtml()
+
+        return html
+
     def convert(self, build_folder, output_format):
         ''' Convert the chapter to the specified output format and write the
         the build folder: {build_folder}/{output_format}/self.file.{format}
@@ -276,8 +284,10 @@ class chapter(object):
         '''
         conversion_functions = {'tex': self.__tolatex,
                                 'html': self.__tohtml,
-                                'xhtml': self.__toxhtml}
+                                'xhtml': self.__toxhtml,
+                                'mobile': self.__tomobile}
 
+        self.render_problems = False
         for outformat in output_format:
 
             # convert this chapter to the specified format
@@ -285,16 +295,24 @@ class chapter(object):
             output_path = os.path.join(build_folder, outformat,
                                        self.file +
                                        '.{f}'.format(f=outformat))
+
+            if outformat == 'mobile':
+                output_path = output_path.replace(r'.mobile', '.html')
+
             # only try this on valid cnxmlplus files
             if self.valid:
                 # run the conversion only if the file has changed OR if it
                 # doesn't exist (it may have been deleted manually)
-                if (self.has_changed) or (not os.path.exists(output_path)):
+                if any((self.has_changed,
+                        not os.path.exists(output_path),
+                        self.render_problems)):
+
                     mkdir_p(os.path.dirname(output_path))
                     print("Converting {ch} to {form}".format(ch=self.file,
                                                              form=outformat))
                     converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f:
+                        # convert tabs to spaces
                         f.write(converted)
 
                 # file has not changed AND the file exists
@@ -309,7 +327,9 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
-                    self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
 
                 elif outformat == 'html':
                     # copy images included to the output folder
@@ -317,12 +337,23 @@ class chapter(object):
                     # read the output html, find all pstricks and tikz
                     # code blocks and render them as pngs and include them
                     # in <img> tags in the html
-                    self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
 
                 elif outformat == 'xhtml':
                     # copy images from html folder
                     self.__copy_html_images(build_folder, output_path)
-                    self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
+
+                elif outformat == 'mobile':
+                    # copy images from html folder
+                    self.__copy_html_images(build_folder, output_path)
+                    rendered = self.__render_pstikz(output_path)
+                    if not rendered:
+                        self.render_problems = True
 
         return
 

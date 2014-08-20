@@ -36,7 +36,6 @@ def xhtml_cleanup(xhtmlstr):
             figcaption.tag = 'div'
             figcaption.attrib['class'] = 'figcaption'
 
-
     for table in xhtml.findall('.//table'):
         if 'summary' in table.attrib.keys():
             del table.attrib['summary']
@@ -46,3 +45,22 @@ def xhtml_cleanup(xhtmlstr):
  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">')
 
     return xhtmlstr
+
+
+def add_mathjax(html):
+    ''' Given html as string, insert a <script> tag that will include mathjax
+    from a local folder called 'mathjax'
+
+    Return as string
+
+    '''
+
+    html = etree.HTML(html)
+    head = html.find('.//head')
+    script = etree.fromstring(r'''<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>''')
+    head.append(script)
+    html = etree.tostring(html, method='xml')
+
+    return html
