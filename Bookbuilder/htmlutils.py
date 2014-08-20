@@ -73,6 +73,7 @@ def repair_equations(html):
 
     unicode_to_replace = ((r'&amp;#183;', r'&#183;'),
                           (r'&amp;#160;', r' '),
+                          (r'&amp;#8451;', r'$^\circ$'),
                           (')~\\', ') \\'))
     for un in unicode_to_replace:
         html = html.replace(un[0], un[1])
