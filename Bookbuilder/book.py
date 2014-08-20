@@ -119,11 +119,11 @@ class book(object):
 
         return cache_object
 
-    def convert(self, formats=['tex', 'html']):
+    def convert(self, formats=['tex', 'html'], parallel=True):
         ''' Convert all the chapters to the given output formats.
 
         Default output format is both tex and html
         '''
 
         for chapter in self.chapters:
-            chapter.convert(self.build_folder, formats)
+            chapter.convert(self.build_folder, formats, parallel=True)

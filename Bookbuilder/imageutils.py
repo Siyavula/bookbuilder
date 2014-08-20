@@ -83,7 +83,7 @@ def run_latex(data):
     return image_cache_path
 
 
-def _render_html_images(html, output_path):
+def _render_html_images(html, output_path, parallel=True):
     ''' Given etree object of the html file, render images and change the
     DOM tp have image links. Returns Etree object
     '''
@@ -108,7 +108,7 @@ def _render_html_images(html, output_path):
 
     if pooldata:
         # call parallel map
-        image_cache_paths = utils.Map(run_latex, pooldata, mode='serial')
+        image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
 
         for i, (pre, pd, icp) in enumerate(zip(allpics,
                                                pooldata,
@@ -133,7 +133,7 @@ def _render_html_images(html, output_path):
     return html, valid
 
 
-def _render_tex_images(tex, output_path):
+def _render_tex_images(tex, output_path, parallel=True):
     '''
     Given TeX file as string, find pstricks and tikz images and generate
     the PDF version, include in file as graphics, return as string
@@ -153,7 +153,7 @@ def _render_tex_images(tex, output_path):
 
         if pooldata:
             # call parallel map
-            image_cache_paths = utils.Map(run_latex, pooldata, mode='serial')
+            image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
 
             for i, (chunk, pd, icp) in enumerate(zip(texsplit[1:],
                                                      pooldata,
@@ -185,7 +185,7 @@ def _render_tex_images(tex, output_path):
     return tex, valid
 
 
-def _render_mobile_images(html, output_path):
+def _render_mobile_images(html, output_path, parallel=True):
     '''
     Given HTML file as string, equations and generate png images for them.
     '''
@@ -211,7 +211,7 @@ def _render_mobile_images(html, output_path):
 
         if pooldata:
             # call parallel map
-            image_cache_paths = utils.Map(run_latex, pooldata, mode='serial')
+            image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
 
             for i, (chunk, pd, icp) in enumerate(zip(htmlsplit[1:],
                                                      pooldata,
@@ -247,7 +247,7 @@ def _render_mobile_images(html, output_path):
     return html, valid
 
 
-def render_images(output_path):
+def render_images(output_path, parallel=True):
     ''' Given an output path, find all the tikz and pstricks images and render
     them as pdf and png. This function act as delegator for the pstikz2png
     module
@@ -260,7 +260,7 @@ def render_images(output_path):
         with open(output_path, 'r') as htmlout:
             html = etree.HTML(htmlout.read())
 
-        html, valid = _render_html_images(html, output_path)
+        html, valid = _render_html_images(html, output_path, parallel=True)
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(etree.tostring(html, method='xml'))
@@ -272,7 +272,7 @@ def render_images(output_path):
         with open(output_path, 'r') as texout:
             tex = texout.read()
 
-        tex, valid = _render_tex_images(tex, output_path)
+        tex, valid = _render_tex_images(tex, output_path, parallel=True)
 
         with open(output_path, 'w') as texout:
             texout.write(tex)
@@ -285,7 +285,7 @@ def render_images(output_path):
         with open(output_path, 'r') as htmlout:
             html = htmlout.read()
 
-        html, valid = _render_mobile_images(html, output_path)
+        html, valid = _render_mobile_images(html, output_path, parallel=True)
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(html)

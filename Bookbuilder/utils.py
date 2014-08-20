@@ -40,19 +40,17 @@ def copy_if_newer(src, dest):
             shutil.copy2(src, dest)
 
 
-def Map(function, data, mode='serial'):
+def Map(function, data, parallel=True):
     ''' Runs parallel or serial map given a function and data
         mode can be one of 'serial' or 'parallel'
     '''
 
-    if mode == 'serial':
+    if not parallel:
         result = map(function, data)
-    elif mode == 'parallel':
+    else:
         pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
         result = pool.map(function, data)
         pool.close()
         pool.join()
-    else:
-        result = None
 
     return result
