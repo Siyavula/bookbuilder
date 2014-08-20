@@ -259,6 +259,7 @@ class chapter(object):
                                      stderr=subprocess.PIPE)
         html, err = myprocess.communicate()
         html = htmlutils.add_mathjax(html)
+        html = htmlutils.repair_equations(html)
 
         return html
 

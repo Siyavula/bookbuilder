@@ -108,10 +108,7 @@ def _render_html_images(html, output_path):
 
     if pooldata:
         # call parallel map
-        pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
-        image_cache_paths = pool.map(run_latex, pooldata)
-        pool.close()
-        pool.join()
+        image_cache_paths = utils.Map(run_latex, pooldata, mode='serial')
 
         for i, (pre, pd, icp) in enumerate(zip(allpics,
                                                pooldata,
@@ -156,10 +153,7 @@ def _render_tex_images(tex, output_path):
 
         if pooldata:
             # call parallel map
-            pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
-            image_cache_paths = pool.map(run_latex, pooldata)
-            pool.close()
-            pool.join()
+            image_cache_paths = utils.Map(run_latex, pooldata, mode='serial')
 
             for i, (chunk, pd, icp) in enumerate(zip(texsplit[1:],
                                                      pooldata,
@@ -217,10 +211,7 @@ def _render_mobile_images(html, output_path):
 
         if pooldata:
             # call parallel map
-            pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
-            image_cache_paths = pool.map(run_latex, pooldata)
-            pool.close()
-            pool.join()
+            image_cache_paths = utils.Map(run_latex, pooldata, mode='serial')
 
             for i, (chunk, pd, icp) in enumerate(zip(htmlsplit[1:],
                                                      pooldata,

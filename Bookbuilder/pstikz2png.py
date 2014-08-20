@@ -256,8 +256,10 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
         raise ValueError, "Code cannot be empty."
     with open(latexPath, 'wt') as fp:
         temp = unescape(iLatex.replace('__CODE__', code.strip()))
-        temp = temp.encode('utf-8')
-        fp.write(temp)
+        try:
+            fp.write(temp)
+        except UnicodeEncodeError:
+            fp.write(temp.encode('utf-8'))
 
     for path, pathFile in iIncludedFiles.iteritems():
         try:

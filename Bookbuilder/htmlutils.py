@@ -64,3 +64,17 @@ def add_mathjax(html):
     html = etree.tostring(html, method='xml')
 
     return html
+
+
+def repair_equations(html):
+    ''' Some equations contain escaped unicode entities. Replace them with unicode.
+
+    '''
+
+    unicode_to_replace = ((r'&amp;#183;', r'&#183;'),
+                          (r'&amp;#160;', r' '),
+                          (')~\\', ') \\'))
+    for un in unicode_to_replace:
+        html = html.replace(un[0], un[1])
+
+    return html
