@@ -131,4 +131,4 @@ class Book(object):
             formats = ['tex', 'html']
 
         for chapter in self.chapters:
-            chapter.convert(self.build_folder, formats, parallel=parallel)
+            chapter.convert(self.build_folder, formats, parallel=True)

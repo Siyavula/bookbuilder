@@ -67,14 +67,21 @@ def add_mathjax(html):
 
 
 def repair_equations(html):
-    ''' Some equations contain escaped unicode entities. Replace them with unicode.
+    r''' Some equations contain escaped unicode entities. Replace them with
+    unicode.
+
+    Some images have nested math environments i.e. $\(\text{blah}\)$, remove
+    the inner math delimiters
 
     '''
 
     unicode_to_replace = ((r'&amp;#183;', r'&#183;'),
                           (r'&amp;#160;', r' '),
                           (r'&amp;#8451;', r'$^\circ$'),
-                          (')~\\', ') \\'))
+                          (r'&amp;#176;', r'$^\circ$'),
+                          (')~\\', ') \\'),
+                          ('alignrll', 'align*'),
+                          (r'&amp;#177;', r'\pm'))
     for un in unicode_to_replace:
         html = html.replace(un[0], un[1])
 

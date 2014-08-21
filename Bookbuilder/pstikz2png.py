@@ -29,8 +29,38 @@ def unescape(text):
                 text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
             except KeyError:
                 pass
-        return text # leave as is
+        return text  # leave as is
     return re.sub("&#?\w+;", fixup, text)
+
+
+def cleanup_code(code):
+    ''' Removes nested math delimiters of the form \( \) inside $ $ pairs'''
+    result = re.findall(r'\$(.*?)\$', code)
+    for snippet in result:
+        newsnippet = snippet.replace(r'\(', ' ').replace(r'\)', ' ')
+        code = code.replace(snippet, newsnippet)
+
+    code = code.strip()
+    # if align* in code we don't need delimiters
+    if r'align*' in code:
+        if code.startswith(r'\('):
+            code = code[2:]
+        if code.endswith('\)'):
+            code = code[:-2]
+
+    # remove blank lines
+    code = '\n'.join([line.strip() for line in code.split('\n') if
+                      line.split()])
+
+    # escape % signs, comments in LaTeX
+    perc_split = code.split('%')
+    for i, chunk in enumerate(perc_split):
+        if not chunk.endswith('\\'):
+            perc_split[i] = chunk + '\\'
+
+    code = '%'.join(perc_split)
+
+    return code
 
 
 pstricksTex = r'''
@@ -199,11 +229,12 @@ disabledatascaling,
 \end{document}
 '''
 
-equationTex = u'''\\documentclass[preview]{standalone}
+equationTex = u'''\\documentclass[preview, border=1bp]{standalone}
 \\usepackage{amsmath}
 \\usepackage{amsfonts}
 \\usepackage{amssymb}
 \\usepackage{keystroke}
+\\usepackage{cancel}
 \\begin{document}
 __CODE__
 \\end{document}'''.encode('utf-8')
@@ -248,6 +279,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     # can send the raw string code or a <pre> element with <code> child
     if isinstance(iPictureElement, str):
         code = iPictureElement
+        code = cleanup_code(code)
     else:
         code = iPictureElement.find('.//code').text.encode('utf-8')
     code = code.replace(r'&amp;', '&').replace(r'&gt;', '>').replace(r'&lt;', '<')
@@ -288,14 +320,8 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
 
     execute(['convert',
              '-density',
-             '%i'%iDpi,
+             '%i' % iDpi,
              pdfPath,
-#            '-trim',
-#            '-bordercolor',
-#            'None',
-#            '-border',
-#            '10x10',
-#            '+repage',
              pngPath])
 
     return pngPath
@@ -307,7 +333,6 @@ def tikzpicture2png(iTikzpictureElement, *args, **kwargs):
 
 def pspicture2png(iPspictureElement, *args, **kwargs):
     return pstikz2png(iPspictureElement, pstricksTex, *args, **kwargs)
-
 
 
 def equation2png(iPspictureElement, *args, **kwargs):

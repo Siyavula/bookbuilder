@@ -2,7 +2,6 @@ from __future__ import print_function
 import os
 import sys
 import hashlib
-import multiprocessing
 import errno
 import shutil
 from xml.sax.saxutils import unescape
@@ -199,6 +198,11 @@ def _render_mobile_images(html, output_path, parallel=True):
         pooldata = []
 
         for i, chunk in enumerate(htmlsplit[1:]):
+            # This finds stuff like
+            #
+            # \[ blah \\[8pt] \]
+            #          ^ this is seen as start for new equation
+            # must avoid that corner case
             env_end_pos = chunk.find(env_end)
             # get code text and hash
             codetext = chunk[0:env_end_pos]
