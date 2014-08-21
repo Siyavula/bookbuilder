@@ -13,9 +13,9 @@ various output formats, including LaTeX, html for web, html for mobile and epub
 Validate book repo and give output         | Done
 LaTeX output                               | Done
 Minimal PDF manual layout                  | Not started
-HTML web output                            | Not started
-XHTML for Epub 3.0                         | Not started
-HTML for mobile                            | Not started
+HTML web output                            | In Progress
+XHTML for Epub 3.0                         | In Progress
+HTML for mobile                            | In Progress
 Efficiency                                 | In progress
 Documentation                              | In progress
 
@@ -23,7 +23,7 @@ Documentation                              | In progress
 
  Goal                                      | Status 
 -------------------------------------------|--------
-Code documentation                         | Comments and doc strings only
+Code documentation                         | Minimal tutorial
 Tests                                      | Not started
 Maintainability                            | Code is PEP8 compliant but overall documentation must be written to support future maintenance
 
@@ -34,7 +34,7 @@ Maintainability                            | Code is PEP8 compliant but overall 
 ### User goals
 
 *   HTML output
-*   Epub output (this relies on HTML output working correctly)
+*   Epub output. Next Step: Add automatic Epub building via epubmaker API.
 
 
 ### Code goals
