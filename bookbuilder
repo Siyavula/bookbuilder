@@ -42,7 +42,7 @@ if __name__ == "__main__":
     arguments = docopt(__doc__)
     # Initialise the book. This will read the cache object in .bookbuilder
     # and create it if it is not there. This also finds and parses chapters
-    Book = book.book()
+    Book = book.Book()
 
     if arguments['--debug']:
         book.DEBUG = True
