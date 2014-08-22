@@ -41,6 +41,7 @@ def cleanup_code(code):
         code = code.replace(snippet, newsnippet)
 
     code = code.strip()
+
     # if align* in code we don't need delimiters
     if r'align*' in code:
         if code.startswith(r'\('):
@@ -48,9 +49,15 @@ def cleanup_code(code):
         if code.endswith('\)'):
             code = code[:-2]
 
-    # remove blank lines
-    code = '\n'.join([line.strip() for line in code.split('\n') if
-                      line.split()])
+    # remove blank lines and lines that start with %
+    newcode = []
+    for line in code.split('\n'):
+        if line.strip().startswith('%'):
+            continue
+        if not line.strip():
+            continue
+        newcode.append(line)
+    code = '\n'.join(newcode)
 
     # escape % signs, comments in LaTeX
     perc_split = code.split('%')

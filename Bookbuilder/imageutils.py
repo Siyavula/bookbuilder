@@ -122,12 +122,12 @@ def _render_html_images(html, output_path, parallel=True):
             utils.copy_if_newer(image_cache_path, pngpath)
 
             # replace div.alternate with <img>
-            figure = pre.getparent().getparent()
+            parent = pre.getparent().getparent()
             img = etree.Element('img')
             img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
             img.attrib['alt'] = codeHash + '.png'
-            figure.append(img)
-            figure.remove(pre.getparent())
+            parent.replace(pre.getparent(), img)
+#           figure.remove(pre.getparent())
 
     return html, valid
 
