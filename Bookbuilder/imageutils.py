@@ -1,3 +1,9 @@
+"""
+This module contains functions that does convertion of code and equations to
+PDF and png formats
+
+"""
+
 from __future__ import print_function
 import os
 import sys
@@ -9,9 +15,9 @@ from xml.sax.saxutils import unescape
 from lxml import etree
 from termcolor import colored
 
-import pstikz2png
-from pstikz2png import LatexPictureError
-import utils
+from . import pstikz2png
+from .pstikz2png import LatexPictureError
+from . import utils
 
 
 def get_code_hash(codetext):
@@ -20,10 +26,10 @@ def get_code_hash(codetext):
     string
     '''
     codetext = ''.join([c for c in codetext if ord(c) < 128])
-    codeHash = hashlib.md5(
+    code_hash = hashlib.md5(
         ''.join(codetext.encode('utf-8').split())).hexdigest()
 
-    return codeHash
+    return code_hash
 
 
 def cleanup_after_latex(figpath):
@@ -62,9 +68,9 @@ def run_latex(data):
             elif pictype == 'equation':
                 figpath = pstikz2png.equation2png(codetext, iDpi=150)
 
-        except LatexPictureError as E:
+        except LatexPictureError as lpe:
             print(colored("\nLaTeX failure", "red"))
-            print(E)
+            print(lpe)
             return None
 
         if figpath:
@@ -95,37 +101,35 @@ def _render_html_images(html, output_path, parallel=True):
 
     # create a data list for the Pool map to work on
     pooldata = []
-    for i, pre in enumerate(allpics):
+    for pre in allpics:
         pictype = pre.attrib['class']
         # find the hash of the code content
         codetext = pre.find('.//code').text
-        codeHash = get_code_hash(codetext)
+        code_hash = get_code_hash(codetext)
         # see if the output png exists at
         # build/html/pspictures/hash.png  OR
         # build/html/tikzpictures/hash.png
-        pooldata.append((pictype, codeHash, codetext))
+        pooldata.append((pictype, code_hash, codetext))
 
     if pooldata:
         # call parallel map
         image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
 
-        for i, (pre, pd, icp) in enumerate(zip(allpics,
-                                               pooldata,
-                                               image_cache_paths)):
+        for (pre, pooldata, icp) in zip(allpics, pooldata, image_cache_paths):
             image_cache_path = icp
             if not image_cache_path:
                 valid = False
                 continue
-            pictype, codeHash, codetext = pd
+            pictype, code_hash, codetext = pooldata
             pngpath = os.path.join(os.path.dirname(output_path), pictype,
-                                   codeHash+'.png')
+                                   code_hash+'.png')
             utils.copy_if_newer(image_cache_path, pngpath)
 
             # replace div.alternate with <img>
             parent = pre.getparent().getparent()
             img = etree.Element('img')
-            img.attrib['src'] = os.path.join(pictype, codeHash+'.png')
-            img.attrib['alt'] = codeHash + '.png'
+            img.attrib['src'] = os.path.join(pictype, code_hash+'.png')
+            img.attrib['alt'] = code_hash + '.png'
             parent.replace(pre.getparent(), img)
 #           figure.remove(pre.getparent())
 
@@ -147,26 +151,26 @@ def _render_tex_images(tex, output_path, parallel=True):
             env_end = chunk.find(r'\end{{{env}}}'.format(env=pictype))
             # get code text and hash
             codetext = chunk[0:env_end]
-            codeHash = get_code_hash(codetext)
-            pooldata.append((pictype, codeHash, codetext))
+            code_hash = get_code_hash(codetext)
+            pooldata.append((pictype, code_hash, codetext))
 
         if pooldata:
             # call parallel map
             image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
 
-            for i, (chunk, pd, icp) in enumerate(zip(texsplit[1:],
-                                                     pooldata,
-                                                     image_cache_paths)):
+            for i, (chunk, pooldata, icp) in enumerate(zip(texsplit[1:],
+                                                           pooldata,
+                                                           image_cache_paths)):
                 if not icp:
                     valid = False
                     continue
 
-                pictype, codeHash, codetext = pd
+                pictype, code_hash, codetext = pooldata
                 env_end = chunk.find(r'\end{{{env}}}'.format(env=pictype))
                 image_cache_path = icp
                 # place where image will go.
                 pdfpath = os.path.join(os.path.dirname(output_path),
-                                       pictype, codeHash+'.pdf')
+                                       pictype, code_hash+'.pdf')
                 # This returns the png path
                 pdf_cache_path = image_cache_path.replace('.png', '.pdf')
                 # copy generated pdf to tex folder.
@@ -176,7 +180,7 @@ def _render_tex_images(tex, output_path, parallel=True):
                 newenv = \
                     r'\includegraphics{{{f}}}'.format(
                         f=os.path.join(pictype,
-                                       codeHash + '.pdf'))
+                                       code_hash + '.pdf'))
                 endlength = len(r'\end{{{env}}}'.format(env=pictype))
                 texsplit[i+1] = newenv + chunk[env_end + endlength:]
             tex = ''.join(texsplit)
@@ -206,29 +210,29 @@ def _render_mobile_images(html, output_path, parallel=True):
             env_end_pos = chunk.find(env_end)
             # get code text and hash
             codetext = chunk[0:env_end_pos]
-            codeHash = get_code_hash(codetext)
+            code_hash = get_code_hash(codetext)
             # unescape the code for latex generation
             codetext = unescape(codetext)
             pooldata.append((pictype,
-                             codeHash,
+                             code_hash,
                              env_start + codetext + env_end))
 
         if pooldata:
             # call parallel map
             image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
 
-            for i, (chunk, pd, icp) in enumerate(zip(htmlsplit[1:],
-                                                     pooldata,
-                                                     image_cache_paths)):
+            for i, (chunk, pooldata, icp) in enumerate(zip(htmlsplit[1:],
+                                                           pooldata,
+                                                           image_cache_paths)):
                 if not icp:
                     valid = False
 
-                pictype, codeHash, codetext = pd
+                pictype, code_hash, codetext = pooldata
                 env_end_pos = chunk.find(env_end)
                 image_cache_path = icp
                 # place where image will go.
                 pngpath = os.path.join(os.path.dirname(output_path),
-                                       pictype, codeHash+'.png')
+                                       pictype, code_hash+'.png')
                 # This returns the png path
                 # copy generated pdf to tex folder.
                 utils.copy_if_newer(image_cache_path, pngpath)
@@ -243,7 +247,7 @@ def _render_mobile_images(html, output_path, parallel=True):
                     r'<img class="{imgclass}" src="{f}"/>'.format(
                         imgclass=imgclass,
                         f=os.path.join(pictype,
-                                       codeHash + '.png'))
+                                       code_hash + '.png'))
                 endlength = len(env_end)
                 htmlsplit[i+1] = newenv + chunk[env_end_pos + endlength:]
             html = ''.join(htmlsplit)
