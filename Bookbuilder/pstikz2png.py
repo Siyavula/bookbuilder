@@ -71,7 +71,7 @@ def cleanup_code(code):
 
 
 pstricksTex = r'''
-\documentclass[10pt]{report}
+\documentclass[preview, border=1bp]{standalone}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{fp}
 \usepackage{float} % for figures to appear where you want them
@@ -186,7 +186,7 @@ pstricksTex = r'''
 '''
 
 tikzTex = r'''
-\documentclass[10pt]{report}
+\documentclass[preview, border=1bp]{standalone}
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage{tikz, ifthen}
@@ -323,7 +323,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
         raise LatexPictureError, "LaTeX failed to compile the image. %s \n%s" % (latexPath, iLatex.replace('__CODE__', code.strip()))
 
     # crop the pdf image too
-    execute(['pdfcrop', '--margins', '1', pdfPath, pdfPath])
+#   execute(['pdfcrop', '--margins', '1', pdfPath, pdfPath])
 
     execute(['convert',
              '-density',
