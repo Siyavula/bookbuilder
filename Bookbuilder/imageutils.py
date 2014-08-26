@@ -113,7 +113,7 @@ def _render_html_images(html, output_path, parallel=True):
 
     if pooldata:
         # call parallel map
-        image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
+        image_cache_paths = utils.Map(run_latex, pooldata, parallel=parallel)
 
         for (pre, pooldata, icp) in zip(allpics, pooldata, image_cache_paths):
             image_cache_path = icp
@@ -156,7 +156,8 @@ def _render_tex_images(tex, output_path, parallel=True):
 
         if pooldata:
             # call parallel map
-            image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
+            image_cache_paths = utils.Map(run_latex, pooldata,
+                                          parallel=parallel)
 
             for i, (chunk, pooldata, icp) in enumerate(zip(texsplit[1:],
                                                            pooldata,
@@ -219,7 +220,8 @@ def _render_mobile_images(html, output_path, parallel=True):
 
         if pooldata:
             # call parallel map
-            image_cache_paths = utils.Map(run_latex, pooldata, parallel=True)
+            image_cache_paths = utils.Map(run_latex, pooldata,
+                                          parallel=parallel)
 
             for i, (chunk, pooldata, icp) in enumerate(zip(htmlsplit[1:],
                                                            pooldata,
@@ -268,7 +270,7 @@ def render_images(output_path, parallel=True):
         with open(output_path, 'r') as htmlout:
             html = etree.HTML(htmlout.read())
 
-        html, valid = _render_html_images(html, output_path, parallel=True)
+        html, valid = _render_html_images(html, output_path, parallel=parallel)
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(etree.tostring(html, method='xml'))
@@ -280,7 +282,7 @@ def render_images(output_path, parallel=True):
         with open(output_path, 'r') as texout:
             tex = texout.read()
 
-        tex, valid = _render_tex_images(tex, output_path, parallel=True)
+        tex, valid = _render_tex_images(tex, output_path, parallel=parallel)
 
         with open(output_path, 'w') as texout:
             texout.write(tex)
@@ -293,7 +295,8 @@ def render_images(output_path, parallel=True):
         with open(output_path, 'r') as htmlout:
             html = htmlout.read()
 
-        html, valid = _render_mobile_images(html, output_path, parallel=True)
+        html, valid = _render_mobile_images(html, output_path,
+                                            parallel=parallel)
 
         with open(output_path, 'w') as htmlout:
             htmlout.write(html)

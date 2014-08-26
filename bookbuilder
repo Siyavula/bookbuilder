@@ -65,7 +65,7 @@ if __name__ == "__main__":
         if arguments['--serial']:
             parallel = False
 
-        Book.convert(formats, parallel=True)
+        Book.convert(formats, parallel=parallel)
 
     # Save the cache object again
     Book.write_cache()

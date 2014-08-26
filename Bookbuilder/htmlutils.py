@@ -1,3 +1,6 @@
+''' Miscellaneous functions that deals with html processing
+
+'''
 from lxml import etree
 
 
@@ -10,21 +13,21 @@ def xhtml_cleanup(xhtmlstr):
     xhtml = etree.HTML(xhtmlstr)
 
     # Fix ID with colons in them
-    IDs = []
+    _ids = []
     for element in xhtml.iter():
-        ID = element.attrib.get('id')
-        if ID:
-            if ID not in IDs:
-                IDs.append(ID)
+        _id = element.attrib.get('id')
+        if _id:
+            if _id not in _ids:
+                _ids.append(_id)
             else:
                 i = 1
-                newID = ID.strip() + '-' + str(i)
-                while newID in IDs:
+                new_id = _id.strip() + '-' + str(i)
+                while new_id in _ids:
                     i += 1
-                    newID = ID.strip() + '-' + str(i)
+                    new_id = _id.strip() + '-' + str(i)
 
-                element.attrib['id'] = newID
-                IDs.append(newID)
+                element.attrib['id'] = new_id
+                _ids.append(new_id)
 
             # replace it with something valid
             element.attrib['id'] = element.attrib['id'].replace(':', '-')
@@ -82,7 +85,10 @@ def repair_equations(html):
                           (')~\\', ') \\'),
                           ('alignrll', 'align*'),
                           (r'&amp;#177;', r'\pm'))
-    for un in unicode_to_replace:
-        html = html.replace(un[0], un[1])
+    for unichar in unicode_to_replace:
+        html = html.replace(unichar[0], unichar[1])
+
+    # some unicode needs to get replaced with math-mode symbols but they cannot
+    # use those symbols if they are already in a math mode.
 
     return html

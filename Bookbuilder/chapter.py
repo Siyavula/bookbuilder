@@ -216,7 +216,7 @@ class chapter(object):
         ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
             image to png. Insert replace div.alternate tags with <img> tags
         '''
-        rendered = imageutils.render_images(output_path, parallel=True)
+        rendered = imageutils.render_images(output_path, parallel=parallel)
 
         return rendered
 
@@ -259,7 +259,7 @@ class chapter(object):
                                      stderr=subprocess.PIPE)
         html, err = myprocess.communicate()
         html = htmlutils.add_mathjax(html)
-        html = htmlutils.repair_equations(html)
+#       html = htmlutils.repair_equations(html)
 
         return html
 
@@ -328,7 +328,7 @@ class chapter(object):
                 # by the user
                 if outformat == 'tex':
                     self.__copy_tex_images(build_folder, output_path)
-                    rendered = self.__render_pstikz(output_path, parallel=True)
+                    rendered = self.__render_pstikz(output_path, parallel=parallel)
                     if not rendered:
                         self.render_problems = True
 
@@ -338,21 +338,21 @@ class chapter(object):
                     # read the output html, find all pstricks and tikz
                     # code blocks and render them as pngs and include them
                     # in <img> tags in the html
-                    rendered = self.__render_pstikz(output_path, parallel=True)
+                    rendered = self.__render_pstikz(output_path, parallel=parallel)
                     if not rendered:
                         self.render_problems = True
 
                 elif outformat == 'xhtml':
                     # copy images from html folder
                     self.__copy_html_images(build_folder, output_path)
-                    rendered = self.__render_pstikz(output_path, parallel=True)
+                    rendered = self.__render_pstikz(output_path, parallel=parallel)
                     if not rendered:
                         self.render_problems = True
 
                 elif outformat == 'mobile':
                     # copy images from html folder
                     self.__copy_html_images(build_folder, output_path)
-                    rendered = self.__render_pstikz(output_path, parallel=True)
+                    rendered = self.__render_pstikz(output_path, parallel=parallel)
                     if not rendered:
                         self.render_problems = True
 

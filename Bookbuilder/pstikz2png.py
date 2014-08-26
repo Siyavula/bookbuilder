@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 import re
 import htmlentitydefs
-
+from . import htmlutils
 ##
 # Removes HTML or XML character references and entities from a text string.
 #
@@ -60,12 +60,14 @@ def cleanup_code(code):
     code = '\n'.join(newcode)
 
     # escape % signs, comments in LaTeX
-    perc_split = code.split('%')
-    for i, chunk in enumerate(perc_split):
-        if not chunk.endswith('\\'):
-            perc_split[i] = chunk + '\\'
+#   perc_split = code.split('%')
+#   for i, chunk in enumerate(perc_split):
+#       if not chunk.endswith('\\'):
+#           perc_split[i] = chunk + '\\'
 
-    code = '%'.join(perc_split)
+#   code = '%'.join(perc_split)
+
+    code = htmlutils.repair_equations(code)
 
     return code
 
