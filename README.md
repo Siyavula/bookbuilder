@@ -192,6 +192,10 @@ your cnxmlplus files:
 
 
 ## Changes
+version 0.3-RC1:
+
+    * many fixes
+
 
 version 0.3beta:
 
