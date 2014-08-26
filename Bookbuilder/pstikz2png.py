@@ -242,6 +242,7 @@ equationTex = u'''\\documentclass[preview, border=1bp]{standalone}
 \\usepackage{amssymb}
 \\usepackage{keystroke}
 \\usepackage{cancel}
+\\usepackage{xcolor}
 \\begin{document}
 __CODE__
 \\end{document}'''.encode('utf-8')
