@@ -292,7 +292,6 @@ class chapter(object):
                                 'html': self.__tohtml,
                                 'xhtml': self.__toxhtml,
                                 'mobile': self.__tomobile}
-
         for outformat in output_format:
 
             # convert this chapter to the specified format
