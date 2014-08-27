@@ -284,14 +284,12 @@ def render_images(output_path, parallel=True):
             tex = texout.read()
 
         tex, valid = _render_tex_images(tex, output_path, parallel=parallel)
-
         with open(output_path, 'w') as texout:
             texout.write(tex)
 
     #
     # Mobile html, equations need to be rendered to images
     #
-
     if r'/mobile/' in output_path:
         with open(output_path, 'r') as htmlout:
             html = htmlout.read()

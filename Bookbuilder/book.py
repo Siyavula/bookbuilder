@@ -51,7 +51,7 @@ class Book(object):
                                        render_problems=previous_render_problems)
             else:
                 # pass the prev has has None so that validation is forced
-                thischapter = _chapter(cfile, hash=None, render_problems=False)
+                thischapter = _chapter(cfile, hash=None, render_problems=None)
 
                 # this chapter was not in the cache_object, add an empty dict
                 # for it
@@ -137,7 +137,8 @@ class Book(object):
         for chapter in self.chapters:
             # find this chapter's attributes from the cache dictionary
             chapter.convert(self.build_folder, formats, parallel=parallel)
-
             # The chapter may not have converted all the images correctly.
             # Set a flag in the cache_object
             self.cache_object['chapters'][chapter.file]['render_problems'] = chapter.render_problems
+
+        self.write_cache()
