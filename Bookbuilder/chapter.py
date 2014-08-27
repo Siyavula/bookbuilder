@@ -378,9 +378,9 @@ class chapter(object):
                                                     parallel=parallel)
 
                 if not (rendered and copy_success):
-                    self.render_problems[outformat] = True
+                    self.render_problems = True
                 else:
-                    self.render_problems[outformat] = False
+                    self.render_problems = False
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)

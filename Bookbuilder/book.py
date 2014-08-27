@@ -51,7 +51,7 @@ class Book(object):
                                        render_problems=previous_render_problems)
             else:
                 # pass the prev has has None so that validation is forced
-                thischapter = _chapter(cfile, hash=None, render_problems=None)
+                thischapter = _chapter(cfile, hash=None, render_problems=True)
 
                 # this chapter was not in the cache_object, add an empty dict
                 # for it
