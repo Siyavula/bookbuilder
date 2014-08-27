@@ -49,7 +49,10 @@ class chapter(object):
         self.hash = None
         self.has_changed = True
         self.valid = None
-        self.output_formats = ['tex', 'html']
+        self.conversion_success = {'tex': False,
+                                   'html': False,
+                                   'xhtml': False,
+                                   'mobile': False}
 
         # set attributes from keyword arguments
         # This can be used to set precomputed values e.g. read from a cache
@@ -264,6 +267,7 @@ class chapter(object):
         return html
 
     def __toxhtml(self):
+        ''' Convert this chapter to html'''
 
         xhtml = self.__tohtml()
         # Convert this html to xhtml
@@ -272,6 +276,7 @@ class chapter(object):
         return xhtml
 
     def __tomobile(self):
+        ''' Conver this chapter to xhtml'''
         html = self.__toxhtml()
 
         return html
@@ -288,7 +293,6 @@ class chapter(object):
                                 'xhtml': self.__toxhtml,
                                 'mobile': self.__tomobile}
 
-        self.render_problems = False
         for outformat in output_format:
 
             # convert this chapter to the specified format

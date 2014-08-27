@@ -43,8 +43,12 @@ class Book(object):
                 previous_hash = cache_object['chapters'][cfile]['hash']
                 previous_validation_status = cache_object[
                     'chapters'][cfile]['previous_validation_status']
+                previous_render_problems = cache_object[
+                    'chapters'][cfile]['render_problems']
+
                 thischapter = _chapter(cfile, hash=previous_hash,
-                                       valid=previous_validation_status)
+                                       valid=previous_validation_status,
+                                       render_problems=previous_render_problems)
             else:
                 # pass the prev has has None so that validation is forced
                 thischapter = _chapter(cfile, hash=None)
@@ -128,7 +132,12 @@ class Book(object):
         Default output format is both tex and html
         '''
         if formats is None:
-            formats = ['tex', 'html']
+            formats = ['tex', 'html', 'xhtml', 'mobile']
 
         for chapter in self.chapters:
+            # find this chapter's attributes from the cache dictionary
             chapter.convert(self.build_folder, formats, parallel=parallel)
+
+            # The chapter may not have converted all the images correctly.
+            # Set a flag in the cache_object
+            self.cache_object['chapters'][chapter.file]['render_problems'] = chapter.render_problems
