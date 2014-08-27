@@ -164,6 +164,7 @@ def _render_tex_images(tex, output_path, parallel=True):
                                                            image_cache_paths)):
                 if not icp:
                     valid = False
+                    # Image was not valid
                     continue
 
                 pictype, code_hash, codetext = pooldata
