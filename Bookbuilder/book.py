@@ -56,6 +56,7 @@ class Book(object):
                 # this chapter was not in the cache_object, add an empty dict
                 # for it
                 cache_object['chapters'][cfile] = {}
+                cache_object['chapters'][cfile]['render_problems'] = True
 
             # now update the cache_object
             cache_object['chapters'][cfile]['hash'] = thischapter.hash

@@ -59,17 +59,28 @@ def cleanup_code(code):
         newcode.append(line)
     code = '\n'.join(newcode)
 
-    # escape % signs, comments in LaTeX
-#   perc_split = code.split('%')
-#   for i, chunk in enumerate(perc_split):
-#       if not chunk.endswith('\\'):
-#           perc_split[i] = chunk + '\\'
-
-#   code = '%'.join(perc_split)
-
     code = htmlutils.repair_equations(code)
 
     return code
+
+
+def escape_percentage(equation):
+    '''
+    Escape percentage symbols in equations
+    Inputs:
+        equation: string containing equation
+
+    Returns string with percentage symbols escaped
+    '''
+    if not '%' in equation:
+        return equation
+
+    equation = equation.replace('%', '\\%').replace('\\\\%', '\\%')
+
+    return equation
+
+
+
 
 
 pstricksTex = r'''
@@ -351,4 +362,5 @@ def equation2png(iPspictureElement, *args, **kwargs):
     iPspictureElement = iPspictureElement.replace(r'&', r' &')
     # remove tabs
     iPspictureElement = iPspictureElement.replace('\t', ' ')
+    iPspictureElement = escape_percentage(iPspictureElement)
     return pstikz2png(iPspictureElement, equationTex, *args, **kwargs)

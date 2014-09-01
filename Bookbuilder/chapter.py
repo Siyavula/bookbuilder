@@ -325,9 +325,10 @@ class chapter(object):
             if self.valid:
                 # run the conversion only if the file has changed OR if it
                 # doesn't exist (it may have been deleted manually)
+
                 if any((self.has_changed,
                         not os.path.exists(output_path),
-                        self.render_problems[outformat])):
+                        self.render_problems)):
 
                     mkdir_p(os.path.dirname(output_path))
                     print("Converting {ch} to {form}".format(ch=self.file,
