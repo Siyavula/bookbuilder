@@ -1,0 +1,1069 @@
+<document xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:style="http://siyavula.com/cnxml/style/0.1">
+  <its:rules xmlns:its="http://www.w3.org/2005/11/its" version="1.0">
+    <its:translateRule translate="no" selector="//link"/>
+    <its:translateRule translate="no" selector="//url"/>
+    <its:translateRule translate="no" selector="//latex"/>
+    <its:translateRule translate="no" selector="//number"/>
+    <its:translateRule translate="no" selector="//unit"/>
+    <its:translateRule translate="no" selector="//unit_number"/>
+    <its:translateRule translate="no" selector="//percentage"/>
+    <its:translateRule translate="no" selector="//symbol"/>
+    <its:translateRule translate="no" selector="//currency"/>
+    <its:translateRule translate="no" selector="//chem_compound"/>
+    <its:translateRule translate="no" selector="//spec_note"/>
+    <its:translateRule translate="no" selector="//nuclear_notation"/>
+    <its:translateRule translate="no" selector="//mass_number"/>
+    <its:translateRule translate="no" selector="//atomic_number"/>
+    <its:translateRule translate="no" selector="//code"/>
+    <its:translateRule translate="no" selector="//m:math"/>
+    <its:translateRule translate="no" selector="//shortcode"/>
+    <its:translateRule translate="no" selector="//metadata"/>
+    <its:translateRule translate="no" selector="//image"/>
+    <its:translateRule translate="no" selector="//video"/>
+    <its:translateRule translate="no" selector="//figure/type"/>
+    <its:translateRule translate="no" selector="//simulation"/>
+  </its:rules>
+  <metadata>
+    <pspicture-generator-version>1.1</pspicture-generator-version>
+  </metadata>
+  <content>
+    <section type="chapter">
+      <title>This is a chapter title</title>
+
+      <para>
+        Donec et augue non ipsum dapibus pellentesque. Etiam pulvinar nisl
+        ac eleifend euismod. Nunc dictum convallis vestibulum. Sed erat
+        dolor, ullamcorper et tristique eget, ultrices sed mauris. Nullam
+        quis nibh non nunc pharetra pulvinar quis at dui. Pellentesque
+        habitant morbi tristique senectus et netus et malesuada fames ac
+        turpis egestas. Morbi fermentum volutpat convallis. Vestibulum
+        tristique nisi id nunc faucibus pretium. Pellentesque orci metus,
+        ultrices eget justo a, ultrices tincidunt enim. Sed vitae mauris
+        quis dolor feugiat semper. Sed consectetur tellus nibh, a iaculis
+        enim convallis eget. Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit. Fusce pharetra erat enim, et vulputate enim congue
+        nec.
+      </para>
+
+      <section type='section'>
+        <title>This is a section.</title>
+        <para>
+          Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+          et quam pharetra, consectetur pretium leo dictum. Pellentesque
+          sem tortor, elementum id tempus vel, varius id massa. Sed
+          faucibus arcu at augue dictum dignissim. Donec justo dui,
+          volutpat dictum erat lobortis, malesuada luctus quam. Donec
+          semper sapien turpis, mattis euismod lectus imperdiet eu.
+          Praesent lobortis mollis ante eu interdum. Integer libero
+          ipsum, hendrerit tempus tellus quis, viverra pellentesque
+          justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+          auctor placerat odio eget dapibus. Nullam porta hendrerit
+          nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+          elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+          id dui vestibulum sollicitudin.
+        </para>
+
+        <section type='subsection'>
+          <title>This is a subsection.</title>
+
+          <para>
+            Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+            et quam pharetra, consectetur pretium leo dictum. Pellentesque
+            sem tortor, elementum id tempus vel, varius id massa. Sed
+            faucibus arcu at augue dictum dignissim. Donec justo dui,
+            volutpat dictum erat lobortis, malesuada luctus quam. Donec
+            semper sapien turpis, mattis euismod lectus imperdiet eu.
+            Praesent lobortis mollis ante eu interdum. Integer libero
+            ipsum, hendrerit tempus tellus quis, viverra pellentesque
+            justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+            auctor placerat odio eget dapibus. Nullam porta hendrerit
+            nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+            elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+            id dui vestibulum sollicitudin.
+          </para>
+
+          <section type='subsubsection'>
+            <title>This is a subsubsection.</title>
+
+            <para>
+              Donec sit amet justo a diam aliquet suscipit. Nam varius mauris
+              et quam pharetra, consectetur pretium leo dictum. Pellentesque
+              sem tortor, elementum id tempus vel, varius id massa. Sed
+              faucibus arcu at augue dictum dignissim. Donec justo dui,
+              volutpat dictum erat lobortis, malesuada luctus quam. Donec
+              semper sapien turpis, mattis euismod lectus imperdiet eu.
+              Praesent lobortis mollis ante eu interdum. Integer libero
+              ipsum, hendrerit tempus tellus quis, viverra pellentesque
+              justo. Quisque et fermentum purus, id pulvinar mauris. Donec
+              auctor placerat odio eget dapibus. Nullam porta hendrerit
+              nulla, ac bibendum est porttitor non. Nunc nunc mauris,
+              elementum ut nulla sed, molestie dictum orci. Mauris vitae orci
+              id dui vestibulum sollicitudin.
+            </para>
+          </section> <!-- end subsubsection -->
+        </section><!-- end subsection -->
+      </section><!-- end section -->
+      <section type="section">
+        <title>This is another section</title>
+        <para>
+          We can add  various environments to chapters, sections, subsections and subsubsections:
+        </para>
+        <section type="subsection">
+          <title>Quotes</title>
+          <quote>
+            This is a quote from some famous person.
+          </quote>
+        </section>
+        <section type="subsection">
+          <title>Definitions</title>
+          <definition>
+             <term>Markup language</term>
+             <meaning>
+              A markup language is a set of tags and/or a set of rules
+              for creating tags that can be embedded in digital text to
+              provide additional information about the text in order to
+              facilitate automated processing of it, including editing
+              and formatting for display or printing.
+               </meaning>
+          </definition>
+        </section>
+        <section type="subsection">
+          <title>Videos, Presentations and Simulations</title>
+          <video>
+            <shortcode>27RG</shortcode>
+            <title>Chapter introduction</title>
+            <url>http://www.youtube.com/embed/2WS1sG9fhOk</url>
+            <width>300</width>
+            <height>245</height>
+            <url>http://www.youtube.com/watch?feature=player_embedded&amp;v=2WS1sG9fhOk</url>
+          </video>
+
+          <presentation>
+            <shortcode>27SC</shortcode>
+            <url>http://www.slideshare.net/slideshow/embed_code/34431272</url>
+          </presentation>
+
+          <simulation>
+            <shortcode>27K2</shortcode>
+            <title>PhET simulation on motion</title>
+            <url>http://phet.colorado.edu/en/simulation/projectile-motion</url>
+            <embed>&lt;div style="position: relative; width: 300px; height: 198px;"&gt;&lt;a
+              href="http://phet.colorado.edu/sims/projectile-motion/projectile-motion_en.html" style="text-decoration:
+              none;" rel="external"&gt;&lt;img
+              src="http://phet.colorado.edu/sims/projectile-motion/projectile-motion-screenshot.png" alt="Projectile
+              Motion" style="border: none;" width="300" height="198"/&gt;&lt;div style="position: absolute; width: 200px;
+              height: 80px; left: 50px; top: 59px; background-color: #FFF; opacity: 0.6; filter: alpha(opacity =
+              60);"&gt;&lt;/div&gt;&lt;table style="position: absolute; width: 200px; height: 80px; left: 50px; top:
+              59px;"&gt;&lt;tr&gt;&lt;td style="text-align: center; color: #000; font-size: 24px; font-family:
+              Arial,sans-serif;"&gt;Click to Run&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/a&gt;&lt;/div&gt;</embed>
+          </simulation>
+
+        </section>
+        <section type="subsection">
+          <title>Math Extension</title>
+          <math_extension>
+            <title>Other forms of potential energy</title>
+            <body>
+              <list list-type="enumerated">
+                <item>
+                  <para>elastic potential energy - potential energy is stored in a compressed or extended spring or rubber band. This potential energy is calculated by:</para>
+                  <latex>\frac{1}{2}k{x}^{2}</latex>
+                  <para>where k is a constant that is a measure of the stiffness of the spring or rubber band and x is the extension of the spring or rubber band.</para>
+                </item>
+                <item>
+                  <para>Chemical potential energy is related to the making and breaking of chemical bonds. For example, a battery converts chemical energy into electrical energy.</para>
+                </item>
+                <item>
+                  <para>The electrical potential energy of an electrically charged object is defined as the work that must be done to move it from an infinite distance away to its present location, in the absence of any non-electrical forces on the object. This energy is non-zero if there is another electrically charged object nearby otherwise it is given by:</para>
+
+
+                  <latex>k\frac{{q}_{1}{q}_{2}}{d}</latex>
+
+
+                  <para>where k is Coulomb's constant. For example, an electric motor lifting an elevator converts electrical energy into gravitational potential energy.</para>
+                </item>
+                <item>
+                  <para>Nuclear energy is the energy released when the nucleus of an atom is split or fused. A nuclear reactor converts nuclear energy into heat.</para>
+                </item>
+              </list>
+              <para>Some of these forms of energy will be studied in later chapters.</para>
+            </body>
+          </math_extension>
+
+        </section>
+        <section type="subsection">
+          <title>Theorem</title>
+          <theorem>
+            <title>Perpendicular line from circle centre bisects chord</title>
+            <statement>
+              <para>If a line is drawn from the centre of a circle perpendicular to a chord, then it bisects the chord.</para>
+              <para>(Reason: <latex>\perp</latex> from centre bisects chord) </para>
+            </statement>
+            <given>
+              <para>Circle with centre <latex>O</latex> and line <latex>OP</latex> perpendicular to chord <latex>AB</latex>.</para>
+              <pspicture>
+                <code>
+                  (-2.6,-2.6)(2.6,2.6)
+                  \pscircle{2.5}
+                  \psline(-2,-1.5)(2,-1.5)
+                  \psline(0,0)(0,-1.5)
+                  \psline[linestyle=dashed](0,0)(-2,-1.5)
+                  \psline[linestyle=dashed](0,0)(2,-1.5)
+                  \rput(0,-1.5){\psline(0.2,0)(0.2,0.2)(0,0.2)}
+                  \psdot(0,0)
+                  \uput[l](-2,-1.5){\(A\)}
+                  \uput[r](2,-1.5){\(B\)}
+                  \uput[u](0,0){\(O\)}
+                  \uput[d](0,-1.5){\(P\)}
+                </code>
+              </pspicture>
+            </given>
+            <required><latex>AP = PB</latex></required>
+            <proof>
+              <para>Draw <latex>OA</latex> and <latex>OB</latex>.</para>
+              <para>In <latex>\triangle OPA</latex> and in <latex>\triangle OPB</latex>,
+                <latex display="block">
+                  \begin{align*}
+                  OA^2 &amp;= OP^2 + AP^2 &amp; \text{(Pythagoras)} \\
+                  OB^2 &amp;= OP^2 + BP^2 &amp; \text{(Pythagoras)} 
+                  \end{align*}
+                </latex>   
+                and
+                <latex display="block">
+                  \begin{align*}
+                  OA  &amp;= OB &amp; \text{(equal radii)} \\
+                  \therefore AP^2 &amp;= BP^2 &amp; \\
+                  \therefore AP &amp;= BP &amp; 
+                  \end{align*}
+                </latex>
+                Therefore <latex>OP</latex> bisects <latex>AB</latex>.</para>
+              <para><emphasis effect="bold">Alternative proof:</emphasis></para>
+              <para>In <latex>\triangle OPA</latex> and in <latex>\triangle OPB</latex>,
+                <latex display="block">
+                  \begin{align*}
+                  O\hat{P}A &amp;= O\hat{P}B &amp; (\text{given } OP \perp AB) \\
+                  OA &amp;= OB &amp; \text{(equal radii)} \\
+                  OP &amp;= OP &amp; \text{(common side)}  \\
+                  \therefore \triangle OPA &amp; \equiv  \triangle OPB &amp; \text{(RHS)}  \\
+                  \therefore AP &amp;= PB &amp; 
+                  \end{align*}
+                </latex>
+                Therefore <latex>OP</latex> bisects <latex>AB</latex>.</para>
+            </proof>
+          </theorem>
+
+        </section>
+        <section type="subsection">
+          <title>Mathematical identities</title>
+          <math_identity>
+            <latex>\tan\theta = \dfrac{\sin\theta}{\cos\theta}</latex>
+          </math_identity>
+        </section>
+        <section>
+          <title>Various kinds of notes:</title>
+          <note type="note">
+            <para>
+              This is a note
+            </para>
+          </note>
+          <note type="tip">
+            <para>
+              This is a note
+            </para>
+          </note>
+          <note type="important">
+            <para>
+              This is an "important" note
+            </para>
+          </note>
+          <note type="warning">
+            <para>
+              This is a warning
+            </para>
+          </note>
+          <note type="didyouknow">
+            <para>
+              This is a "Did You Know" note.
+            </para>
+          </note>
+          <note type="visit">
+            <para>
+              This is a note containing links to visit.
+            </para>
+          </note>
+        </section>
+        <section type="section">
+          <title>Activities of various kinds.</title>
+
+          <activity type="activity">
+            <title>Identifying the interactions of the spheres on Earth</title>
+            <teachers-guide>
+              <para id="gd-idp15495488"/>
+              <para id="gd-idp14325568">For this activity let the learners discuss amongst themselves first. The activity can be part of your teaching. The idea is that the learners discover the interactions by themselves (with your guidance) before you 'give them the answers'. Give them 5 minutes to talk to each other and then another 10 minutes so that they can complete the map. Afterwards the interactions can be discussed as a class. They might need some assistance in how to complete the map. One example is given. It might be necessary to do one more example as a class before they try it on their own.</para>
+              <para id="gd-idp23666656"/>
+            </teachers-guide>
+            <para id="gd-idp20885296">
+              <emphasis effect="bold">INSTRUCTIONS:</emphasis>
+            </para>
+            <list list-type="enumerated" id="gd-idp14096272">
+              <item>The picture below is of the dam wall that was built for the Gariep Dam on the border between the Free State and the Eastern Cape. The wall is used to generate hydroelectric power, as we learned about in Energy and Change.</item>
+              <item>Answer the questions below.</item>
+            </list>
+            <figure><type>figure</type><image mime-type="" src="images/gr9eb01-gd-0029.jpg" height="268" width="402"/>
+              <caption id="gd-idp13549088">Gariep Dam in the Orange River.</caption>
+              </figure><para id="gd-idp20623168">
+              <emphasis effect="bold">QUESTIONS:</emphasis>
+            </para>
+            <list list-type="enumerated" id="gd-idp18547808">
+              <item>Discuss in pairs all the possible interactions between the spheres of the Earth.</item>
+              <item>Work on your own to complete the following map. Write a description of the interaction on each of the arrows. One example was done for you: There is an interaction between the lithosphere and the atmosphere in that the wind (moving air) will cause erosion of the rocks surrounding the dam. Where possible include more than one interaction on the arrow linking the spheres.</item>
+            </list>
+            <figure id="gd-idp14501760">
+              <type>figure</type><image mime-type="" src="images/gr9eb01-gd-0030.png" height="385" width="514"/>
+            </figure>
+            <teachers-guide>
+              <para id="gd-idp13480960"/>
+              <para id="gd-idp23444880">Learner-dependent answer. Some possible solutions are given below. Learners could also include other options.</para>
+              <figure id="gd-idp23545120">
+                <type>figure</type><image mime-type="" src="images/gr9eb01-gd-0031.png" height="340" width="553"/>
+              </figure>
+              <para id="gd-idp29721216"/>
+            </teachers-guide>
+            <para id="gd-idp14336192"/>
+          </activity>
+        </section>
+        <section type="subsection">
+          <title>Experiments</title>
+          <para>Experiments are also activities of a kind.</para>
+
+          <activity type="g_experiment">
+            <title>Preparation of esters</title>
+            <section>
+              <title>Aim</title>
+              <para>To prepare and identify esters.</para>
+            </section>
+            <section>
+              <title>Apparatus</title>
+              <list list-type="bulleted">
+                <item>
+                  <para>Methanol (<chem_compound>CH_{3}OH</chem_compound>), ethanol (<chem_compound>CH_{3}CH_{2}(OH)</chem_compound>),</para>
+                  <para>pentan-1-ol (<chem_compound>CH_{3}CH_{2}CH_{2}CH_{2}CH_{2}(OH)</chem_compound>), methanoic acid (<chem_compound>HCOOH</chem_compound>),</para>
+                  <para>ethanoic acid (<chem_compound>CH_{3}COOH</chem_compound>), sulfuric acid (<chem_compound>H_{2}SO_{4}</chem_compound>)</para>
+                </item>
+                <item>
+                  <para>Marble chips (or small, clean stones)</para>
+                </item>
+                <item>
+                  <para>Five tall test tubes or beakers, a water bath, a hot-plate (or bunsen burner), a thermometer, rubber bands, paper towel, five bowls of cold water</para>
+                </item>
+              </list>
+            </section>
+            <section>
+              <title>Method</title>
+              <note type="warning">
+                <para>Concentrated acids can cause serious burns. We suggest using gloves and safety glasses whenever you work with an acid. Always add the acid to the water and avoid sniffing the acid.</para>
+                <para>Remember that all alcohols are toxic, methanol is particularly toxic and can cause blindness, coma or death. Handle all chemicals with care.</para>
+              </note>
+              <list list-type="enumerated">
+                <item>
+                  <para>Place the marble chips (or clean stones) in the test tubes and label them <emphasis effect="italics">A - E</emphasis>.</para>
+                </item>
+                <item>
+                  <para>Add <unit_number><number>4</number><unit>ml</unit></unit_number> methanoic acid to test tubes <emphasis effect="bold">A</emphasis> and <emphasis effect="bold">B</emphasis>.</para>
+                </item>
+                <item>
+                  <para>Add <unit_number><number>4</number><unit>ml</unit></unit_number> ethanoic acid to test tubes <emphasis effect="bold">C</emphasis>, <emphasis effect="bold">D</emphasis> and <emphasis effect="bold">E</emphasis>.</para>
+                  <pspicture style:width="0.5">
+                    <code>
+                      (-1,-0.2)(15,6)
+                      \pstTubeEssais[niveauLiquide1=30,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge A}]
+                      \rput(-0.1,5.5){\Huge 4 ml methanoic acid}
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(-0.5,5)(-1.5,3.8)
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(0.5,5)(1.5,3.8)
+                      \pstTubeEssais[niveauLiquide1=30,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge B}]
+                      \pstTubeEssais[niveauLiquide1=30,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge C}]
+                      \rput(1.6,5.5){\Huge 4 ml ethanoic acid}
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(-0.5,5)(-1.5,3.8)
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(3.5,5)(4.5,3.8)
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(1.5,5)(1.5,3.8)
+                      \pstTubeEssais[niveauLiquide1=30,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge D}]
+                      \pstTubeEssais[niveauLiquide1=30,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge E}]
+                    </code>
+                  </pspicture>
+                </item>
+                <item>
+                  <para>Add <unit_number><number>5</number><unit>ml</unit></unit_number> methanol to test tubes <emphasis effect="bold">A</emphasis> and <emphasis effect="bold">C</emphasis>.</para>
+                </item>
+                <item>
+                  <para>Add <unit_number><number>5</number><unit>ml</unit></unit_number> ethanol to test tubes <emphasis effect="bold">B</emphasis> and <emphasis effect="bold">D</emphasis>.</para>
+                </item>
+                <item>
+                  <para>Add <unit_number><number>5</number><unit>ml</unit></unit_number> pentanol to test tube <emphasis effect="bold">E</emphasis>.</para>
+                  <pspicture style:width="0.5">
+                    <code>
+                      (0,-3.2)(16.2,6)
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge A}]
+                      \rput(1.5,5.5){\Huge 5 ml methanol}
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(-0.5,5)(-1.5,3.8)
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(3.5,5)(4.5,3.8)
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge B}]
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge C}]
+                      \rput(-1.5,-2){\Huge 5 ml ethanol}
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(-3.5,-1.5)(-4.5,-0.3)
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(0.5,-1.5)(1.5,-0.3)
+                      \psline[arrowsize=10pt,linewidth=2pt]{-&gt;}(4.5,5)(4.5,3.8)
+                      \rput(4.5,5.5){\Huge 5 ml pentanol}
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge D}]
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]},etiquette=true,Numero={\Huge E}]
+                    </code>
+                  </pspicture>
+                </item>
+                <item>
+                  <para><emphasis effect="bold">Slowly</emphasis> add <unit_number><number>2</number><unit>ml</unit></unit_number> <chem_compound>H_{2}SO_{4}</chem_compound> to each test tube.</para>
+                </item>
+                <item>
+                  <para>Soak the paper towel in cold water and attach it to the sides near the top of each test tube with a rubber band (do not close the test tube, just wrap the paper around the sides near the top).</para>
+                  <pspicture style:width="0.15">
+                    <code>
+                      (0.2,-0.2)(3,4)
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]}]
+                      \pscustom[fillstyle=solid,fillcolor=white]{
+                      \pscurve(-2.1,3.3)(-1.5,3.2)(-0.9,3.3)
+                      \psline(-0.9,2)
+                      \pscurve(-1.5,1.9)(-2.1,2)
+                      \psline(-2.1,3.3)
+                      }    
+                      \pscurve[linewidth=2pt,linecolor=orange](-2.1,3)(-1.5,2.9)(-0.9,3)
+                      \pscurve[linewidth=2pt,linecolor=orange](-2.1,2.5)(-1.5,2.4)(-0.9,2.5)
+                    </code>
+                  </pspicture>
+                </item>
+                <item>
+                  <para>Heat the water bath to <unit_number><number>60</number><unit>℃</unit></unit_number> (using the hot-plate or bunsen burner) and place the test tubes in it for <number>10</number>-<unit_number><number>15</number><unit>min</unit></unit_number>.</para>
+                </item>
+                <item>
+                  <para>After <number>10</number>-<unit_number><number>15</number><unit>min</unit></unit_number> cool each test tube in cold water. Label the bowls of cold water <emphasis effect="italics">A - E</emphasis> and pour the contents of test tube A into bowl A, etc.</para>
+                  <pspicture style:width="0.5">
+                    <code>
+                      (0.5,-2.2)(10,2.5)
+                      \newrgbcolor{skyblue}{0.53 0.81 0.98}
+                      \newrgbcolor{grey}{0.7 0.7 0.7}
+                      \pstTubeEssais[niveauLiquide1=50,solide={\pstGrenailleZinc[30]},tubePenche=-55,etiquette,Numero={\text{\LARGE A}}]
+                      \rput{-55}(-2.15,-1.2){\pscustom[fillstyle=solid,fillcolor=white]{
+                      \pscurve(-2.1,3.3)(-1.5,3.2)(-0.9,3.3)
+                      \psline(-0.9,2)
+                      \pscurve(-1.5,1.9)(-2.1,2)
+                      \psline(-2.1,3.3)
+                      }
+                      \pscurve[linewidth=2pt,linecolor=orange](-2.1,3)(-1.5,2.9)(-0.9,3)
+                      \pscurve[linewidth=2pt,linecolor=orange](-2.1,2.5)(-1.5,2.4)(-0.9,2.5)
+                      }
+                      \psframe[framearc=0.2,fillstyle=solid,fillcolor=skyblue,linestyle=none](0,-2)(4,-1)
+                      \psframe[fillstyle=solid,fillcolor=skyblue,linestyle=none](0,-1.2)(4,-0.5)
+                      \psline[linearc=0.2,linewidth=1.5pt](-0.05,0.55)(0,0.5)(0,-2)(4,-2)(4,0.5)(4.05,0.55)
+                      \psellipse[linewidth=1.5pt](2,0.55)(2.1,0.2)
+                      \psframe[linestyle=none,fillcolor=grey,fillstyle=solid](1.7,-1.2)(2.3,-0.4)
+                      \rput(2,-0.8){\LARGE A}
+                    </code>
+                  </pspicture>
+                </item>
+                <item>
+                  <para>Observe the surface of the water and note the smell in each bowl.</para>
+                </item>
+              </list>
+            </section>
+            <section>
+              <title>Questions</title>
+              <list list-type="enumerated">
+                <item>
+                  <para>What is the purpose of the <chem_compound>H_{2}SO_{4}</chem_compound>?</para>
+                </item>
+                <item>
+                  <para>What is the purpose of the wet paper towel?</para>
+                </item>
+                <item>
+                  <para>What did you observe on the top of the water in each bowl at the end?</para>
+                </item>
+                <item>
+                  <para>Fill in the details in a table like the one below:</para>
+                  <table>
+                    <tgroup cols="4">
+                      <colspec colname="c1" colnum="1"/>
+                      <colspec colname="c2" colnum="2"/>
+                      <colspec colname="c3" colnum="3"/>
+                      <colspec colname="c4" colnum="4"/>
+                      <tbody>
+                        <row>
+                          <entry>
+                            <para><emphasis effect="bold">Carboxylic acid</emphasis></para>
+                          </entry>
+                          <entry>
+                            <para><emphasis effect="bold">Alcohol</emphasis></para>
+                          </entry>
+                          <entry>
+                            <para><emphasis effect="bold">Product</emphasis></para>
+                          </entry>
+                          <entry>
+                            <para><emphasis effect="bold">Smell</emphasis></para>
+                          </entry>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>methanoic acid</para>
+                          </entry>
+                          <entry>
+                            <para>methanol</para>
+                          </entry>
+                          <entry/>
+                          <entry/>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>methanoic acid</para>
+                          </entry>
+                          <entry>
+                            <para>ethanol</para>
+                          </entry>
+                          <entry/>
+                          <entry/>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>ethanoic acid</para>
+                          </entry>
+                          <entry>
+                            <para>methanol</para>
+                          </entry>
+                          <entry/>
+                          <entry/>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>ethanoic acid</para>
+                          </entry>
+                          <entry>
+                            <para>ethanol</para>
+                          </entry>
+                          <entry/>
+                          <entry/>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>ethanoic acid</para>
+                          </entry>
+                          <entry>
+                            <para>pentanol</para>
+                          </entry>
+                          <entry/>
+                          <entry/>
+                        </row>
+                      </tbody>
+                    </tgroup>
+                  </table>
+                </item>
+              </list>
+            </section>
+            <section>
+              <title>Discussion and Conclusion</title>
+              <para>An ester is the product of an acid-catalysed condensation between an alcohol and a carboxylic acid. Esters have identifiable aromas (like the fragrant smell and odour of fruit) and are used in perfumes. If you didn't smell anything it is likely that your water bath was set at too high a temperature and the ester degraded.</para>
+              <para>Esters are less water soluble than the carboxylic acid they were formed from and appear as an oily substance on water. Before being cooled however some of the ester would have been a vapour, so the wet paper towel would help to prevent a loss of the product.</para>
+              <para> Refer to Table <link target-id="tab:organic:esteruses"/> and see if the smells match those listed there. Remember to waft the smell towards you using your hand, do not sniff the fumes directly!</para>
+            </section>
+          </activity>
+          <para> This is an investigation</para>
+          <activity type="investigation">
+            <title>Fertiliser in your area</title>
+            <para>For this investigation you will be working in a group. Your task is to find out what fertilisers are used in your area and whether people know about the impact of fertilisers on the environment, especially the water sources in the area.</para>
+            <list list-type="enumerated">
+              <item>
+                <para><emphasis effect="bold">Design a survey to find out the following:</emphasis></para>
+                <list list-type="bulleted">
+                  <item>
+                    <para>Do people use fertilisers in their gardens or the areas around their homes?</para>
+                  </item>
+                  <item>
+                    <para>What type of fertilisers are they using?</para>
+                  </item>
+                  <item>
+                    <para>Why are they using fertilisers?</para>
+                  </item>
+                  <item>
+                    <para>How often do they apply fertilisers?</para>
+                  </item>
+                  <item>
+                    <para>How much fertiliser do they use in each application?</para>
+                  </item>
+                  <item>
+                    <para>Do they use organic or inorganic fertilisers?</para>
+                  </item>
+                  <item>
+                    <para>Which ones do they think are better to use?</para>
+                  </item>
+                  <item>
+                    <para>How do they think fertilisers influence the quality of water in the area?</para>
+                  </item>
+                </list>
+              </item>
+              <item>
+                <para><emphasis effect="bold">Collect your data</emphasis></para>
+                <para>Take the survey to at least <number>10</number> people in your area. Record their responses.</para>
+              </item>
+              <item>
+                <para><emphasis effect="bold">Present your findings</emphasis></para>
+                <para>Present your findings in tables or graphs and write a one-page summary of what you have found.</para>
+              </item>
+              <item>
+                <para><emphasis effect="bold">Interpret your findings</emphasis></para>
+                <para>Discuss your findings:</para>
+                <list list-type="bulleted">
+                  <item>
+                    <para>Answer all the questions that were posed in the beginning of the investigation.</para>
+                  </item>
+                  <item>
+                    <para>Did you find what you thought you would?</para>
+                  </item>
+                  <item>
+                    <para>What was different?</para>
+                  </item>
+                  <item>
+                    <para>What was the same?</para>
+                  </item>
+                  <item>
+                    <para>Why do you think this is the case?</para>
+                  </item>
+                </list>
+              </item>
+              <item>
+                <para><emphasis effect="bold">Make recommendations</emphasis></para>
+                <para>Include some recommendations to people in your neighbourhood regarding the use of fertilisers and their impact on the environment.</para>
+                <para>Suggestion: Report your findings in your local newspaper to promote awareness.</para>
+              </item>
+            </list>
+          </activity>
+
+        </section>
+        <section type="subsection">
+          <title>Worked example</title>
+          <worked_example>
+            <title>Equal displacements [attribution: Sunil Kumar Singh]</title>
+            <question>
+              <para>A sequence of balls are successively dropped from the top of a tower. The time interval between
+                the release of consecutive balls is equal. At the precise instant that the ninth ball (ball 9) is released, the
+                first ball hits the ground. Which of the balls in the sequence is at <latex>\frac{3}{4}</latex> of the height, 
+                <latex>h</latex>, of the tower when the first ball hits the ground?</para>
+            </question>
+            <answer>
+              <workstep>
+                <title>Understand what is happening</title>
+                <para>A ball is dropped from a tower. After a time, <latex>t_i</latex>, a second ball is dropped. After another time interval, 
+                  <latex>t_i</latex>, a third ball is dropped. This means that when ball 3 is dropped the total time that
+                  has passed is <latex>2t_i</latex>.</para>
+                <para>After a third time interval, 
+                  <latex>t_i</latex>, a fourth ball is dropped. This means that at the instant that ball 4 is dropped the total time that has passed is <latex>3t_i</latex>.
+                  This process continues until the ninth ball is dropped. At the same instant that the ninth ball is dropped, the first ball that was dropped strikes the ground. 
+                  The ninth ball would have been
+                  released after 8 time intervals, therefore it took the first ball a time interval of <latex>8t_i</latex> to hit the ground.</para>
+              </workstep>
+              <workstep>
+                <title>Describe the events mathematically</title>
+                <para>As this is a vertical motion problem where everything is falling towards the ground, it is
+                  simplest to choose downwards as the positive direction.</para>
+                <para>The first ball hits the ground when 
+                  the ninth ball is dropped. This means that the first ball has fallen for a total time of 
+                  <latex>(
+                    <number>9</number>-
+                    <number>1</number>)t_i = 
+                    <number>8</number>t_i</latex>.
+                  The displacement of the first ball is also described by the equation <latex>\Delta \vec{x}=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2</latex>. The balls are dropped so 
+                  their initial velocity is zero, <latex>\vec{v}_{i}=0</latex> and the we know the time for the first ball to fall the height of the tower therefore, in the case 
+                  of the first ball, we have:</para>
+                <latex display="block">
+                  \begin{align}
+                  \Delta \vec{x} &amp;=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2 \\
+                  h &amp;=\frac{1}{2}(<number>9.8</number>)(<number>8</number>t_i)^2 
+                  \end{align}
+                </latex>
+                <para>
+                  Let the <latex>n</latex>th ball be the ball that is at <latex>\frac{3}{4}</latex> of the height, <latex>h</latex>, of the tower when the first ball strikes the ground. The
+                  <latex>n</latex>th ball will have fall for a time of <latex>(n-1)t_i</latex>. If it is <latex>\frac{3}{4}</latex> of the way up the tower it will have fall a distance of
+                  <latex>\frac{1}{4}h</latex>. This motion is also described by <latex>\Delta \vec{x}=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2</latex>, and therefore we know, in the case of the
+                  <latex>n</latex>th ball, we have:</para>
+                <latex display="block">
+                  \begin{align}
+                  \Delta \vec{x} &amp;=\vec{v}_{i}t+\frac{1}{2}\vec{g}t^2 \\
+                  \frac{1}{4}h &amp;=\frac{1}{2}(<number>9.8</number>)((n-<number>1</number>)t_i)^2 \\
+                  h &amp;=2(<number>9.8</number>)((n-<number>1</number>)t_i)^2 
+                  \end{align}
+                </latex>
+                <para>We can't solve for <latex>n</latex> from this final equation because it will contain <latex>h</latex> and <latex>t_i</latex>. We can use the two equations 
+                  we have to eliminate <latex>h</latex>. Both equations are written in the form <latex>h=...</latex> therefore we can equate them eliminating <latex>h</latex>:</para>
+                <latex display="block">
+                  \begin{align}
+                  \frac{1}{2}(<number>9.8</number>)(<number>8</number>t_i)^2 &amp; = 2(<number>9.8</number>)((n-<number>1</number>)t_i)^2 \\
+                  \frac{1}{2}(<number>9.8</number>)<number>8</number>^2t_i^2 &amp; = 2(<number>9.8</number>)(n-<number>1</number>)^2t_i^2 \\
+                  \left(\frac{2}{(<number>9.8</number>)t_i^2}\right)\times\frac{1}{2}(<number>9.8</number>)<number>8</number>^2t_i^2 &amp; = \left(\frac{2}{(<number>9.8</number>)t_i^2}\right)\times 2(<number>9.8</number>)(n-<number>1</number>)^2t_i^2 \\
+                  <number>8</number>^2 &amp; = 4(n-<number>1</number>)^2 \\
+                  <number>8</number> &amp; = 2(n-<number>1</number>) \\
+                  <number>4</number> &amp; = (n-<number>1</number>) \\
+                  n &amp; = 5  
+                  \end{align}
+                </latex>
+                <note type="important">
+                  <para>We know that <latex>n</latex> must be a positive integer which is why we use the positive roots when we take the square root above.</para>
+                </note>
+              </workstep>
+              <workstep>
+                <title>Write the final answer</title>
+                <para>The fifth ball is at 
+                  <latex>\frac{3}{4}</latex> of the height of the tower when the first ball strikes the ground.</para>
+              </workstep>
+            </answer>
+          </worked_example>
+
+        </section>
+        <section type="subsection">
+          <title>Exercises</title>
+          <exercises>
+            <title/>
+            <problem-set>
+              <header>
+                <para>This is a Problem set</para>
+                <para>Write the following in set notation:</para>
+              </header>
+              <entry>
+                <shortcode>00f9</shortcode>
+                <problem>
+                  <latex>(-\infty;7]</latex>
+                </problem>
+                <solution>
+                  <correct><latex>\left\{x:x\in\mathbb{R},x \leq 7\right\}</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00f9</shortcode>
+                <problem>
+                  <latex>[13;4)</latex>
+                </problem>
+                <solution>
+                  <correct><latex>\left\{y:y\in\mathbb{R}, -13 \leq y &lt; 4\right\}</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00f9</shortcode>
+                <problem>
+                  <latex>(35;\infty)</latex>
+                </problem>
+                <solution>
+                  <correct><latex>\left\{z:z\in\mathbb{R}, z &gt; 35\right\}</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00f9</shortcode>
+                <problem>
+                  <latex>[\frac{3}{4};21)</latex>
+                </problem>
+                <solution>
+                  <correct><latex>\left\{t:t\in\mathbb{R}, \frac{3}{4} \leq t &lt; 21\right\}</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00f9</shortcode>
+                <problem>
+                  <latex>[-\frac{1}{2};\frac{1}{2}]</latex>
+                </problem>
+                <solution>
+                  <correct><latex>\left\{p:p\in\mathbb{R}, -\frac{1}{2} \leq p \leq \frac{1}{2}\right\}</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00f9</shortcode>
+                <problem>
+                  <latex>(-\sqrt{3};\infty)</latex>
+                </problem>
+                <solution>
+                  <correct><latex>\left\{m:m\in\mathbb{R}, m &gt; -\sqrt{3}\right\}</latex></correct>
+                </solution>
+              </entry>
+            </problem-set>
+            <problem-set>
+              <header>
+                <para>Write the following in interval notation:</para>
+              </header>
+              <entry>
+                <shortcode>00fa</shortcode>
+                <problem>
+                  <latex>\left\{p:p\in\mathbb{R}, p \leq 6 \right\}</latex>
+                </problem>
+                <solution>
+                  <correct><latex>(-\infty;6]</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00fa</shortcode>
+                <problem>
+                  <latex>\left\{k:k\in\mathbb{R},-5 &lt; k &lt; 5\right\}</latex>
+                </problem>
+                <solution>
+                  <correct><latex>(-5;5)</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00fa</shortcode>
+                <problem>
+                  <latex>\left\{x:x\in\mathbb{R},x &gt; \frac{1}{5}\right\}</latex>
+                </problem>
+                <solution>
+                  <correct><latex>(\frac{1}{5};\infty)</latex></correct>
+                </solution>
+              </entry>
+              <entry>
+                <shortcode>00fa</shortcode>
+                <problem>
+                  <latex>\left\{z:z\in\mathbb{R},21 \leq x &lt; 41\right\}</latex>
+                </problem>
+                <solution>
+                  <correct><latex>[21;41)</latex></correct>
+                </solution>
+              </entry>
+              <multi-part>
+                <shortcode>00fp</shortcode>
+                <header>
+                  <para>This is a multi-part exercise</para>
+                  <para>Two parabolas are drawn: <latex>g: y=ax^2+p</latex> and <latex>h:y=bx^2+q</latex>.</para>
+                  <tikzpicture>
+                    <code>
+                      \begin{axis}[
+                      ymax=7, ymin=-3, xmax =5, xmin=-5,
+                      ytick={0},xtick={0}, xlabel=$x$,ylabel=$y$]
+                      \addplot [domain=-3:3,&lt;-&gt;] {x*x-2.25};
+                      \addplot [domain=-3:3,&lt;-&gt;] {-x*x+5.75};
+                      \addplot coordinates {(0.3,0.3)} node[label=below left:$0$] {};
+                      \addplot  [fill] coordinates{ (0,-2.25) } circle (0.08);
+                      \addplot  [fill] coordinates{ (0,5.75) } circle (0.08);
+                      \addplot  [fill] coordinates{ (-2,1.75) } circle (0.08);
+                      \addplot  [fill] coordinates{ (2,1.75) } circle (0.08);
+                      \addplot coordinates {(0,-2.25)} node[below right] {$(0;-9)$};
+                      \addplot coordinates {(0,5.75)} node[above right] {$(0;27)$};
+                      \addplot coordinates {(-2,1.75)} node[above left] {$(-4;7)$};
+                      \addplot coordinates {(2,1.75)} node[above right] {$(4;7)$};
+                      \addplot coordinates {(3,-3.5)} node[above right] {$h$};
+                      \addplot coordinates {(3,5.75)} node[above right] {$g$};
+                      \end{axis}
+                    </code>
+                  </tikzpicture>
+                </header>
+                <entry>
+                  <problem>
+                    <para>Find the values of <latex>a</latex> and <latex>p</latex>.</para>
+                  </problem>
+                  <solution>
+                    <para><latex>p</latex> is the <latex>y</latex>-intercept, therefore <latex>p=-9</latex></para>
+                    <para>To find <latex>a</latex> we use one of the points on the graph (e.g. <latex>(4;7)</latex>):</para>
+                    <para>
+                      <latex display="block">
+                        \begin{align}
+                        y&amp;=ax^2-9\\
+                        7&amp;= a(4^2) - 9\\
+                        16a&amp;=16\\
+                        \therefore a&amp;=1
+                        \end{align}
+                      </latex>
+                    </para>
+                    <correct><latex>a=1</latex>;<latex>p=-9</latex></correct>
+                  </solution>
+                </entry>
+                <entry>
+                  <problem>
+                    <para>Find the values of <latex>b</latex> and <latex>q</latex>.</para>
+                  </problem>
+                  <solution>
+                    <para><latex>q</latex> is the <latex>y</latex>-intercept, therefore  <latex>q = 23</latex></para>
+                    <para>To find <latex>b</latex>, we use one of the points on the graph (e.g. <latex>(4;7)</latex>): </para>
+                    <para>
+                      <latex display="block">
+                        \begin{align}
+                        y&amp;=bx^{2} =23\\
+                        7&amp;= b(4^{2}) +23\\
+                        16b&amp;=-16\\
+                        \therefore b&amp;=-1
+                        \end{align}
+                      </latex>
+                    </para>
+                    <correct><latex>b=-1</latex>;<latex>q=23</latex></correct>
+                  </solution>
+                </entry>
+                <entry>
+                  <problem>
+                    <para>Find the values of <latex>x</latex> for which <latex>g(x) \geq h(x)</latex>.</para>
+                  </problem>
+                  <solution>
+                    <para>This is the point where <latex>g</latex> lies above <latex>h</latex>. </para>
+                    <para>From the graph we see that <latex>g</latex> lies above <latex>h</latex> when: <correct><latex>x \leq -4</latex> or <latex>x \geq 4</latex></correct> </para>
+                  </solution>
+                </entry>
+                <entry>
+                  <problem>
+                    <para>For what values of <latex>x</latex> is <latex>g</latex> increasing?</para>
+                  </problem>
+                  <solution>
+                    <para><latex>g</latex> increases from the turning point <latex>(0;-9)</latex>, i.e. for <correct><latex>x \geq 0</latex></correct>.</para>
+                  </solution>
+                </entry>
+              </multi-part>
+            </problem-set>
+          </exercises>
+        </section> <!-- end subsection -->
+        <section type="subsection">
+          <title>Figures</title>
+          <para> This is a figure </para>
+          <figure id="fig:mf:g:parabola10a">
+            <type>figure</type>
+            <tikzpicture>
+              <code>
+                \begin{scope}[xshift=-2cm]
+                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*0.5});
+                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                \node [below] at (0,0) {$a &gt; 0$ (a positive smile)};
+                \end{scope}
+                \begin{scope}[xshift=2cm]
+                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*-0.5+0.7});
+                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                \node [below] at (0,0) {$a &lt; 0$ (a negative frown)};
+                \end{scope}
+              </code>
+            </tikzpicture>
+          </figure>
+          <para> This is a figure with a caption.</para>
+          <figure id="fig:mf:g:parabola10b">
+            <type>figure</type>
+            <tikzpicture>
+              <code>
+                \begin{scope}[xshift=-2cm]
+                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*0.5});
+                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                \node [below] at (0,0) {$a &gt; 0$ (a positive smile)};
+                \end{scope}
+                \begin{scope}[xshift=2cm]
+                \draw[domain=-1:1,&lt;-&gt;] plot (\x, {\x*\x*-0.5+0.7});
+                \draw [fill] (-0.5,1.75) circle [radius=0.05];
+                \draw [fill] (0.5,1.75) circle [radius=0.05];
+                \node [below] at (0,0) {$a &lt; 0$ (a negative frown)};
+                \end{scope}
+              </code>
+            </tikzpicture>
+            <caption>This is the caption</caption>
+          </figure>
+        </section> <!-- end subsection -->
+        <section type="subsection">
+          <title>Teacher's Guide stuff</title>
+
+          <teachers-guide>
+            <para>This is a Teacher's guide environment</para>
+
+            <para>and it contains a bulleted list</para>
+
+            <list list-type="bulleted" id="import-auto-idm15102736">
+              <item>Understand the principle of free falling under gravity with a constant acceleration for an upwards and downwards motion.</item>
+              <item>Know that it's only vertical displacement no horizontal displacement.</item>
+              <item>Always move only under the influence of only gravity.</item>
+              <item>The meaning of time symmetry and the magnitude of velocity.</item>
+              <item>Do an experiment to measure the position and time during a motion.</item>
+              <item>Calculations done on projectiles by knowing how to use a single set of equations.</item>
+              <item>Graphical representations of the equations of motion - Draw graphs for the projectiles motions.</item>
+              <item>Deduct equations and determine the position, displacement, velocity or acceleration from the graphs.</item>
+              <item>Describe the motion of the object from the graphs.</item>
+            </list>
+            <para>and a numbered list</para>
+
+            <list list-type="enumerated" id="import-auto-idm15102736">
+              <item>Understand the principle of free falling under gravity with a constant acceleration for an upwards and downwards motion.</item>
+              <item>Know that it's only vertical displacement no horizontal displacement.</item>
+              <item>Always move only under the influence of only gravity.</item>
+              <item>The meaning of time symmetry and the magnitude of velocity.</item>
+              <item>Do an experiment to measure the position and time during a motion.</item>
+              <item>Calculations done on projectiles by knowing how to use a single set of equations.</item>
+              <item>Graphical representations of the equations of motion - Draw graphs for the projectiles motions.</item>
+              <item>Deduct equations and determine the position, displacement, velocity or acceleration from the graphs.</item>
+              <item>Describe the motion of the object from the graphs.</item>
+            </list>
+
+            <para>The next environment is a linked-concept environment.</para>
+            <linked-concepts>
+              <concept><text>Units and unit conversions</text><subject>science</subject><grade>10</grade><chapter>science skills</chapter></concept>
+              <concept><text>Rectilinear motion</text><subject>science</subject><grade>10</grade><chapter>TODO</chapter></concept>
+              <concept><text>Linear equations</text><subject>maths</subject><grade>10</grade><chapter>TODO</chapter></concept>
+              <concept><text>Quadratic equations</text><subject>maths</subject><grade>10</grade><chapter>TODO</chapter></concept>
+            </linked-concepts>
+
+          </teachers-guide>
+        </section> <!-- end subsection -->
+        <section type="subsection">
+          <title>Tables</title>
+          <table>
+            <tgroup cols="3">
+              <colspec colname="c1" colnum="1"/>
+              <colspec colname="c2" colnum="2"/>
+              <colspec colname="c3" colnum="3"/>
+              <tbody>
+                <row>
+                  <entry>Graph
+                  </entry>
+                  <entry>Slope
+                  </entry>
+                  <entry>
+                    Area
+                  </entry>
+                </row>
+                <row>
+                  <entry>Displacement vs time
+                  </entry>
+                  <entry><latex>\vec{v}</latex>
+                  </entry>
+                  <entry>-
+                  </entry>
+                </row>
+                <row>
+                  <entry>Velocity vs time
+                  </entry>
+                  <entry><latex>\vec{a}</latex>
+                  </entry>
+                  <entry><latex>\Delta \vec{x}</latex>
+                  </entry>
+                </row>
+                <row>
+                  <entry>Acceleration vs time
+                  </entry>
+                  <entry>-
+                  </entry>
+                  <entry><latex>\vec{v}</latex>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </section>
+      </section> <!-- end section -->
+      <summary>
+        <para>This is a summary</para>
+        <para>
+          Donec et augue non ipsum dapibus pellentesque. Etiam pulvinar nisl
+          ac eleifend euismod. Nunc dictum convallis vestibulum. Sed erat
+          dolor, ullamcorper et tristique eget, ultrices sed mauris. Nullam
+          quis nibh non nunc pharetra pulvinar quis at dui. Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Morbi fermentum volutpat convallis. Vestibulum
+          tristique nisi id nunc faucibus pretium. Pellentesque orci metus,
+          ultrices eget justo a, ultrices tincidunt enim. Sed vitae mauris
+          quis dolor feugiat semper. Sed consectetur tellus nibh, a iaculis
+          enim convallis eget. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Fusce pharetra erat enim, et vulputate enim congue
+          nec.
+        </para>
+      </summary>
+    </section> <!-- end chapter -->
+  </content>
+</document>
+

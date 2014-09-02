@@ -1,3 +1,6 @@
+'''This module contains the book class. It is a high level class that
+handles caching, validation and convertion of cnxmlplus files'''
+
 import os
 import logging
 import ast
@@ -6,7 +9,7 @@ from chapter import chapter as _chapter
 from utils import mkdir_p
 
 
-class book(object):
+class Book(object):
 
     ''' Class to represent a whole book
     '''
@@ -33,26 +36,31 @@ class book(object):
 
         cnxmlplusfiles.sort()
 
-        for cf in cnxmlplusfiles:
+        for cfile in cnxmlplusfiles:
             # see if this chapter occurs in the cache_object
-            if cf in cache_object['chapters'].keys():
+            if cfile in cache_object['chapters'].keys():
                 # pass the previous hash to the chapter initialisation method
-                previous_hash = cache_object['chapters'][cf]['hash']
+                previous_hash = cache_object['chapters'][cfile]['hash']
                 previous_validation_status = cache_object[
-                    'chapters'][cf]['previous_validation_status']
-                thischapter = _chapter(
-                    cf, hash=previous_hash, valid=previous_validation_status)
+                    'chapters'][cfile]['previous_validation_status']
+                previous_render_problems = cache_object[
+                    'chapters'][cfile]['render_problems']
+
+                thischapter = _chapter(cfile, hash=previous_hash,
+                                       valid=previous_validation_status,
+                                       render_problems=previous_render_problems)
             else:
                 # pass the prev has has None so that validation is forced
-                thischapter = _chapter(cf, hash=None)
+                thischapter = _chapter(cfile, hash=None, render_problems=True)
 
                 # this chapter was not in the cache_object, add an empty dict
                 # for it
-                cache_object['chapters'][cf] = {}
+                cache_object['chapters'][cfile] = {}
+                cache_object['chapters'][cfile]['render_problems'] = True
 
             # now update the cache_object
-            cache_object['chapters'][cf]['hash'] = thischapter.hash
-            cache_object['chapters'][cf][
+            cache_object['chapters'][cfile]['hash'] = thischapter.hash
+            cache_object['chapters'][cfile][
                 'previous_validation_status'] = thischapter.valid
             self.chapters.append(thischapter)
 
@@ -119,11 +127,19 @@ class book(object):
 
         return cache_object
 
-    def convert(self, formats=['tex', 'html']):
+    def convert(self, formats=None, parallel=True):
         ''' Convert all the chapters to the given output formats.
 
         Default output format is both tex and html
         '''
+        if formats is None:
+            formats = ['tex', 'html', 'xhtml', 'mobile']
 
         for chapter in self.chapters:
-            chapter.convert(self.build_folder, formats)
+            # find this chapter's attributes from the cache dictionary
+            chapter.convert(self.build_folder, formats, parallel=parallel)
+            # The chapter may not have converted all the images correctly.
+            # Set a flag in the cache_object
+            self.cache_object['chapters'][chapter.file]['render_problems'] = chapter.render_problems
+
+        self.write_cache()

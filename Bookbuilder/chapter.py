@@ -49,13 +49,24 @@ class chapter(object):
         self.hash = None
         self.has_changed = True
         self.valid = None
-        self.output_formats = ['tex', 'html']
+        self.conversion_success = {'tex': False,
+                                   'html': False,
+                                   'xhtml': False,
+                                   'mobile': False}
 
         # set attributes from keyword arguments
         # This can be used to set precomputed values e.g. read from a cache
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+        if not self.render_problems:
+            # if this has not been instantiated yet create an empty
+            # dict to keep track of image rendering success for every output
+            # format. Make all True to force image generation on first go.
+            self.render_problems = {'tex': True,
+                                    'html': True,
+                                    'xhtml': True,
+                                    'mobile': True}
         # Parse the xml
         self.parse_cnxmlplus()
 
@@ -70,8 +81,8 @@ class chapter(object):
     def parse_cnxmlplus(self):
         ''' Parse the xml file and save some information
         '''
-        with open(self.file, 'r') as f:
-            content = f.read()
+        with open(self.file, 'r') as f_in:
+            content = f_in.read()
 
         if (self.hash is None) or (self.valid is False):
             self.hash = self.calculate_hash(content)
@@ -157,8 +168,8 @@ class chapter(object):
             try:
                 xmlValidator.validate(xml)
                 self.valid = True
-            except XmlValidationError as Err:
-                print(Err)
+            except XmlValidationError as err:
+                print(err)
                 self.valid = False
 
     def __xml_preprocess(self, xml):
@@ -173,7 +184,6 @@ class chapter(object):
         output: etree object with pr
 
         '''
-        # TODO add stuff here for tweaking
         processed_xml = xml
 
         return processed_xml
@@ -183,8 +193,9 @@ class chapter(object):
         to their correct relative places in the build/tex folder.
 
         '''
-        with open(self.file) as f:
-            xml = etree.XML(f.read())
+        success = True
+        with open(self.file) as f_in:
+            xml = etree.XML(f_in.read())
 
         # if it is tex, we can copy the images referenced in the cnxmlplus
         # directly to the build/tex folder
@@ -199,6 +210,7 @@ class chapter(object):
             if src.startswith('/'):
                 print(colored("ERROR! image paths may not start with /: ",
                               "red") + src)
+                success = False
                 continue
 
             dest = os.path.join(build_folder, 'tex', src)
@@ -209,23 +221,31 @@ class chapter(object):
                     msg = colored("WARNING! {dest} is not allowed!"
                                   .format(dest=dest),
                                   "magenta")
+                    success = False
                     print(msg)
-            copy_if_newer(src, dest)
+            success = copy_if_newer(src, dest)
 
-    def __render_pstikz(self, output_path):
+        return success
+
+    def __render_pstikz(self, output_path, parallel=True):
         ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
             image to png. Insert replace div.alternate tags with <img> tags
+            Also, find pstricks and tikz in tex output and replace with
+            includegraphics{}
         '''
-        imageutils.render_images(output_path)
+        rendered = imageutils.render_images(output_path, parallel=parallel)
+
+        return rendered
 
     def __copy_html_images(self, build_folder, output_path):
         ''' Find all images referenced in the converted html document and copy
         them to their correct relative places in the build/tex folder.
 
         '''
+        success = True
         # copy images directly included in cnxmlplus to the output folder
-        with open(output_path, 'r') as f:
-            html = etree.HTML(f.read())
+        with open(output_path, 'r') as f_in:
+            html = etree.HTML(f_in.read())
 
         for img in html.findall('.//img'):
             src = img.attrib['src']
@@ -233,7 +253,9 @@ class chapter(object):
             if not os.path.exists(src) and (not os.path.exists(dest)):
                 print_debug_msg(src + " doesn't exist")
 
-            copy_if_newer(src, dest)
+            success = copy_if_newer(src, dest)
+
+        return success
 
     def __tolatex(self):
         ''' Convert this chapter to latex
@@ -256,10 +278,13 @@ class chapter(object):
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         html, err = myprocess.communicate()
+        html = htmlutils.add_mathjax(html)
+        html = htmlutils.repair_equations(html)
 
         return html
 
     def __toxhtml(self):
+        ''' Convert this chapter to html'''
 
         xhtml = self.__tohtml()
         # Convert this html to xhtml
@@ -267,7 +292,13 @@ class chapter(object):
 
         return xhtml
 
-    def convert(self, build_folder, output_format):
+    def __tomobile(self):
+        ''' Conver this chapter to xhtml'''
+        html = self.__toxhtml()
+
+        return html
+
+    def convert(self, build_folder, output_format, parallel=True):
         ''' Convert the chapter to the specified output format and write the
         the build folder: {build_folder}/{output_format}/self.file.{format}
         e.g. build/tex/chapter1.cnxmlplus.tex
@@ -276,7 +307,8 @@ class chapter(object):
         '''
         conversion_functions = {'tex': self.__tolatex,
                                 'html': self.__tohtml,
-                                'xhtml': self.__toxhtml}
+                                'xhtml': self.__toxhtml,
+                                'mobile': self.__tomobile}
 
         for outformat in output_format:
 
@@ -285,17 +317,30 @@ class chapter(object):
             output_path = os.path.join(build_folder, outformat,
                                        self.file +
                                        '.{f}'.format(f=outformat))
+
+            if outformat == 'mobile':
+                output_path = output_path.replace(r'.mobile', '.html')
+
             # only try this on valid cnxmlplus files
             if self.valid:
                 # run the conversion only if the file has changed OR if it
                 # doesn't exist (it may have been deleted manually)
-                if (self.has_changed) or (not os.path.exists(output_path)):
+
+                if any((self.has_changed,
+                        not os.path.exists(output_path),
+                        self.render_problems)):
+
                     mkdir_p(os.path.dirname(output_path))
                     print("Converting {ch} to {form}".format(ch=self.file,
                                                              form=outformat))
                     converted = conversion_functions[outformat]()
-                    with open(output_path, 'w') as f:
-                        f.write(converted)
+                    with open(output_path, 'w') as f_out:
+                        # This is a bit of a hack, not quite sure why I need this
+                        if outformat == 'html':
+                            f_out.write(converted.encode('utf-8'))
+                        else:
+                            f_out.write(converted)
+
 
                 # file has not changed AND the file exists
                 elif (not self.has_changed) and (os.path.exists(output_path)):
@@ -308,23 +353,39 @@ class chapter(object):
                 # changed and is still valid, the image may have been copied in
                 # by the user
                 if outformat == 'tex':
-                    self.__copy_tex_images(build_folder, output_path)
-                    self.__render_pstikz(output_path)
+                    copy_success = self.__copy_tex_images(build_folder,
+                                                          output_path)
+                    rendered = self.__render_pstikz(output_path,
+                                                    parallel=parallel)
 
                 elif outformat == 'html':
                     # copy images included to the output folder
-                    self.__copy_html_images(build_folder, output_path)
+                    copy_success = self.__copy_html_images(build_folder,
+                                                           output_path)
                     # read the output html, find all pstricks and tikz
                     # code blocks and render them as pngs and include them
                     # in <img> tags in the html
-                    self.__render_pstikz(output_path)
+                    rendered = self.__render_pstikz(output_path,
+                                                    parallel=parallel)
 
                 elif outformat == 'xhtml':
                     # copy images from html folder
-                    self.__copy_html_images(build_folder, output_path)
-                    self.__render_pstikz(output_path)
+                    copy_success = self.__copy_html_images(build_folder,
+                                                           output_path)
+                    rendered = self.__render_pstikz(output_path,
+                                                    parallel=parallel)
 
-        return
+                elif outformat == 'mobile':
+                    # copy images from html folder
+                    copy_success = self.__copy_html_images(build_folder,
+                                                           output_path)
+                    rendered = self.__render_pstikz(output_path,
+                                                    parallel=parallel)
+
+                if not (rendered and copy_success):
+                    self.render_problems = True
+                else:
+                    self.render_problems = False
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)

@@ -1,6 +1,7 @@
 import os
 import errno
 import shutil
+import multiprocessing
 
 
 def mkdir_p(path):
@@ -18,8 +19,15 @@ def mkdir_p(path):
 
 
 def copy_if_newer(src, dest):
-    ''' Copy a file from src to  dest if src is newer than dest '''
+    ''' Copy a file from src to  dest if src is newer than dest
+
+    Returns True if success or False if there was a problem
+    '''
+    success = True
     dest_dir = os.path.dirname(dest)
+    if (dest_dir is None) or (src is None):
+        success = False
+        return success
     if not os.path.exists(dest_dir):
         mkdir_p(dest_dir)
 
@@ -35,3 +43,23 @@ def copy_if_newer(src, dest):
         except OSError:
             # destination doesn't exist
             shutil.copy2(src, dest)
+    else:
+        success = False
+
+    return success
+
+
+def Map(function, data, parallel=True):
+    ''' Runs parallel or serial map given a function and data
+        mode can be one of 'serial' or 'parallel'
+    '''
+
+    if not parallel:
+        result = map(function, data)
+    else:
+        pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
+        result = pool.map(function, data)
+        pool.close()
+        pool.join()
+
+    return result

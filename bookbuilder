@@ -5,7 +5,7 @@ Book Builder.
 
 Usage:
     bookbuilder.py status [--debug]
-    bookbuilder.py build [<format>...] [--debug]
+    bookbuilder.py build [<format>...] [--debug] [--serial]
     bookbuilder.py -h --help
 
 Options:
@@ -13,16 +13,19 @@ Options:
 
     build <format>... # Transform chapters to specified output formats. If no
                       # formats are specified, all implemented formats will be
-                      # used. These can be one or more of (tex, html )
+                      # used. These can be one or more of (tex, html, xhtml )
 
     -h --help         # print help message
     --debug           # switch on debug messages
+    --serial        # Render images in serial (for debugging)
 
 Examples:
     bookbuilder.py status
     bookbuilder.py build
     bookbuilder.py build tex
     bookbuilder.py build tex html
+    bookbuilder.py build xhtml
+    Bookbuilder.py build mobile
 
 
 """
@@ -39,7 +42,7 @@ if __name__ == "__main__":
     arguments = docopt(__doc__)
     # Initialise the book. This will read the cache object in .bookbuilder
     # and create it if it is not there. This also finds and parses chapters
-    Book = book.book()
+    Book = book.Book()
 
     if arguments['--debug']:
         book.DEBUG = True
@@ -51,15 +54,18 @@ if __name__ == "__main__":
     elif arguments['build']:
         print("Building book")
         formats = arguments['<format>']
-        supported_formats = ['tex', 'html', 'xhtml']
+        supported_formats = ['tex', 'html', 'xhtml', 'mobile']
         for form in formats:
             if form not in supported_formats:
                 print __doc__
                 sys.exit(1)
         if not formats:
             formats = supported_formats
+        parallel = True
+        if arguments['--serial']:
+            parallel = False
 
-        Book.convert(formats)
+        Book.convert(formats, parallel=parallel)
 
     # Save the cache object again
     Book.write_cache()

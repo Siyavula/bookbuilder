@@ -1,8 +1,90 @@
 import os
 import subprocess
+import tempfile
+import re
+import htmlentitydefs
+from . import htmlutils
+##
+# Removes HTML or XML character references and entities from a text string.
+#
+# @param text The HTML (or XML) source text.
+# @return The plain text, as a Unicode string, if necessary.
+
+
+def unescape(text):
+    def fixup(m):
+        text = m.group(0)
+        if text[:2] == "&#":
+            # character reference
+            try:
+                if text[:3] == "&#x":
+                    return unichr(int(text[3:-1], 16))
+                else:
+                    return unichr(int(text[2:-1]))
+            except ValueError:
+                pass
+        else:
+            # named entity
+            try:
+                text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
+            except KeyError:
+                pass
+        return text  # leave as is
+    return re.sub("&#?\w+;", fixup, text)
+
+
+def cleanup_code(code):
+    ''' Removes nested math delimiters of the form \( \) inside $ $ pairs'''
+    result = re.findall(r'\$(.*?)\$', code)
+    for snippet in result:
+        newsnippet = snippet.replace(r'\(', ' ').replace(r'\)', ' ')
+        code = code.replace(snippet, newsnippet)
+
+    code = code.strip()
+
+    # if align* in code we don't need delimiters
+    if r'align*' in code:
+        if code.startswith(r'\('):
+            code = code[2:]
+        if code.endswith('\)'):
+            code = code[:-2]
+
+    # remove blank lines and lines that start with %
+    newcode = []
+    for line in code.split('\n'):
+        if line.strip().startswith('%'):
+            continue
+        if not line.strip():
+            continue
+        newcode.append(line)
+    code = '\n'.join(newcode)
+
+    code = htmlutils.repair_equations(code)
+
+    return code
+
+
+def escape_percentage(equation):
+    '''
+    Escape percentage symbols in equations
+    Inputs:
+        equation: string containing equation
+
+    Returns string with percentage symbols escaped
+    '''
+    if not '%' in equation:
+        return equation
+
+    equation = equation.replace('%', '\\%').replace('\\\\%', '\\%')
+
+    return equation
+
+
+
+
 
 pstricksTex = r'''
-\documentclass[10pt]{report}
+\documentclass[preview, border=1bp]{standalone}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{fp}
 \usepackage{float} % for figures to appear where you want them
@@ -117,7 +199,7 @@ pstricksTex = r'''
 '''
 
 tikzTex = r'''
-\documentclass[10pt]{report}
+\documentclass[preview, border=1bp]{standalone}
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage{tikz, ifthen}
@@ -147,7 +229,6 @@ axis lines =center,
 xlabel = $x$,
 ylabel =$y$,
 clip=false,
-axis equal image,
 cycle list={black\\},
 ticklabel style={scale=1},
 xlabel style={at=(current axis.right of origin), anchor=west},
@@ -167,6 +248,17 @@ disabledatascaling,
 \end{tikzpicture}
 \end{document}
 '''
+
+equationTex = u'''\\documentclass[preview, border=1bp]{standalone}
+\\usepackage{amsmath}
+\\usepackage{amsfonts}
+\\usepackage{amssymb}
+\\usepackage{keystroke}
+\\usepackage{cancel}
+\\usepackage{xcolor}
+\\begin{document}
+__CODE__
+\\end{document}'''.encode('utf-8')
 
 
 def execute(args):
@@ -200,7 +292,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     One or two paths, the first to the PNG, the second to the EPS.
     """
 
-    tempDir = os.curdir
+    tempDir = tempfile.mkdtemp()
     latexPath = os.path.join(tempDir, 'figure.tex')
     pngPath = os.path.join(tempDir, 'figure.png')
     pdfPath = os.path.join(tempDir, 'figure.pdf')
@@ -208,6 +300,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     # can send the raw string code or a <pre> element with <code> child
     if isinstance(iPictureElement, str):
         code = iPictureElement
+        code = cleanup_code(code)
     else:
         code = iPictureElement.find('.//code').text.encode('utf-8')
     code = code.replace(r'&amp;', '&').replace(r'&gt;', '>').replace(r'&lt;', '<')
@@ -215,7 +308,11 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     if code is None:
         raise ValueError, "Code cannot be empty."
     with open(latexPath, 'wt') as fp:
-        fp.write(iLatex.replace('__CODE__', code.strip()))
+        temp = unescape(iLatex.replace('__CODE__', code.strip()))
+        try:
+            fp.write(temp)
+        except UnicodeEncodeError:
+            fp.write(temp.encode('utf-8'))
 
     for path, pathFile in iIncludedFiles.iteritems():
         try:
@@ -237,21 +334,15 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     try:
         open(pdfPath, "rb")
     except IOError:
-        raise LatexPictureError, "LaTeX failed to compile the image. %s" % latexPath
+        raise LatexPictureError, "LaTeX failed to compile the image. %s \n%s" % (latexPath, iLatex.replace('__CODE__', code.strip()))
 
     # crop the pdf image too
-    execute(['pdfcrop', pdfPath, pdfPath])
+#   execute(['pdfcrop', '--margins', '1', pdfPath, pdfPath])
 
     execute(['convert',
              '-density',
-             '%i'%iDpi,
+             '%i' % iDpi,
              pdfPath,
-             '-trim',
-             '-bordercolor',
-             'None',
-             '-border',
-             '10x10',
-             '+repage',
              pngPath])
 
     return pngPath
@@ -263,3 +354,13 @@ def tikzpicture2png(iTikzpictureElement, *args, **kwargs):
 
 def pspicture2png(iPspictureElement, *args, **kwargs):
     return pstikz2png(iPspictureElement, pstricksTex, *args, **kwargs)
+
+
+def equation2png(iPspictureElement, *args, **kwargs):
+    # check to see how many lines are in the code
+    iPspictureElement = iPspictureElement.replace(r'\[', '\(').replace(r'\]', '\)')
+    iPspictureElement = iPspictureElement.replace(r'&', r' &')
+    # remove tabs
+    iPspictureElement = iPspictureElement.replace('\t', ' ')
+    iPspictureElement = escape_percentage(iPspictureElement)
+    return pstikz2png(iPspictureElement, equationTex, *args, **kwargs)
