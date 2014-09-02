@@ -335,8 +335,12 @@ class chapter(object):
                                                              form=outformat))
                     converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f_out:
-                        # convert tabs to spaces
-                        f_out.write(converted.encode('utf-8'))
+                        # This is a bit of a hack, not quite sure why I need this
+                        if outformat == 'html':
+                            f_out.write(converted.encode('utf-8'))
+                        else:
+                            f_out.write(converted)
+
 
                 # file has not changed AND the file exists
                 elif (not self.has_changed) and (os.path.exists(output_path)):
