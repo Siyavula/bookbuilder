@@ -192,8 +192,9 @@ your cnxmlplus files:
 
 
 ## Changes
-version 0.3-RC1:
+version 0.3:
 
+    * Most html entity / unicode issues sorted out now.
     * many fixes
 
 
