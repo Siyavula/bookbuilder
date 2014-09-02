@@ -336,7 +336,7 @@ class chapter(object):
                     converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f_out:
                         # convert tabs to spaces
-                        f_out.write(converted)
+                        f_out.write(converted.encode('utf-8'))
 
                 # file has not changed AND the file exists
                 elif (not self.has_changed) and (os.path.exists(output_path)):
