@@ -2,7 +2,8 @@
 
 '''
 from lxml import etree
-
+import HTMLParser
+import re
 
 def xhtml_cleanup(xhtmlstr):
     ''' Given xhtmlstr input, parse it as xml and make some fixes to it for
@@ -78,15 +79,11 @@ def repair_equations(html):
 
     '''
 
-    unicode_to_replace = ((r'&amp;#183;', r'&#183;'),
-                          (r'&amp;#160;', r' '),
-                          (r'&amp;#8451;', r'$^\circ$'),
-                          (r'&amp;#176;', r'$^\circ$'),
-                          (')~\\', ') \\'),
-                          ('alignrll', 'align*'),
-                          (r'&amp;#177;', r'\pm'))
-    for unichar in unicode_to_replace:
-        html = html.replace(unichar[0], unichar[1])
+    htmlparser = HTMLParser.HTMLParser()
+    html = html.replace('&amp;#', '&#')
+    entities = re.findall('&#.*?;', html)
+    for ent in entities:
+        html = html.replace(ent, htmlparser.unescape(ent))
 
     # some unicode needs to get replaced with math-mode symbols but they cannot
     # use those symbols if they are already in a math mode.
