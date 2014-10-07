@@ -5,6 +5,7 @@ import logging
 import hashlib
 import subprocess
 import inspect
+import copy
 
 import lxml
 from lxml import etree
@@ -335,12 +336,12 @@ class chapter(object):
                                                              form=outformat))
                     converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f_out:
-                        # This is a bit of a hack, not quite sure why I need this
+                        # This is a bit of a hack, not quite sure why I need
+                        # this
                         if outformat == 'html':
                             f_out.write(converted.encode('utf-8'))
                         else:
                             f_out.write(converted)
-
 
                 # file has not changed AND the file exists
                 elif (not self.has_changed) and (os.path.exists(output_path)):
@@ -381,11 +382,68 @@ class chapter(object):
                                                            output_path)
                     rendered = self.__render_pstikz(output_path,
                                                     parallel=parallel)
-
                 if not (rendered and copy_success):
                     self.render_problems = True
                 else:
                     self.render_problems = False
+
+    def split_into_sections(self, formats=None):
+        '''
+        Split this chapter into seperate files, each containing a section. The
+        first one contains the h1 element for the chapter too
+        '''
+        if formats is None:
+            formats = ['html', 'xhtml', 'mobile']
+
+        for form in formats:
+            if form == 'xhtml':
+                ext = '.xhtml'
+            else:
+                ext = '.html'
+
+            chapterfilepath = os.path.join('build', form, self.file + ext)
+
+            with open(chapterfilepath) as chapterfile:
+                html = etree.HTML(chapterfile.read())
+
+            # make a copy of the html, want to use as template.
+            html_template = copy.deepcopy(html)
+            for bodychild in html_template.find('.//body'):
+                bodychild.getparent().remove(bodychild)
+
+            sections = []
+            chapter = [c.getparent() for c in html.findall('.//div[@class="section"]/h1')][0]
+
+            thissection = []
+            for child in chapter:
+                if (child.tag != 'div'):
+                    thissection.append(child)
+                else:
+                    if len(child) == 0:
+                        pass
+                    elif child[0].tag == 'h2':
+                        thissection.append(child)
+                        sections.append(thissection)
+                        thissection = []
+                    else:
+                        thissection.append(child)
+
+
+            # The first section file must contain the div.section > h1 and
+            # everything up to and including the first div.section > h2
+            for num, section in enumerate(sections):
+                template = copy.deepcopy(html_template)
+                body = template.find('.//body')
+                for child in section:
+                    body.append(child)
+                secfilename = self.file.replace('.cnxmlplus',
+                                                '-{:02d}.cnxmlplus'.format(num))
+                secfilepath = os.path.join('build', form, secfilename + ext)
+
+                with open(secfilepath, 'w') as outfile:
+                    outfile.write(etree.tostring(template,
+                                                 xml_declaration=True,
+                                                 encoding='utf-8'))
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)

@@ -72,15 +72,12 @@ def escape_percentage(equation):
 
     Returns string with percentage symbols escaped
     '''
-    if not '%' in equation:
+    if not ('%' in equation):
         return equation
 
     equation = equation.replace('%', '\\%').replace('\\\\%', '\\%')
 
     return equation
-
-
-
 
 
 pstricksTex = r'''
@@ -192,6 +189,7 @@ pstricksTex = r'''
 \makeatother
 
 \pagestyle{empty}
+\usepackage{fontspec}
 \begin{document}
 \begin{pspicture}__CODE__
 \end{pspicture}
@@ -243,6 +241,7 @@ disabledatascaling,
 \sffamily
 
 \pagestyle{empty}
+\usepackage{fontspec}
 \begin{document}
 \begin{tikzpicture}__CODE__
 \end{tikzpicture}
@@ -256,6 +255,8 @@ equationTex = u'''\\documentclass[preview, border=1bp]{standalone}
 \\usepackage{keystroke}
 \\usepackage{cancel}
 \\usepackage{xcolor}
+\\usepackage{fontspec}
+\\newcommand{\dottimes}{\ensuremath{\;.\;}}
 \\begin{document}
 __CODE__
 \\end{document}'''.encode('utf-8')
@@ -298,7 +299,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
     pdfPath = os.path.join(tempDir, 'figure.pdf')
 
     # can send the raw string code or a <pre> element with <code> child
-    if isinstance(iPictureElement, str):
+    if isinstance(iPictureElement, (str, unicode)):
         code = iPictureElement
         code = cleanup_code(code)
     else:

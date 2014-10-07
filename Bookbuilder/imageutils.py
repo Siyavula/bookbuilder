@@ -70,7 +70,7 @@ def run_latex(data):
 
         except LatexPictureError as lpe:
             print(colored("\nLaTeX failure", "red"))
-            print(lpe)
+            print(unicode(lpe))
             return None
 
         if figpath:
