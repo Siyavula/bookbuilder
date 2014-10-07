@@ -396,6 +396,8 @@ class chapter(object):
             formats = ['html', 'xhtml', 'mobile']
 
         for form in formats:
+            if 'tex' in form:
+                continue
             if form == 'xhtml':
                 ext = '.xhtml'
             else:
@@ -428,7 +430,6 @@ class chapter(object):
                     else:
                         thissection.append(child)
 
-
             # The first section file must contain the div.section > h1 and
             # everything up to and including the first div.section > h2
             for num, section in enumerate(sections):
@@ -441,9 +442,7 @@ class chapter(object):
                 secfilepath = os.path.join('build', form, secfilename + ext)
 
                 with open(secfilepath, 'w') as outfile:
-                    outfile.write(etree.tostring(template,
-                                                 xml_declaration=True,
-                                                 encoding='utf-8'))
+                    outfile.write(etree.tostring(template, xml_declaration=True))
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)
