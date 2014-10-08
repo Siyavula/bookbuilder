@@ -413,6 +413,7 @@ class chapter(object):
             for bodychild in html_template.find('.//body'):
                 bodychild.getparent().remove(bodychild)
 
+            # build up a list of the sections
             sections = []
             chapter = [c.getparent() for c in html.findall('.//div[@class="section"]/h1')][0]
 
@@ -429,9 +430,9 @@ class chapter(object):
                         thissection = []
                     else:
                         thissection.append(child)
+            sections.append(thissection)
 
-            # The first section file must contain the div.section > h1 and
-            # everything up to and including the first div.section > h2
+            # write each section to a separate file
             for num, section in enumerate(sections):
                 template = copy.deepcopy(html_template)
                 body = template.find('.//body')
@@ -443,6 +444,10 @@ class chapter(object):
 
                 with open(secfilepath, 'w') as outfile:
                     outfile.write(etree.tostring(template, xml_declaration=True))
+
+            # remove the original html
+            os.remove(chapterfilepath)
+
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)
