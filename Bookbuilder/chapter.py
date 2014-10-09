@@ -425,14 +425,13 @@ class chapter(object):
                 else:
                     if len(child) == 0:
                         pass
-                    elif child[0].tag == 'h2':
+                    elif (child[0].tag == 'h2') or (child.attrib.get('class') == 'exercises'):
                         thissection.append(child)
                         sections.append(thissection)
                         thissection = []
                     else:
                         thissection.append(child)
-            sections.append(thissection)
-
+            #sections.append(thissection)
             # write each section to a separate file
             for num, section in enumerate(sections):
                 template = copy.deepcopy(html_template)
@@ -448,7 +447,6 @@ class chapter(object):
 
             # remove the original html
             os.remove(chapterfilepath)
-
             # create the ToC file.
             self.create_toc(os.path.dirname(chapterfilepath))
 
@@ -468,7 +466,14 @@ class chapter(object):
             for element in html.iter():
                 if element.tag in ['h1', 'h2']:
                     parent = element.getparent()
-                    if (parent.attrib.get('class') == 'section') or (parent.tag == 'body'):
+                    if (parent.attrib.get('class') in ['exercises', 'section']) or (parent.tag == 'body'):
+
+                        # exercises are special
+                        if parent.attrib.get('class') == 'exercises':
+                            ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
+                            element.text = "Exercises"
+                            element.tag = 'h{}'.format(ancestors)
+
                         toc.append((htmlfile, copy.deepcopy(element)))
 
         tocelements = [TocElement(t[0], t[1]) for t in toc]

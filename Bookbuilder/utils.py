@@ -84,6 +84,10 @@ class TOCBuilder(object):
     def add_entry(self, tocelement):
         ''' Add a new tocelement'''
 
+
+        if tocelement.level > 2:
+            return
+
         # if there are no entries
         if (not self.entries):
             self.entries.append(tocelement)
@@ -165,7 +169,7 @@ def add_unique_ids(html):
     for heading in headings:
         for htag in html.findall('.//div/{}'.format(heading)):
             _class = htag.getparent().attrib.get('class')
-            if _class not in ['chapter', 'section']:
+            if _class not in ['chapter', 'section', 'exercises']:
                 continue
             current_id = htag.attrib.get('id')
             if (current_id not in IDs) and (current_id is not None):
