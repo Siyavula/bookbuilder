@@ -443,7 +443,7 @@ class chapter(object):
                 secfilepath = os.path.join('build', form, secfilename + ext)
 
                 with open(secfilepath, 'w') as outfile:
-                    outfile.write(etree.tostring(template, xml_declaration=True))
+                    outfile.write(etree.tostring(template))
 
             # remove the original html
             os.remove(chapterfilepath)

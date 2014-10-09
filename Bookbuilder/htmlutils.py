@@ -58,7 +58,6 @@ def add_mathjax(html):
     Return as string
 
     '''
-
     html = etree.HTML(html)
     head = html.find('.//head')
     script = etree.fromstring(r'''<script type="text/javascript"
@@ -78,7 +77,6 @@ def repair_equations(html):
     the inner math delimiters
 
     '''
-
     htmlparser = HTMLParser.HTMLParser()
     html = html.replace('&amp;#', '&#')
     entities = re.findall('&#.*?;', html)
@@ -87,5 +85,4 @@ def repair_equations(html):
 
     # some unicode needs to get replaced with math-mode symbols but they cannot
     # use those symbols if they are already in a math mode.
-
     return html
