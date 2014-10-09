@@ -19,7 +19,7 @@ from XmlValidator import XmlValidator
 from XmlValidator import XmlValidationError
 from . import htmlutils
 import imageutils
-from utils import mkdir_p, copy_if_newer
+from utils import mkdir_p, copy_if_newer, TOCBuilder, TocElement, add_unique_ids
 
 
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
@@ -407,7 +407,8 @@ class chapter(object):
 
             with open(chapterfilepath) as chapterfile:
                 html = etree.HTML(chapterfile.read())
-
+                # add unique IDs to all the section titles.
+                html = add_unique_ids(html)
             # make a copy of the html, want to use as template.
             html_template = copy.deepcopy(html)
             for bodychild in html_template.find('.//body'):
@@ -448,6 +449,53 @@ class chapter(object):
             # remove the original html
             os.remove(chapterfilepath)
 
+            # create the ToC file.
+            self.create_toc(os.path.dirname(chapterfilepath))
+
+    def create_toc(self, path):
+        '''Read all the html files in path and use div.section>h1 and
+        div.section>h2 to make table of contents'''
+
+        # get all the (x)html files
+        file_list = [f for f in os.listdir(path) if f.endswith('html')]
+        file_list.sort()
+
+        toc = []
+
+        for htmlfile in file_list:
+            with open(os.path.join(path, htmlfile)) as hf:
+                html = etree.HTML(hf.read())
+            for element in html.iter():
+                if element.tag in ['h1', 'h2']:
+                    parent = element.getparent()
+                    if (parent.attrib.get('class') == 'section') or (parent.tag == 'body'):
+                        toc.append((htmlfile, copy.deepcopy(element)))
+
+        tocelements = [TocElement(t[0], t[1]) for t in toc]
+
+        assert(len(toc) == len(set(toc)))
+
+        tocbuilder = TOCBuilder()
+        for tocelement in tocelements:
+            tocbuilder.add_entry(tocelement)
+
+        toccontent = '''\
+        <html>
+            <head>
+                <title>Table of contents</title>
+            </head>
+            <body>
+                {}
+            </body>
+
+        </html>
+
+        '''.format(etree.tostring(tocbuilder.as_etree_element(),
+                                  pretty_print=True))
+
+        # TODO, add ids to the section html pages.
+        with open(os.path.join(path, 'tableofcontents.html'), 'w') as tocout:
+            tocout.write(toccontent)
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)

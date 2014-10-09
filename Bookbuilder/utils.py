@@ -2,7 +2,7 @@ import os
 import errno
 import shutil
 import multiprocessing
-
+from lxml import etree
 
 def mkdir_p(path):
     ''' mkdir -p functionality
@@ -63,3 +63,123 @@ def Map(function, data, parallel=True):
         pool.join()
 
     return result
+
+
+class TOCBuilder(object):
+    ''' Class for TOC'''
+
+    def __init__(self):
+        self.entries = []
+        self.previous_element = None
+
+    def as_etree_element(self):
+        ''' Returns Toc as etree element'''
+        ol = etree.Element('ol')
+
+        for entry in self.entries:
+            ol.append(entry.as_etree_element())
+
+        return ol
+
+    def add_entry(self, tocelement):
+        ''' Add a new tocelement'''
+
+        # if there are no entries
+        if (not self.entries):
+            self.entries.append(tocelement)
+            self.previous_element = tocelement
+
+            return
+
+        if tocelement.level == 1:
+            self.entries.append(tocelement)
+            self.previous_element = tocelement
+
+            return
+
+        # if we add a lower level to a higher level
+        if tocelement.level > self.previous_element.level:
+            assert(tocelement.level - self.previous_element.level == 1)
+            self.previous_element.children.append(tocelement)
+            tocelement.parent = self.previous_element
+            self.previous_element = tocelement
+
+            return
+
+        # we add a level the same as the previous one
+        if tocelement.level == self.previous_element.level:
+            self.previous_element.parent.children.append(tocelement)
+            tocelement.parent = self.previous_element.parent
+            self.previous_element = tocelement
+
+            return
+
+        # we add a higher than the previous one, could go from h3 to h1 or h3
+        # to h2 etc.
+        else:
+            leveldiff = tocelement.level - self.previous_element.level
+            parent = self.previous_element.parent
+            for i in range(leveldiff+1):
+                parent = parent.parent
+
+            parent.children.append(tocelement)
+            tocelement.parent = parent
+            self.previous_element = tocelement
+
+            return
+
+
+class TocElement(object):
+    '''Class to represent an element in the TOC'''
+    def __init__(self, filename, h_element):
+        self.filename = filename
+        self.element = h_element
+        self.children = []
+        self.parent = None
+        self.level = int(self.element.tag[1])
+
+    def as_etree_element(self):
+        ''' Return object as etree element'''
+        li = etree.Element('li')
+        a = etree.Element('a')
+        a.attrib['href'] = '{}#{}'.format(self.filename,
+                                              self.element.attrib['id'])
+        a.text = self.element.text
+        li.append(a)
+        ol = etree.Element('ol')
+        for child in self.children:
+            ol.append(child.as_etree_element())
+        if len(ol) > 0:
+            li.append(ol)
+
+        return li
+
+
+def add_unique_ids(html):
+    ''' Given html etree object, return same object with unique ids for all the
+    h1 and h2 titles'''
+
+    IDs = []
+    _id = 0
+    headings = ['h1', 'h2']
+    for heading in headings:
+        for htag in html.findall('.//div/{}'.format(heading)):
+            _class = htag.getparent().attrib.get('class')
+            if _class not in ['chapter', 'section']:
+                continue
+            current_id = htag.attrib.get('id')
+            if (current_id not in IDs) and (current_id is not None):
+                IDs.append(current_id)
+                continue
+
+            # it doesn't have an ID
+            new_id = "toc-id-{}".format(_id)
+            while new_id in IDs:
+                _id += 1
+                new_id = "toc-id-{}".format(_id)
+            IDs.append(new_id)
+            htag.attrib['id'] = new_id
+            _id += 1
+    return html
+
+
