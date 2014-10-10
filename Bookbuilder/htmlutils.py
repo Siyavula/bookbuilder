@@ -44,7 +44,7 @@ def xhtml_cleanup(xhtmlstr):
         if 'summary' in table.attrib.keys():
             del table.attrib['summary']
 
-    xhtmlstr = etree.tostring(xhtml, xml_declaration=True, encoding='utf-8')
+    xhtmlstr = etree.tostring(xhtml, encoding='utf-8')
     xhtmlstr = xhtmlstr.replace('<html>', '<html\
  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">')
 
