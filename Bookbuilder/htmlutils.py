@@ -5,6 +5,7 @@ from lxml import etree
 import HTMLParser
 import re
 
+
 def xhtml_cleanup(xhtmlstr):
     ''' Given xhtmlstr input, parse it as xml and make some fixes to it for
     inclusion into an epub, validated by Epubcheck 3.01
@@ -43,6 +44,13 @@ def xhtml_cleanup(xhtmlstr):
     for table in xhtml.findall('.//table'):
         if 'summary' in table.attrib.keys():
             del table.attrib['summary']
+
+    for exercise in xhtml.findall('.//div[@class="exercises"]'):
+        exercise.attrib['class'] = 'section'
+        firstchild = exercise[0]
+        if firstchild.tag.startswith('h'):
+            firstchild.tag = 'h2'
+            firstchild.text = 'Exercises'
 
     xhtmlstr = etree.tostring(xhtml, encoding='utf-8')
     xhtmlstr = xhtmlstr.replace('<html>', '<html\

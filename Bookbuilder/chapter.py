@@ -442,6 +442,11 @@ class chapter(object):
                                                 '-{:02d}.cnxmlplus'.format(num))
                 secfilepath = os.path.join('build', form, secfilename + ext)
 
+                # add css to head
+                css = '<link rel="stylesheet" type="text/css" href="css/stylesheet.css"></link>'
+                css = etree.fromstring(css)
+                template.find('.//head').append(css)
+
                 with open(secfilepath, 'w') as outfile:
                     outfile.write(etree.tostring(template))
 
@@ -488,6 +493,7 @@ class chapter(object):
         <html>
             <head>
                 <title>Table of contents</title>
+                <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
             </head>
             <body>
                 {}
