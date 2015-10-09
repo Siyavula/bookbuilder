@@ -146,8 +146,8 @@ class TocElement(object):
         ''' Return object as etree element'''
         li = etree.Element('li')
         a = etree.Element('a')
-        #a.attrib['href'] = '{}#{}'.format(self.filename,
-                                              #self.element.attrib['id'])
+        a.attrib['href'] = '{}#{}'.format(self.filename,
+                                              self.element.attrib['id'])
         a.text = self.element.text
         li.append(a)
         ol = etree.Element('ol')

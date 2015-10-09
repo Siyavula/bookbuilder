@@ -519,13 +519,13 @@ class chapter(object):
             for element in html.iter():
                 if element.tag in ['h1', 'h2']:
                     parent = element.getparent()
-                    if (parent.attrib.get('class') in ['exercises', 'section']) or (parent.tag == 'body'):
+                    if (parent.attrib.get('class') in ['section']) or (parent.tag == 'body'):
 
                         # exercises are special
-                        if parent.attrib.get('class') == 'exercises':
-                            ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
-                            element.text = "Exercises"
-                            element.tag = 'h{}'.format(ancestors)
+                        #if parent.attrib.get('class') == 'exercises':
+                            ##ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
+                            #element.text = "Exercises"
+                            #element.tag = 'h{}'.format(ancestors)
 
                         toc.append((htmlfile, copy.deepcopy(element)))
 
