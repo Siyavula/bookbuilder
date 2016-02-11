@@ -35,7 +35,7 @@ class NumberingClass():
         self.figure_dictionary = {}
 
     def number_files(self, write_back_to_file_boolean=True):
-        for file_name in self.file_list:
+        for file_name in file_list:
             # Skip directories
             full_file_name = '{}/{}'.format(path, file_name)
             if os.path.isdir(full_file_name):
@@ -43,7 +43,7 @@ class NumberingClass():
             if file_name[0] not in ['0', '1', '2']:  # we need to ignore anything that does not start with a number
                 continue
 
-            self.numbered_files[file_name] = self.number_file(full_file_name)
+            self.numbered_files[full_file_name] = self.number_file(full_file_name)
             
         if not write_back_to_file_boolean:
             return

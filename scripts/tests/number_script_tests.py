@@ -12,17 +12,18 @@ class NumberingClassTests(TestCase):
         file_list = os.listdir(path)
         file_list.sort()
         self.number_class = NumberingClass(file_list)
-        import ipdb; ipdb.set_trace()
 
     def test_number_files(self):
-        self.number_class.number_files()
+        self.number_class.number_files(False)
         correct_file_names = [
-            '/home/heather/Desktop/books/scripts/tests/sample-files-for-testing/numbered_files/01-ideal-file-00.cnxmlplus.html', 
-            '/home/heather/Desktop/books/scripts/tests/sample-files-for-testing/numbered_files/01-ideal-file-01.cnxmlplus.html', 
-            '/home/heather/Desktop/books/scripts/tests/sample-files-for-testing/numbered_files/02-perfect-file-00.cnxmlplus.html']
+            '01-ideal-file-00.cnxmlplus.html', 
+            '01-ideal-file-01.cnxmlplus.html', 
+            '02-perfect-file-00.cnxmlplus.html']
         for correct_file_name in correct_file_names:
-            correct_file = open(correct_file_name, 'r')
-            assert self.number_class.numbered_files[file_name] == correct_file
+            full_file_name = '{}/{}'.format('/home/heather/Desktop/books/scripts/tests/sample-files-for-testing/unnumbered_files', correct_file_name)
+            correct_file = open(full_file_name, 'r')
+            import ipdb; ipdb.set_trace()
+            assert self.number_class.numbered_files[full_file_name] == correct_file
     
 #class GeneralCounterTests(TestCase):
     #def sanity_test(self):
