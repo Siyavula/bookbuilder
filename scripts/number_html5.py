@@ -13,7 +13,7 @@ import os
 from lxml import etree
 
 '/home/heather/Desktop/books/mathematics-10/afrikaans/build/epubs/maths10/OPS/xhtml/maths10'
-path = '/home/heather/Desktop/books/scripts/tests/sample-files-for-testing/unnumbered_files'
+path = '/home/heather/Desktop/books/bookbuilder/scripts/tests/sample-files-for-testing/unnumbered_files'
 file_list = os.listdir(path)
 file_list.sort()
 
@@ -42,7 +42,6 @@ class NumberingClass():
                 continue
             if file_name[0] not in ['0', '1', '2']:  # we need to ignore anything that does not start with a number
                 continue
-
             self.numbered_files[full_file_name] = self.number_file(full_file_name)
             
         if not write_back_to_file_boolean:
@@ -56,7 +55,6 @@ class NumberingClass():
             
     def number_file(self, full_file_name):
         xml = etree.parse(full_file_name, etree.HTMLParser())
-
         heading1 = xml.find('.//h1')
         sections = xml.findall('.//section')
         divs = xml.findall('.//div')
@@ -66,66 +64,67 @@ class NumberingClass():
         file_number = int(full_file_name
                           [find_chapter_number_index+1:find_chapter_number_index+3])
         
-        def chapter_number_insert(self):
+        def chapter_number_insert(self, xml):
             # Create the chapter titles
             if heading1 is not None:
                 newText = 'Chapter {}: {}'.format(file_number, heading1.text)
                 heading1.text = newText
-                return heading1
+            return xml
 
 
         file_counter = int(full_file_name[-17:-15])  # the end of every file name is .cnxmlplus.html which has length of 15, this extracts the number at the tail end of the file name
         # Handle section, subsection, exercise, worked example, table and figure numbering
-        #if file_counter == 0:
-            #section_number = 1
-            #figure_number = 1
-            #table_number = 1
-            #worked_example_counter = 1
-            #exercise_counter = 1
-        #else:
-            #for section in sections:
-                #if section.find('h3') is not None:  # subsection headings
-                    #h3 = section.find('h3')
-                    #try:
-                        #shortcode = etree.Element('span')
-                        #shortcode.text = '({})'.format(section.attrib['id'][2:])
-                        #shortcode.set('class', 'shortcode')
-                        #h3.text = '{} '.format(h3.text)
-                        #h3.append(shortcode)
-                    #except KeyError:
-                        #continue
-                #if section.attrib['class'] == 'worked_example':  # worked examples
-                    #title = section.find('h2')
-                    #if title is not None:
-                        #title.text = 'Worked example ' + str(worked_example_counter) + ':' + title.text  # while .format or other string concatenation methods might work better this handles unicode errors better
-                        #worked_example_counter += 1
-                #if section.attrib['class'] == 'exercises':  # exercises
-                    #try:
-                        #problem_set = section.find('.//div[@class]')
-                        #if problem_set.attrib['class'] == 'problemset':
-                            #span_code = etree.Element('span')
-                            #span_code.set('class', 'exerciseTitle')
-                            #span_code.text = 'Exercise {}.{}'.format(file_number, exercise_counter)
-                            #problem_set.insert(0, span_code)
-                            #exercise_counter += 1
-                    #except AttributeError:
-                        #continue
-                #if section.find('h2') is not None:  # section headings
-                    #h2 = section.find('h2')
-                    #try:
-                        #if section.attrib['id'] is not None and section.attrib['id'][:2] == 'sc':
-                            #shortcode = etree.Element('span')
-                            #shortcode.text = '({})'.format(section.attrib['id'][2:])
-                            #shortcode.set('class', 'shortcode')
-                            #h2.text = '{}.{} {}'.format(file_number, self.section_number, h2.text)
-                            #h2.append(shortcode)
-                            #self.section_number += 1
-                    #except KeyError:
-                        #continue
+        def section_exercise_wex_counter(self, xml):
+            if file_counter == 0:
+                self.section_number = 1
+                self.worked_example_number = 1
+                self.exercise_number = 1
+            for section in sections:
+                if section.find('h3') is not None:  # subsection headings
+                    h3 = section.find('h3')
+                    try:
+                        shortcode = etree.Element('span')
+                        shortcode.text = '({})'.format(section.attrib['id'][2:])
+                        shortcode.set('class', 'shortcode')
+                        h3.text = '{} '.format(h3.text)
+                        h3.append(shortcode)
+                    except KeyError:
+                        continue
+                if section.attrib['class'] == 'worked_example':  # worked examples
+                    title = section.find('h2')
+                    if title is not None:
+                        title.text = 'Worked example ' + str(self.worked_example_number) + ':' + title.text  # while .format or other string concatenation methods might work better this handles unicode errors better
+                        self.worked_example_number += 1
+                if section.attrib['class'] == 'exercises':  # exercises
+                    try:
+                        problem_set = section.find('.//div[@class]')
+                        if problem_set.attrib['class'] == 'problemset':
+                            span_code = etree.Element('span')
+                            span_code.set('class', 'exerciseTitle')
+                            span_code.text = 'Exercise {}.{}'.format(file_number, self.exercise_number)
+                            problem_set.insert(0, span_code)
+                            self.exercise_number += 1
+                    except AttributeError:
+                        continue
+                if section.find('h2') is not None:  # section headings
+                    h2 = section.find('h2')
+                    try:
+                        if section.attrib['id'] is not None and section.attrib['id'][:2] == 'sc':
+                            shortcode = etree.Element('span')
+                            shortcode.text = '({})'.format(section.attrib['id'][2:])
+                            shortcode.set('class', 'shortcode')
+                            h2.text = '{}.{} {} '.format(file_number, self.section_number, h2.text)
+                            h2.append(shortcode)
+                            self.section_number += 1
+                    except KeyError:
+                        continue
+            return xml
 
 
         # figure numbering
-        def figure_number_insert(self):
+        def figure_number_insert(self, xml):
+            if file_counter == 0:
+                self.figure_number = 1
             for figure in figures:
                 caption = figure.find('.//figcaption')
                 if caption is not None and figure.attrib['id'] is not None:
@@ -136,11 +135,13 @@ class NumberingClass():
                         caption.text = 'Figure {}.{}: {}'.format(file_number, self.figure_number, caption.text)
                     self.figure_dictionary[figure.attrib['id']] = str(file_number) + '.' + str(self.figure_number)
                     self.figure_number += 1
-                    return caption
+            return xml
 
 
         # table numbering
-        def table_number_insert(self):
+        def table_number_insert(self, xml):
+            if file_counter == 0:
+                self.table_number = 1
             for div in divs:
                 try:
                     if div.attrib['class'] is not None:
@@ -154,32 +155,29 @@ class NumberingClass():
                                     caption.text = 'Table {}.{}: {}'.format(file_number, table_number, caption.text)
                                 table_dictionary[div.attrib['id']] = str(file_number) + '.' + str(table_number)
                                 table_number += 1
-                                return caption
                 except KeyError:
                     continue
+            return xml
 
 
         # replace the anchor tags
-        def hyperlink_text_fix(self):
+        def hyperlink_text_fix(self, xml):
             for anchor in anchors:
                 try:
                     if anchor.attrib['class'] == 'InternalLink':
-                        if anchor.attrib['href'][1:] in table_dictionary.keys():
-                            anchor.text = 'Table ' + table_dictionary[anchor.attrib['href'][1:]]
-                        elif anchor.attrib['href'][1:] in figure_dictionary.keys():
-                            anchor.text = 'Figure ' + figure_dictionary[anchor.attrib['href'][1:]]
-                        return anchor
+                        if anchor.attrib['href'][1:] in self.table_dictionary.keys():
+                            anchor.text = 'Table ' + self.table_dictionary[anchor.attrib['href'][1:]]
+                        elif anchor.attrib['href'][1:] in self.figure_dictionary.keys():
+                            anchor.text = 'Figure ' + self.figure_dictionary[anchor.attrib['href'][1:]]
                 except KeyError:
                     continue
+            return xml
         
-        if chapter_number_insert(self) is not None:
-            xml = chapter_number_insert(self)
-        if figure_number_insert(self) is not None:
-            xml = figure_number_insert(self)
-        if table_number_insert(self) is not None:
-            xml = table_number_insert(self)
-        if hyperlink_text_fix(self) is not None:
-            xml = hyperlink_text_fix(self)
+        xml = chapter_number_insert(self, xml)
+        xml = section_exercise_wex_counter(self, xml)
+        xml = figure_number_insert(self, xml)
+        xml = table_number_insert(self, xml)
+        xml = hyperlink_text_fix(self, xml)
         
         file_text = None
         
