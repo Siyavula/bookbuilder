@@ -22,8 +22,7 @@ class NumberingClassTests(TestCase):
         for correct_file_name in correct_file_names:
             full_file_name = '{}/{}'.format('/home/heather/Desktop/books/scripts/tests/sample-files-for-testing/unnumbered_files', correct_file_name)
             correct_file = open(full_file_name, 'r')
-            import ipdb; ipdb.set_trace()
-            assert self.number_class.numbered_files[full_file_name] == correct_file
+            assert self.number_class.numbered_files[full_file_name] == correct_file.read()
     
 #class GeneralCounterTests(TestCase):
     #def sanity_test(self):
