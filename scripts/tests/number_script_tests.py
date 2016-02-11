@@ -17,13 +17,12 @@ class NumberingClassTests(TestCase):
         self.number_class.number_files(False)
         correct_file_names = [
             '01-ideal-file-00.cnxmlplus.html', 
-            #'01-ideal-file-01.cnxmlplus.html', 
-            #'02-perfect-file-00.cnxmlplus.html'
+            '01-ideal-file-01.cnxmlplus.html', 
+            '02-perfect-file-00.cnxmlplus.html'
             ]
         for correct_file_name in correct_file_names:
             full_unumbered_file_name = '{}/{}'.format('/home/heather/Desktop/books/bookbuilder/scripts/tests/sample-files-for-testing/unnumbered_files', correct_file_name)
             full_numbered_file_name = '{}/{}'.format('/home/heather/Desktop/books/bookbuilder/scripts/tests/sample-files-for-testing/numbered_files', correct_file_name)
-            #correct_file = open(full_numbered_file_name, 'r')
             assert self.number_class.numbered_files[full_unumbered_file_name] == etree.tostring(etree.parse(full_numbered_file_name, etree.HTMLParser()), pretty_print=True)
     
 #class GeneralCounterTests(TestCase):
@@ -47,14 +46,11 @@ class NumberingClassTests(TestCase):
         #assert number_class.file_counter in range(0,15)
     
     #def test_chapter_numbering(self):
-        #'''
-        #This should correctly insert the chapter number (which is the file_number)
-        #into the xml
-        #'''
-        #try:
-            #assert number_class.chapter_number_insert(number_class.file_number).find(number_class.file_number) != -1
-        #except AttributeError:
-            #pass
+        '''
+        This should correctly insert the chapter number (which is the file_number)
+        into the xml
+        '''
+        #assert self.number_class.chapter_number_insert(number_class.file_number).find(number_class.file_number) != -1
     
     #def test_section_numbering(self):
         #'''Test that the section numbering is correctly added to the xml
