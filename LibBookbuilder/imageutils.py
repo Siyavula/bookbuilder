@@ -70,7 +70,7 @@ def run_latex(data):
 
         except LatexPictureError as lpe:
             print(colored("\nLaTeX failure", "red"))
-            print(lpe)
+            print(unicode(lpe))
             return None
 
         if figpath:
@@ -269,12 +269,12 @@ def render_images(output_path, parallel=True):
     #
     if output_path.endswith('html'):
         with open(output_path, 'r') as htmlout:
-            html = etree.HTML(htmlout.read())
+            html = etree.HTML(htmlout.read().decode('utf-8'))
 
         html, valid = _render_html_images(html, output_path, parallel=parallel)
 
         with open(output_path, 'w') as htmlout:
-            htmlout.write(etree.tostring(html, method='xml'))
+            htmlout.write(etree.tostring(html, method='xml').encode('utf-8'))
 
     #
     # TeX output

@@ -5,6 +5,7 @@ import logging
 import hashlib
 import subprocess
 import inspect
+import copy
 
 import lxml
 from lxml import etree
@@ -18,7 +19,7 @@ from XmlValidator import XmlValidator
 from XmlValidator import XmlValidationError
 from . import htmlutils
 import imageutils
-from utils import mkdir_p, copy_if_newer
+from utils import mkdir_p, copy_if_newer, TOCBuilder, TocElement, add_unique_ids
 
 
 specpath = os.path.join(os.path.dirname(inspect.getfile(XmlValidator)),
@@ -335,12 +336,12 @@ class chapter(object):
                                                              form=outformat))
                     converted = conversion_functions[outformat]()
                     with open(output_path, 'w') as f_out:
-                        # This is a bit of a hack, not quite sure why I need this
+                        # This is a bit of a hack, not quite sure why I need
+                        # this
                         if outformat == 'html':
                             f_out.write(converted.encode('utf-8'))
                         else:
                             f_out.write(converted)
-
 
                 # file has not changed AND the file exists
                 elif (not self.has_changed) and (os.path.exists(output_path)):
@@ -381,11 +382,131 @@ class chapter(object):
                                                            output_path)
                     rendered = self.__render_pstikz(output_path,
                                                     parallel=parallel)
-
                 if not (rendered and copy_success):
                     self.render_problems = True
                 else:
                     self.render_problems = False
+
+    def split_into_sections(self, formats=None):
+        '''
+        Split this chapter into seperate files, each containing a section. The
+        first one contains the h1 element for the chapter too
+        '''
+        if formats is None:
+            formats = ['html', 'xhtml', 'mobile']
+
+        for form in formats:
+            if 'tex' in form:
+                continue
+            if form == 'xhtml':
+                ext = '.xhtml'
+            else:
+                ext = '.html'
+
+            chapterfilepath = os.path.join('build', form, self.file + ext)
+
+            with open(chapterfilepath) as chapterfile:
+                html = etree.HTML(chapterfile.read())
+                # add unique IDs to all the section titles.
+                html = add_unique_ids(html)
+            # make a copy of the html, want to use as template.
+            html_template = copy.deepcopy(html)
+            for bodychild in html_template.find('.//body'):
+                bodychild.getparent().remove(bodychild)
+
+            # build up a list of the sections
+            sections = []
+            chapter = [c.getparent() for c in html.findall('.//div[@class="section"]/h1')][0]
+
+            thissection = []
+            for child in chapter:
+                if (child.tag != 'div'):
+                    thissection.append(child)
+                else:
+                    if len(child) == 0:
+                        pass
+                    elif (child[0].tag == 'h2') or (child.attrib.get('class') == 'exercises'):
+                        thissection.append(child)
+                        sections.append(thissection)
+                        thissection = []
+                    else:
+                        thissection.append(child)
+            #sections.append(thissection)
+            # write each section to a separate file
+            for num, section in enumerate(sections):
+                template = copy.deepcopy(html_template)
+                body = template.find('.//body')
+                for child in section:
+                    body.append(child)
+                secfilename = self.file.replace('.cnxmlplus',
+                                                '-{:02d}.cnxmlplus'.format(num))
+                secfilepath = os.path.join('build', form, secfilename + ext)
+
+                # add css to head
+                css = '<link rel="stylesheet" type="text/css" href="css/stylesheet.css"></link>'
+                css = etree.fromstring(css)
+                template.find('.//head').append(css)
+
+                with open(secfilepath, 'w') as outfile:
+                    outfile.write(etree.tostring(template))
+
+            # remove the original html
+            os.remove(chapterfilepath)
+            # create the ToC file.
+            self.create_toc(os.path.dirname(chapterfilepath))
+
+    def create_toc(self, path):
+        '''Read all the html files in path and use div.section>h1 and
+        div.section>h2 to make table of contents'''
+
+        # get all the (x)html files
+        file_list = [f for f in os.listdir(path) if f.endswith('html')]
+        file_list.sort()
+
+        toc = []
+
+        for htmlfile in file_list:
+            with open(os.path.join(path, htmlfile)) as hf:
+                html = etree.HTML(hf.read())
+            for element in html.iter():
+                if element.tag in ['h1', 'h2']:
+                    parent = element.getparent()
+                    if (parent.attrib.get('class') in ['exercises', 'section']) or (parent.tag == 'body'):
+
+                        # exercises are special
+                        if parent.attrib.get('class') == 'exercises':
+                            ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
+                            element.text = "Exercises"
+                            element.tag = 'h{}'.format(ancestors)
+
+                        toc.append((htmlfile, copy.deepcopy(element)))
+
+        tocelements = [TocElement(t[0], t[1]) for t in toc]
+
+        assert(len(toc) == len(set(toc)))
+
+        tocbuilder = TOCBuilder()
+        for tocelement in tocelements:
+            tocbuilder.add_entry(tocelement)
+
+        toccontent = '''\
+        <html>
+            <head>
+                <title>Table of contents</title>
+                <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+            </head>
+            <body>
+                {}
+            </body>
+
+        </html>
+
+        '''.format(etree.tostring(tocbuilder.as_etree_element(),
+                                  pretty_print=True))
+
+        # TODO, add ids to the section html pages.
+        with open(os.path.join(path, 'tableofcontents.html'), 'w') as tocout:
+            tocout.write(toccontent)
 
     def __str__(self):
         chapno = str(self.chapter_number).ljust(4)

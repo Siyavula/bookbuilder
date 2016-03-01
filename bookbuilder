@@ -36,7 +36,7 @@ try:
 except ImportError:
     logging.error("Please install docopt:\n sudo pip install docopt")
 
-from Bookbuilder import book
+from LibBookbuilder import book
 
 if __name__ == "__main__":
     arguments = docopt(__doc__)

@@ -5,6 +5,7 @@ from lxml import etree
 import HTMLParser
 import re
 
+
 def xhtml_cleanup(xhtmlstr):
     ''' Given xhtmlstr input, parse it as xml and make some fixes to it for
     inclusion into an epub, validated by Epubcheck 3.01
@@ -44,7 +45,14 @@ def xhtml_cleanup(xhtmlstr):
         if 'summary' in table.attrib.keys():
             del table.attrib['summary']
 
-    xhtmlstr = etree.tostring(xhtml, xml_declaration=True, encoding='utf-8')
+    for exercise in xhtml.findall('.//div[@class="exercises"]'):
+        exercise.attrib['class'] = 'section'
+        firstchild = exercise[0]
+        if firstchild.tag.startswith('h'):
+            firstchild.tag = 'h2'
+            firstchild.text = 'Exercises'
+
+    xhtmlstr = etree.tostring(xhtml, encoding='utf-8')
     xhtmlstr = xhtmlstr.replace('<html>', '<html\
  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">')
 
@@ -58,7 +66,6 @@ def add_mathjax(html):
     Return as string
 
     '''
-
     html = etree.HTML(html)
     head = html.find('.//head')
     script = etree.fromstring(r'''<script type="text/javascript"
@@ -78,7 +85,6 @@ def repair_equations(html):
     the inner math delimiters
 
     '''
-
     htmlparser = HTMLParser.HTMLParser()
     html = html.replace('&amp;#', '&#')
     entities = re.findall('&#.*?;', html)
@@ -87,5 +93,4 @@ def repair_equations(html):
 
     # some unicode needs to get replaced with math-mode symbols but they cannot
     # use those symbols if they are already in a math mode.
-
     return html
