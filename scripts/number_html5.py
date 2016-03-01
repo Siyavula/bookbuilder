@@ -56,30 +56,15 @@ class NumberingClass():
                 full_file_name = '{}/{}'.format(path, file_name)
                 file_text = self.number_file(file_name)
                 self.write_back_to_file(file_text, file_name)
-
-    def number_file(self, full_file_name):
-        xml = etree.parse(full_file_name, etree.HTMLParser())
-        heading1 = xml.find('.//h1')
-        sections = xml.findall('.//section')
-        divs = xml.findall('.//div')
-        figures = xml.findall('.//figure[@id]')
-        anchors = xml.findall('.//a')
-        find_chapter_number_index = full_file_name.rfind('/')
-        file_number = int(full_file_name
-                          [find_chapter_number_index+1:find_chapter_number_index+3])
-
-        def chapter_number_insert(self, xml):
+    
+    def chapter_number_insert(self, xml, heading1, file_number):
             # Create the chapter titles
             if heading1 is not None:
                 newText = 'Chapter {}: {}'.format(file_number, heading1.text)
                 heading1.text = newText
             return xml
-
-        file_counter = int(full_file_name[-17:-len('.cnxmlplus.html')])
-        # this extracts the number at the tail end of the file name
-        # Handle section, subsection, exercise, worked example, table and figure numbering
-
-        def section_exercise_wex_counter(self, xml):
+    
+    def section_exercise_wex_counter(self, xml, sections, file_counter, file_number):
             if file_counter == 0:
                 self.section_number = 1
                 self.worked_example_number = 1
@@ -125,69 +110,82 @@ class NumberingClass():
                     except KeyError:
                         continue
             return xml
-
-        # figure numbering
-        def figure_number_insert(self, xml):
-            if file_counter == 0:
-                self.figure_number = 1
-            for figure in figures:
-                caption = figure.find('.//figcaption')
-                if caption is not None and figure.attrib['id'] is not None:
-                    if caption.find('.//p') is not None:
-                        para = caption.find('.//p')
-                        para.text = 'Figure {}.{}: {}'.format(
-                            file_number, self.figure_number, para.text)
-                    else:
-                        caption.text = 'Figure {}.{}: {}'.format(
-                            file_number, self.figure_number, caption.text)
-                    self.figure_dictionary[figure.attrib['id']] = str(
-                        file_number) + '.' + str(self.figure_number)
-                    self.figure_number += 1
-            return xml
-
-        # table numbering
-        def table_number_insert(self, xml):
-            if file_counter == 0:
-                self.table_number = 1
-            for div in divs:
-                if div.attrib['class'] is not None:
-                    try:
-                        table_id = div.attrib['id']
-                    except KeyError:
-                        table_id = None
-                    if table_id is not None and div.attrib['class'] == 'FigureTable':
-                        caption = div.find('.//div[@class]')
-                        if caption is not None and caption.attrib['class'] == 'caption':
-                            if caption.find('.//p') is not None:
-                                para = caption.find('.//p')
-                                para.text = 'Table {}.{}: {}'.format(
-                                    file_number, self.table_number, para.text)
-                            else:
-                                caption.text = 'Table {}.{}: {}'.format(
-                                    file_number, self.table_number, caption.text)
-                            self.table_dictionary[div.attrib['id']] = str(file_number) + '.' + str(self.table_number)
-                            self.table_number += 1
-                #1/0
-            return xml
-
-        # replace the anchor tags
-        def hyperlink_text_fix(self, xml):
-            for anchor in anchors:
+    
+    # figure numbering
+    def figure_number_insert(self, xml, figures, file_counter, file_number):
+        if file_counter == 0:
+            self.figure_number = 1
+        for figure in figures:
+            caption = figure.find('.//figcaption')
+            if caption is not None and figure.attrib['id'] is not None:
+                if caption.find('.//p') is not None:
+                    para = caption.find('.//p')
+                    para.text = 'Figure {}.{}: {}'.format(
+                        file_number, self.figure_number, para.text)
+                else:
+                    caption.text = 'Figure {}.{}: {}'.format(
+                        file_number, self.figure_number, caption.text)
+                self.figure_dictionary[figure.attrib['id']] = str(
+                    file_number) + '.' + str(self.figure_number)
+                self.figure_number += 1
+        return xml
+    
+    # table numbering
+    def table_number_insert(self, xml, divs, file_counter, file_number):
+        if file_counter == 0:
+            self.table_number = 1
+        for div in divs:
+            if div.attrib['class'] is not None:
                 try:
-                    if anchor.attrib['class'] == 'InternalLink':
-                        if anchor.attrib['href'][1:] in self.table_dictionary.keys():
-                            anchor.text = 'Table ' + self.table_dictionary[anchor.attrib['href'][1:]]
-                        elif anchor.attrib['href'][1:] in self.figure_dictionary.keys():
-                            anchor.text = 'Figure ' + self.figure_dictionary[anchor.attrib['href'][1:]]
+                    table_id = div.attrib['id']
                 except KeyError:
-                    continue
-            return xml
+                    table_id = None
+                if table_id is not None and div.attrib['class'] == 'FigureTable':
+                    caption = div.find('.//div[@class]')
+                    if caption is not None and caption.attrib['class'] == 'caption':
+                        if caption.find('.//p') is not None:
+                            para = caption.find('.//p')
+                            para.text = 'Table {}.{}: {}'.format(
+                                file_number, self.table_number, para.text)
+                        else:
+                            caption.text = 'Table {}.{}: {}'.format(
+                                file_number, self.table_number, caption.text)
+                        self.table_dictionary[div.attrib['id']] = str(file_number) + '.' + str(self.table_number)
+                        self.table_number += 1
+        return xml
+    
+    # replace the anchor tags
+    def hyperlink_text_fix(self, xml, anchors):
+        for anchor in anchors:
+            try:
+                if anchor.attrib['class'] == 'InternalLink':
+                    if anchor.attrib['href'][1:] in self.table_dictionary.keys():
+                        anchor.text = 'Table ' + self.table_dictionary[anchor.attrib['href'][1:]]
+                    elif anchor.attrib['href'][1:] in self.figure_dictionary.keys():
+                        anchor.text = 'Figure ' + self.figure_dictionary[anchor.attrib['href'][1:]]
+            except KeyError:
+                continue
+        return xml
 
-        xml = chapter_number_insert(self, xml)
-        xml = section_exercise_wex_counter(self, xml)
-        xml = figure_number_insert(self, xml)
-        xml = table_number_insert(self, xml)
-        xml = hyperlink_text_fix(self, xml)
+    def number_file(self, full_file_name):
+        xml = etree.parse(full_file_name, etree.HTMLParser())
+        heading1 = xml.find('.//h1')
+        sections = xml.findall('.//section')
+        divs = xml.findall('.//div')
+        figures = xml.findall('.//figure[@id]')
+        anchors = xml.findall('.//a')
+        find_chapter_number_index = full_file_name.rfind('/')
+        file_number = int(full_file_name
+                          [find_chapter_number_index+1:find_chapter_number_index+3])
+
+        file_counter = int(full_file_name[-17:-len('.cnxmlplus.html')])
+        # this extracts the number at the tail end of the file name
+
+        xml = self.chapter_number_insert(xml, heading1, file_number)
+        xml = self.section_exercise_wex_counter(xml, sections, file_counter, file_number)
+        xml = self.figure_number_insert(xml, figures, file_counter, file_number)
+        xml = self.table_number_insert(xml, divs, file_counter, file_number)
+        xml = self.hyperlink_text_fix(xml, anchors)
 
         file_text = None
 
