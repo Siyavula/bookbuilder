@@ -12,3 +12,5 @@ ratings:
   - LibBookBuilder/**
   - scripts/**
   - "**.py"
+exclude_paths:
+- "scripts/tests/**/*"
