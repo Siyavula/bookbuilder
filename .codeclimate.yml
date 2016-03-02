@@ -1,0 +1,16 @@
+languages:
+  Python: true
+engines:
+  fixme:
+    enabled: true
+  pep8:
+    enabled: true
+  radon:
+    enabled: true
+ratings:
+  paths:
+  - LibBookBuilder/**
+  - scripts/**
+  - "**.py"
+exclude_paths:
+- "scripts/tests/**/*"
