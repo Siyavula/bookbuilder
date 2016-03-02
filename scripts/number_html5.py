@@ -1,10 +1,12 @@
 '''Automatic numbering script
 This script does the following:
 1. Updates the anchor tags to have the correct figure or table reference.
-2. Updates the figure and table caption tags to have a prefix of table x: or figure x:.
+2. Updates the figure and table caption tags to 
+    have a prefix of table x: or figure x:.
 3. Updates chapter titles, section titles and subsection titles.
-Chapter titles need chapter x: as  a prefix, section titles need 'no. title shortcode'
-subsection titles just need the shortcode at the end.
+    Chapter titles need chapter x: as  a prefix, 
+    section titles need 'no. title shortcode'
+    subsection titles just need the shortcode at the end.
 4. Numbers the worked examples.
 5. Numbers the exercises
 '''
@@ -56,14 +58,14 @@ class NumberingClass():
                 full_file_name = '{}/{}'.format(path, file_name)
                 file_text = self.number_file(file_name)
                 self.write_back_to_file(file_text, file_name)
-    
+
     def chapter_number_insert(self, xml, heading1, file_number):
             # Create the chapter titles
             if heading1 is not None:
                 newText = 'Chapter {}: {}'.format(file_number, heading1.text)
                 heading1.text = newText
             return xml
-    
+
     def section_exercise_wex_counter(self, xml, sections, file_counter, file_number):
             if file_counter == 0:
                 self.section_number = 1
@@ -74,7 +76,8 @@ class NumberingClass():
                     h3 = section.find('h3')
                     try:
                         shortcode = etree.Element('span')
-                        shortcode.text = '({})'.format(section.attrib['id'][2:])
+                        shortcode.text = '({})'.format(
+                            section.attrib['id'][2:])
                         shortcode.set('class', 'shortcode')
                         h3.text = '{} '.format(h3.text)
                         h3.append(shortcode)
@@ -92,7 +95,8 @@ class NumberingClass():
                         if problem_set.attrib['class'] == 'problemset':
                             span_code = etree.Element('span')
                             span_code.set('class', 'exerciseTitle')
-                            span_code.text = 'Exercise {}.{}'.format(file_number, self.exercise_number)
+                            span_code.text = 'Exercise {}.{}'.format(
+                                file_number, self.exercise_number)
                             problem_set.insert(0, span_code)
                             self.exercise_number += 1
                     except AttributeError:
@@ -104,13 +108,14 @@ class NumberingClass():
                             shortcode = etree.Element('span')
                             shortcode.text = '({})'.format(section.attrib['id'][2:])
                             shortcode.set('class', 'shortcode')
-                            h2.text = '{}.{} {} '.format(file_number, self.section_number, h2.text)
+                            h2.text = '{}.{} {} '.format(
+                                file_number, self.section_number, h2.text)
                             h2.append(shortcode)
                             self.section_number += 1
                     except KeyError:
                         continue
             return xml
-    
+
     # figure numbering
     def figure_number_insert(self, xml, figures, file_counter, file_number):
         if file_counter == 0:
@@ -129,7 +134,7 @@ class NumberingClass():
                     file_number) + '.' + str(self.figure_number)
                 self.figure_number += 1
         return xml
-    
+
     # table numbering
     def table_number_insert(self, xml, divs, file_counter, file_number):
         if file_counter == 0:
@@ -153,7 +158,7 @@ class NumberingClass():
                         self.table_dictionary[div.attrib['id']] = str(file_number) + '.' + str(self.table_number)
                         self.table_number += 1
         return xml
-    
+
     # replace the anchor tags
     def hyperlink_text_fix(self, xml, anchors):
         for anchor in anchors:
@@ -194,7 +199,8 @@ class NumberingClass():
 
     def write_back_to_file(self, file_text, full_file_name):
         # This overwrites the contents of the file you are working with.
-        # Only do this if you are sure you can get the contents of the file back
+        # Only do this if you are sure you can get 
+        # the contents of the file back
         # before the script was run.
 
         with open(full_file_name, 'w') as file:
