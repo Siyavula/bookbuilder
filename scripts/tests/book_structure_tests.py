@@ -14,9 +14,10 @@ class BookStructureTests(TestCase):
         file_list.sort()
         self.book_structure = BookStructureCreation(file_list, path)
 
-    def test_structure_file(self):
+    def test_book_structure_data(self):
         self.book_structure.create_structure(False)
-        assert 'This is the first chapter' in self.book_structure.book_data
-        assert 'Section the first, in chapter the third' in self.book_structure.book_data
-        assert 'Subsection the first, in chapter the second' not in self.book_structure.book_data
+        book_data = yaml.load(self.book_structure.book_data)
+        with open('sample-files-for-testing/book_structure_test.yaml', 'r') as file:
+            test_data = yaml.load(file)
+        assert book_data == test_data
         

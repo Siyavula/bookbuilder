@@ -29,8 +29,7 @@ class BookStructureCreation():
         self.write_to_yaml_file(self.book_data)
     
     def section_chapter_extract(self, file_list, path):
-        section_list = []
-        chapter_list = []
+        self.file_contents += 'chapters: \n'
         for file_name in self.file_list:
             full_file_name = '{}/{}'.format(self.path, file_name)
             
@@ -47,33 +46,31 @@ class BookStructureCreation():
             
             xml = etree.parse(full_file_name, etree.HTMLParser())
             chapter_number = int(file_name[:2])
-            section_number = 1
         
+            section_list = []
+            section_number = 1
             for section in xml.findall('.//section[@type]'):
                 if section.attrib['type'] == 'chapter':
-                    title = 'Chapter {}":" {}'.format(chapter_number, section.find('.//title').text)
-                    chapter_list.append(title)
+                    chapter_title = section.find('.//title')
+                    self.file_contents += '  - number: {} \n'.format(chapter_number)
+                    self.file_contents += '    title: {} \n'.format(chapter_title.text)
                 elif section.attrib['type'] == 'section':
                     title = section.find('.//title')
-                    text = title.text
-                    text = text.replace(':', '":"')
-                    section_text = '{}.{} {}'.format(chapter_number, section_number, text)
-                    section_list.append(section_text)
+                    title_text = title.text
+                    title_text = title_text.replace(':', '":"')
+                    section_title = '{}.{} {}'.format(
+                        chapter_number, section_number, title_text)
                     section_number += 1
-        
-        self.file_contents += 'chapters: \n'
-        for chapter in chapter_list:
-            self.file_contents += '  - {} \n'.format(chapter)
-        self.file_contents += 'sections: \n'
-        for section in section_list:
-            self.file_contents += '  - {} \n'.format(section)
+                    section_list.append(section_title)
+            self.file_contents += '    sections: \n'
+            for i in section_list:
+                self.file_contents += '      - {} \n'.format(i)
         return self.file_contents
     
     def write_to_yaml_file(self, file_contents):
         # write the contents of each dictionary and list to a file
         with open('test.txt', 'w') as file:
             file.write(file_contents)
-            print yaml.load(file_contents)
 
 book_structure = BookStructureCreation(file_list, path)
 book_structure.create_structure(True)
