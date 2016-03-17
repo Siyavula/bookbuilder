@@ -13,17 +13,23 @@ class BookStructureCreation():
     """
     This class extracts the book structure information into a yaml file
     """
-    def __init__(self, file_list):
+    def __init__(self, file_list, path):
         self.file_list = file_list
+        self.path = path
         self.file_contents = ''
+        self.book_data = ''
     
-    def create_structure(self):
-        file_contents = self.section_chapter_extract()
-        self.write_to_yaml_file(file_contents)
+    def create_structure(self, write_back_to_file_boolean=False):
+        self.book_data += self.section_chapter_extract(file_list, path)
+        
+        if not write_back_to_file_boolean:
+            return
+        
+        self.write_to_yaml_file(self.book_data)
     
-    def section_chapter_extract(self):
+    def section_chapter_extract(self, file_list, path):
         for file_name in self.file_list:
-            full_file_name = '{}/{}'.format(path, file_name)
+            full_file_name = '{}/{}'.format(self.path, file_name)
             
             # Skip directories
             if os.path.isdir(full_file_name):
@@ -36,8 +42,8 @@ class BookStructureCreation():
             if file_name[0] not in ['0', '1', '2', '3']:
                 continue
             
-            xml = etree.XML(open(full_file_name, 'r').read())
-            
+            xml = etree.parse(full_file_name, etree.HTMLParser())
+        
             section_list = []
             for section in xml.findall('.//section[@type]'):
                 if section.attrib['type'] == 'chapter':
@@ -57,7 +63,7 @@ class BookStructureCreation():
         # write the contents of each dictionary and list to a file
         with open('test.txt', 'w') as file:
             file.write(file_contents)
-            #print yaml.load(file_contents)
+            print yaml.load(file_contents)
 
-book_structure = BookStructureCreation(file_list)
-print book_structure.create_structure()
+book_structure = BookStructureCreation(file_list, path)
+book_structure.create_structure(True)

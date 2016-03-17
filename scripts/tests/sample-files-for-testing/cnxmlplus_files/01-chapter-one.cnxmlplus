@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<document xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:style="http://siyavula.com/cnxml/style/0.1">
+<its:rules xmlns:its="http://www.w3.org/2005/11/its" version="1.0">
+    <its:translateRule translate="no" selector="//link"/>
+    <its:translateRule translate="no" selector="//url"/>
+    <its:translateRule translate="no" selector="//latex"/>
+    <its:translateRule translate="no" selector="//number"/>
+    <its:translateRule translate="no" selector="//unit"/>
+    <its:translateRule translate="no" selector="//unit_number"/>
+    <its:translateRule translate="no" selector="//percentage"/>
+    <its:translateRule translate="no" selector="//symbol"/>
+    <its:translateRule translate="no" selector="//currency"/>
+    <its:translateRule translate="no" selector="//chem_compound"/>
+    <its:translateRule translate="no" selector="//spec_note"/>
+    <its:translateRule translate="no" selector="//nuclear_notation"/>
+    <its:translateRule translate="no" selector="//mass_number"/>
+    <its:translateRule translate="no" selector="//atomic_number"/>
+    <its:translateRule translate="no" selector="//code"/>
+    <its:translateRule translate="no" selector="//m:math"/>
+    <its:translateRule translate="no" selector="//shortcode"/>
+    <its:translateRule translate="no" selector="//metadata"/>
+    <its:translateRule translate="no" selector="//image"/>
+    <its:translateRule translate="no" selector="//video"/>
+    <its:translateRule translate="no" selector="//figure/type"/>
+    <its:translateRule translate="no" selector="//simulation"/>
+</its:rules>
+  <metadata>
+    <cnxml-version>0.1</cnxml-version>
+    <pspicture-generator-version>1.1</pspicture-generator-version>
+  </metadata>
+  <content>
+    <section type="chapter">
+      <title>This is the first chapter</title>
+      <section type="section">
+        <title>Section the first, in chapter the first</title>
+        <shortcode>ESCJV</shortcode>
+<para>Eam ea illum voluptua perpetua, tation quaeque legimus ex has. Vim eu malis oblique constituto, ea pri ceteros apeirian assentior. Pri eu justo periculis, modo putent ancillae his at, cum aperiri senserit intellegebat ad. Suas consectetuer sit ex. Est exerci salutandi eu. Eam lorem equidem perpetua eu.
+</para>
+    </section>
+    <section type="section">
+        <title>Section the second, in chapter the first</title>
+        <shortcode>ESCJW</shortcode>
+        <para>Ut esse nobis nam, eu nec atqui tollit disputationi. Wisi feugait hendrerit sed eu, vis putant nominati an, et pertinax tractatos voluptatibus vel. Has consul docendi constituam ei, malis voluptua inimicus an sed. Possim malorum splendide mei cu. No velit tamquam cum, in esse decore suscipit quo.</para>
+        <section type="subsection">
+        <title>Subsection the first, in chapter the first</title>
+        <shortcode>ESCJW</shortcode>
+<para>Lorem ipsum dolor sit amet, qui id everti pericula persequeris, autem timeam no has, nec in sale convenire salutandi. Cu sea illum aeque erroribus, ad vix debet iracundia forensibus. Eos explicari molestiae theophrastus eu, mel ut numquam epicurei, inani gloriatur mnesarchum his an. Te mel facete torquatos, pri ex nihil torquatos.</para>
+    </section>
+<para>Lorem ipsum dolor sit amet, qui id everti pericula persequeris, autem timeam no has, nec in sale convenire salutandi. Cu sea illum aeque erroribus, ad vix debet iracundia forensibus. Eos explicari molestiae theophrastus eu, mel ut numquam epicurei, inani gloriatur mnesarchum his an. Te mel facete torquatos, pri ex nihil torquatos.</para>
+    </section>
+  </content>
+</document>
