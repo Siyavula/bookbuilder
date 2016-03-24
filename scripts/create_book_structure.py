@@ -5,7 +5,7 @@ import os
 from lxml import etree
 import yaml
 
-path = '/home/heather/Desktop/books/physical-sciences-12/english'
+path = '/home/heather/Desktop/books/grade-10-mathslit-latex/english'
 file_list = os.listdir(path)
 file_list.sort()
 
@@ -18,8 +18,7 @@ class BookStructureCreation():
         self.file_list = file_list
         self.path = path
         self.file_contents = ''
-        self.book_data = 'grade: 12 \n'
-        self.book_data += 'subject: science \n'
+        self.book_data = ''
 
     def create_structure(self, write_back_to_file_boolean=False):
         self.book_data += self.section_chapter_extract(file_list, path)
@@ -71,7 +70,7 @@ class BookStructureCreation():
         return self.file_contents
 
     def write_to_yaml_file(self, file_contents):
-        with open('test.txt', 'w') as file:
+        with open('maths-lit-10-structure.txt', 'w') as file:
             file.write(file_contents)
 
 if __name__ == "__main__":
