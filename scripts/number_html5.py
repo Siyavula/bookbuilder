@@ -85,7 +85,7 @@ class NumberingClass():
         anchors = xml.findall('.//a')
         find_chapter_number_index = full_file_name.rfind('/')
         file_number = int(full_file_name
-                          [find_chapter_number_index+1:find_chapter_number_index+3])
+            [find_chapter_number_index+1:find_chapter_number_index+3])
 
         def chapter_number_insert(self, xml):
             """Create the chapter titles"""
