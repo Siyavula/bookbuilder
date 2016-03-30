@@ -119,7 +119,7 @@ class NumberingClass():
                     shortcode = etree.Element('span')
                     shortcode.text = '({})'.format(section.attrib['id'][2:])
                     shortcode.set('class', 'shortcode')
-                    h3.text = '{} '.format(h3.text)
+                    h3.text = h3.text + ' '
                     h3.append(shortcode)
                 if section.attrib['class'] == 'worked_example':
                     title = section.find('h2')
@@ -160,11 +160,11 @@ class NumberingClass():
                 if caption is not None and figure.attrib['id'] is not None:
                     if caption.find('.//p') is not None:
                         para = caption.find('.//p')
-                        para.text = 'Figure {}.{}: {}'.format(
-                            file_number, self.figure_number, para.text)
+                        if para.text is not None:
+                            para.text = 'Figure ' + str(file_number) + '.' + str(self.figure_number) + ': ' + para.text
                     else:
-                        caption.text = 'Figure {}.{}: {}'.format(
-                            file_number, self.figure_number, caption.text)
+                        if caption.text is not None:
+                            caption.text = 'Figure ' + str(file_number) + '.' + str(self.figure_number) + ': ' + caption.text
                     self.figure_dictionary[figure.attrib['id']] = str(
                         file_number) + '.' + str(self.figure_number)
                     self.figure_number += 1
@@ -175,7 +175,7 @@ class NumberingClass():
             if file_counter == 0:
                 self.table_number = 1
             for div in divs:
-                if div.attrib['class'] is not None:
+                if div.attrib.get('class', None):
                     if not div.attrib.get('id', None):
                         table_id = None
                     else:
