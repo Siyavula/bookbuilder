@@ -65,11 +65,12 @@ class NumberingClass():
 
         if not write_back_to_file_boolean:
             return
-
+        
+        #import ipdb; ipdb.set_trace()
+        
         for file_name in self.numbered_files.keys():
             if self.numbered_files[file_name]:
-                full_file_name = '{}/{}'.format(path, file_name)
-                file_text = self.number_file(file_name)
+                file_text = self.numbered_files[file_name]
                 self.write_back_to_file(file_text, file_name)
 
     def number_file(self, full_file_name):
