@@ -1,22 +1,39 @@
 chapters:
   - number: 1
     title: This is the first chapter
+    title-link: this-is-the-first-chapter
     sections: 
       - 1.1 Section the first, in chapter the first
       - 1.2 Section the second, in chapter the first
+    sections-links:
+      - 01-this-is-the-first-chapter-00
+      - 01-this-is-the-first-chapter-01
   - number: 2
-    title: This is the second chapter
+    title: This is the second' chapter
+    title-link: this-is-the-second-chapter
     sections:
       - 2.1 Section the first, in chapter the second
       - 2.2 Section the second, in chapter the second
+    sections-links:
+      - 02-this-is-the-second-chapter-00
+      - 02-this-is-the-second-chapter-01
   - number: 3
-    title: This is the third chapter
+    title: This":" is the third chapter
+    title-link: this-is-the-third-chapter
     sections: 
       - 3.1 Section the first, in chapter the third
       - 3.2 Section the second, in chapter the third
+    sections-links:
+      - 03-this-is-the-third-chapter-00
+      - 03-this-is-the-third-chapter-01
   - number: 4
     title: Yet another chapter
+    title_link: yet-another-chapter
     sections:
       - 4.1 Section in yet another chapter
       - 4.2 Another section
       - 4.3 This is the third section
+    sections-links:
+      - 04-yet-another-chapter-00
+      - 04-yet-another-chapter-01
+      - 04-yet-another-chapter-02

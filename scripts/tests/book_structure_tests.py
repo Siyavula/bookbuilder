@@ -18,5 +18,4 @@ class BookStructureTests(TestCase):
         test_data_path = '/home/heather/Desktop/books/bookbuilder/scripts/tests/sample-files-for-testing/book_structure_test.yaml'
         with open(test_data_path, 'r') as file:
             test_data = yaml.load(file)
-        assert book_data == test_data
-        
+        assert book_data== test_data
