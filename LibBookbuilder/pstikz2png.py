@@ -324,7 +324,7 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
         with open(os.path.join(tempDir, path), 'wb') as fp:
             fp.write(pathFile.read())
     try:
-        texlivepath = [p for p in os.getenv('PATH').split(':') if 'texlive' in p][0]
+        texlivepath = [p for p in os.getenv('LATEX_BOOKS_PATH').split(':') if 'texlive' in p][0]
     except IndexError:
         # use the /usr/bin/pdflatex as fallback
         texlivepath = '/usr/bin'
