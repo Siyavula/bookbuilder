@@ -130,7 +130,7 @@ class Book(object):
         Default output format is both tex and html.
         """
         if formats is None:
-            formats = ['tex', 'html', 'xhtml', 'mobile']
+            formats = ['tex', 'html', 'xhtml', 'mobile', 'html5']
 
         for chapter in self.chapters:
             # find this chapter's attributes from the cache dictionary
