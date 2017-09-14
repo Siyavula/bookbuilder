@@ -1,3 +1,4 @@
+"""Class to handle chapter processing for books."""
 from __future__ import print_function
 
 import os
@@ -29,20 +30,16 @@ DEBUG = False
 
 
 def print_debug_msg(msg):
-    '''prints a debug message if DEBUG is True'''
+    """Print a debug message if DEBUG is True."""
     if DEBUG:
         print(colored("DEBUG: {msg}".format(msg=msg), "yellow"))
 
 
 class chapter(object):
-
-    ''' Class to represent a single chapter
-    '''
+    """Class to represent a single chapter."""
 
     def __init__(self, cnxmlplusfile, **kwargs):
-        ''' cnxmlplusfile is the path of the file
-        '''
-
+        """Cnxmlplusfile is the path of the file."""
         # set some default attributes.
         self.file = cnxmlplusfile
         self.chapter_number = None
@@ -72,16 +69,14 @@ class chapter(object):
         self.parse_cnxmlplus()
 
     def calculate_hash(self, content):
-        ''' Calculates the md5 hash of the file content and returns it
-        '''
+        """Calculate the md5 hash of the file content and returns it."""
         m = hashlib.md5()
         m.update(content)
 
         return m.hexdigest()
 
     def parse_cnxmlplus(self):
-        ''' Parse the xml file and save some information
-        '''
+        """Parse the xml file and save some information."""
         with open(self.file, 'r') as f_in:
             content = f_in.read()
 
@@ -136,8 +131,7 @@ class chapter(object):
             self.title = chapters[0].find('.//title').text
 
     def info(self):
-        ''' Returns a formatted string with all the details of the chapter
-        '''
+        """Return a formatted string with all the details of the chapter."""
         info = '{ch}'.format(ch=self.chapter_number)
         info += ' ' * (4 - len(info))
         if self.valid:
@@ -150,10 +144,11 @@ class chapter(object):
         return info
 
     def validate(self):
-        ''' Run the validator on this file
+        """
+        Run the validator on this file.
 
-        sets self.valid to True or False depending on the outcome
-        '''
+        Set self.valid to True or False depending on the outcome.
+        """
         print("Validating {f}".format(f=self.file))
 
         with open(self.file, 'r') as xmlfile:
@@ -174,7 +169,10 @@ class chapter(object):
                 self.valid = False
 
     def __xml_preprocess(self, xml):
-        ''' This is an internal method for the chapter class that tweaks the
+        """
+        Prepare the xml for processing.
+
+        This is an internal method for the chapter class that tweaks the
         cnxmlplus before it is converted to one of the output formats e.g.
         image links are changed to point one folder up so that the output files
         in the build folder points to where the current images are located.
@@ -184,16 +182,19 @@ class chapter(object):
         input: cnxmlplus is an etree object of the cnxmlplus file
         output: etree object with pr
 
-        '''
+        """
         processed_xml = xml
 
         return processed_xml
 
     def __copy_tex_images(self, build_folder, output_path):
-        ''' Find all images referenced in the cnxmlplus document and copy them
+        """
+        Copy tex images.
+
+        Find all images referenced in the cnxmlplus document and copy them
         to their correct relative places in the build/tex folder.
 
-        '''
+        """
         success = True
         with open(self.file) as f_in:
             xml = etree.XML(f_in.read())
@@ -229,20 +230,25 @@ class chapter(object):
         return success
 
     def __render_pstikz(self, output_path, parallel=True):
-        ''' Use Bookbuilder/pstricks2png to render each pstricks and tikz
-            image to png. Insert replace div.alternate tags with <img> tags
-            Also, find pstricks and tikz in tex output and replace with
-            includegraphics{}
-        '''
+        """
+        Render the pstikz images.
+
+        Use Bookbuilder/pstricks2png to render each pstricks and tikz
+        image to png. Insert replace div.alternate tags with <img> tags
+        Also, find pstricks and tikz in tex output and replace with
+        includegraphics{}.
+        """
         rendered = imageutils.render_images(output_path, parallel=parallel)
 
         return rendered
 
     def __copy_html_images(self, build_folder, output_path):
-        ''' Find all images referenced in the converted html document and copy
-        them to their correct relative places in the build/tex folder.
+        """
+        Copy html images.
 
-        '''
+        Find all images referenced in the converted html document and copy
+        them to their correct relative places in the build/tex folder.
+        """
         success = True
         # copy images directly included in cnxmlplus to the output folder
         with open(output_path, 'r') as f_in:
@@ -259,8 +265,7 @@ class chapter(object):
         return success
 
     def __tolatex(self):
-        ''' Convert this chapter to latex
-        '''
+        """Convert this chapter to latex."""
         print_debug_msg("Entered __tolatex {f}".format(f=self.file))
         myprocess = subprocess.Popen(["cnxmlplus2latex", self.file],
                                      stdout=subprocess.PIPE,
@@ -270,8 +275,7 @@ class chapter(object):
         return latex
 
     def __tohtml(self):
-        ''' Convert this chapter to latex
-        '''
+        """Convert this chapter to html."""
         print_debug_msg("Entered __tohtml {f}".format(f=self.file))
 #       tohtmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 #                                 'tohtml.py')
@@ -285,8 +289,7 @@ class chapter(object):
         return html
 
     def __toxhtml(self):
-        ''' Convert this chapter to html'''
-
+        """Convert this chapter to xhtml."""
         xhtml = self.__tohtml()
         # Convert this html to xhtml
         xhtml = htmlutils.xhtml_cleanup(xhtml)
@@ -294,18 +297,19 @@ class chapter(object):
         return xhtml
 
     def __tomobile(self):
-        ''' Conver this chapter to xhtml'''
+        """Convert this chapter to mobile."""
         html = self.__toxhtml()
 
         return html
 
     def convert(self, build_folder, output_format, parallel=True):
-        ''' Convert the chapter to the specified output format and write the
-        the build folder: {build_folder}/{output_format}/self.file.{format}
-        e.g. build/tex/chapter1.cnxmlplus.tex
+        """Convert the chapter to the specified output format.
 
-        output_format: one  of 'tex', 'html'
-        '''
+        Write to the build folder: {build_folder}/{output_format}/self.file.{format}
+        e.g. build/tex/chapter1.cnxmlplus.tex as needed.
+
+        output_format: one  of 'tex', 'html'.
+        """
         conversion_functions = {'tex': self.__tolatex,
                                 'html': self.__tohtml,
                                 'xhtml': self.__toxhtml,
@@ -388,10 +392,11 @@ class chapter(object):
                     self.render_problems = False
 
     def split_into_sections(self, formats=None):
-        '''
-        Split this chapter into seperate files, each containing a section. The
-        first one contains the h1 element for the chapter too
-        '''
+        """
+        Split this chapter into seperate files, each containing a section.
+
+        The first one contains the h1 element for the chapter too
+        """
         if formats is None:
             formats = ['html', 'xhtml', 'mobile']
 
@@ -431,7 +436,7 @@ class chapter(object):
                         thissection = []
                     else:
                         thissection.append(child)
-            #sections.append(thissection)
+            # sections.append(thissection)
             # write each section to a separate file
             for num, section in enumerate(sections):
                 template = copy.deepcopy(html_template)
@@ -456,9 +461,12 @@ class chapter(object):
             self.create_toc(os.path.dirname(chapterfilepath))
 
     def create_toc(self, path):
-        '''Read all the html files in path and use div.section>h1 and
-        div.section>h2 to make table of contents'''
+        """
+        Create the table of contents.
 
+        Read all the html files in path and use div.section>h1 and
+        div.section>h2 to make table of contents.
+        """
         # get all the (x)html files
         file_list = [f for f in os.listdir(path) if f.endswith('html')]
         file_list.sort()
@@ -472,7 +480,6 @@ class chapter(object):
                 if element.tag in ['h1', 'h2']:
                     parent = element.getparent()
                     if (parent.attrib.get('class') in ['exercises', 'section']) or (parent.tag == 'body'):
-
                         # exercises are special
                         if parent.attrib.get('class') == 'exercises':
                             ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
@@ -489,7 +496,7 @@ class chapter(object):
         for tocelement in tocelements:
             tocbuilder.add_entry(tocelement)
 
-        toccontent = '''\
+        toccontent = """\
         <html>
             <head>
                 <title>Table of contents</title>
@@ -501,7 +508,7 @@ class chapter(object):
 
         </html>
 
-        '''.format(etree.tostring(tocbuilder.as_etree_element(),
+        """.format(etree.tostring(tocbuilder.as_etree_element(),
                                   pretty_print=True))
 
         # TODO, add ids to the section html pages.

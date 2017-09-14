@@ -1,5 +1,8 @@
-'''This module contains the book class. It is a high level class that
-handles caching, validation and convertion of cnxmlplus files'''
+"""
+This module contains the book class.
+
+It is a high level class that handles caching, validation and convertion of cnxmlplus files.
+"""
 
 import os
 import logging
@@ -10,11 +13,10 @@ from utils import mkdir_p
 
 
 class Book(object):
-
-    ''' Class to represent a whole book
-    '''
+    """Class to represent a whole book."""
 
     def __init__(self):
+        """Initialise the book class."""
         self.repo_folder = os.path.abspath(os.curdir)
         self.build_folder = os.path.join(self.repo_folder, 'build')
 
@@ -26,8 +28,7 @@ class Book(object):
         self._discover_chapters(self.cache_object)
 
     def _discover_chapters(self, cache_object):
-        ''' Add all the .cnxmlplus files in the current folder'''
-
+        """Add all the .cnxmlplus files in the current folder."""
         files = os.listdir(os.curdir)
         cnxmlplusfiles = [
             f for f in files if f.strip().endswith('.cnxmlplus')]
@@ -67,22 +68,20 @@ class Book(object):
         self.write_cache()
 
     def show_status(self):
-        ''' Print a listing of the chapters in book
-        '''
+        """Print a listing of the chapters in book."""
         print("\nCh.  Valid     File\n" + '-' * 79)
         for chapter in self.chapters:
             print(chapter.info())
         print('-' * 79)
 
     def read_cache(self):
-        ''' Read cache object inside the .bookbuilder/cache_object.txt
+        """
+        Read cache object inside the .bookbuilder/cache_object.txt.
 
         Returns:
             None if cache_object.txt doesn't exist
             cache_object of type dict if it does
-
-        '''
-
+        """
         # check whether .bookbuilder folder exists
         # and initialise it if it doesn't
         if not os.path.exists('.bookbuilder'):
@@ -107,17 +106,14 @@ class Book(object):
                 return cache_object
 
     def write_cache(self):
-        ''' write cache object to the .bookbuilder folder
-
-        '''
+        """Write cache object to the .bookbuilder folder."""
         cache_object_path = os.path.join('.bookbuilder', 'cache_object.txt')
 
         with open(cache_object_path, 'w') as cop:
             cop.write(self.cache_object.__str__())
 
     def create_cache_object(self):
-        ''' create an empty cache_object dictionary
-        '''
+        """Create an empty cache_object dictionary."""
         # make it a dict
         cache_object = {}
 
@@ -128,10 +124,11 @@ class Book(object):
         return cache_object
 
     def convert(self, formats=None, parallel=True):
-        ''' Convert all the chapters to the given output formats.
+        """
+        Convert all the chapters to the given output formats.
 
-        Default output format is both tex and html
-        '''
+        Default output format is both tex and html.
+        """
         if formats is None:
             formats = ['tex', 'html', 'xhtml', 'mobile']
 
