@@ -53,7 +53,6 @@ def Map(function, data, parallel=True):
     ''' Runs parallel or serial map given a function and data
         mode can be one of 'serial' or 'parallel'
     '''
-
     if not parallel:
         result = map(function, data)
     else:
