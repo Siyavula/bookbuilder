@@ -1,1 +1,1 @@
--e git+https://github.com/Siyavula/cnxml-validator.git@validator-updates-round1b#egg=cnxml-validator
+-e git+https://github.com/Siyavula/cnxml-validator.git@develop#egg=cnxml-validator
