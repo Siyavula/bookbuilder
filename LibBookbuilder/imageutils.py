@@ -92,7 +92,6 @@ def _render_html_images(html, output_path, parallel=True):
     ''' Given etree object of the html file, render images and change the
     DOM tp have image links. Returns Etree object
     '''
-
     valid = True
     # find all the pspicture and tikz elements
     pspics = [p for p in html.findall('.//pre[@class="pspicture"]')]
@@ -113,7 +112,7 @@ def _render_html_images(html, output_path, parallel=True):
 
     if pooldata:
         # call parallel map
-        image_cache_paths = utils.Map(run_latex, pooldata, parallel=parallel)
+        image_cache_paths = utils.Map(run_latex, pooldata, parallel=False)
 
         for (pre, pooldata, icp) in zip(allpics, pooldata, image_cache_paths):
             image_cache_path = icp

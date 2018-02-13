@@ -323,10 +323,14 @@ def pstikz2png(iPictureElement, iLatex, iReturnEps=False, iPageWidthPx=None,
             pass
         with open(os.path.join(tempDir, path), 'wb') as fp:
             fp.write(pathFile.read())
-    try:
-        texlivepath = [p for p in os.getenv('PATH').split(':') if 'texlive' in p][0]
-    except IndexError:
-        # use the /usr/bin/pdflatex as fallback
+    latex_books_path = os.getenv('LATEX_BOOKS_PATH')
+    if latex_books_path:
+        try:
+            texlivepath = [p for p in latex_books_path.split(':') if 'texlive' in p][0]
+        except IndexError:
+            # use the /usr/bin/pdflatex as fallback
+            texlivepath = '/usr/bin'
+    else:
         texlivepath = '/usr/bin'
 
     errorLog, temp = execute(["{texlive}/xelatex".format(texlive=texlivepath),

@@ -1,28 +1,4 @@
 <document xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:style="http://siyavula.com/cnxml/style/0.1">
-  <its:rules xmlns:its="http://www.w3.org/2005/11/its" version="1.0">
-    <its:translateRule translate="no" selector="//link"/>
-    <its:translateRule translate="no" selector="//url"/>
-    <its:translateRule translate="no" selector="//latex"/>
-    <its:translateRule translate="no" selector="//number"/>
-    <its:translateRule translate="no" selector="//unit"/>
-    <its:translateRule translate="no" selector="//unit_number"/>
-    <its:translateRule translate="no" selector="//percentage"/>
-    <its:translateRule translate="no" selector="//symbol"/>
-    <its:translateRule translate="no" selector="//currency"/>
-    <its:translateRule translate="no" selector="//chem_compound"/>
-    <its:translateRule translate="no" selector="//spec_note"/>
-    <its:translateRule translate="no" selector="//nuclear_notation"/>
-    <its:translateRule translate="no" selector="//mass_number"/>
-    <its:translateRule translate="no" selector="//atomic_number"/>
-    <its:translateRule translate="no" selector="//code"/>
-    <its:translateRule translate="no" selector="//m:math"/>
-    <its:translateRule translate="no" selector="//shortcode"/>
-    <its:translateRule translate="no" selector="//metadata"/>
-    <its:translateRule translate="no" selector="//image"/>
-    <its:translateRule translate="no" selector="//video"/>
-    <its:translateRule translate="no" selector="//figure/type"/>
-    <its:translateRule translate="no" selector="//simulation"/>
-  </its:rules>
   <metadata>
     <pspicture-generator-version>1.1</pspicture-generator-version>
   </metadata>
@@ -989,14 +965,6 @@
               <item>Deduct equations and determine the position, displacement, velocity or acceleration from the graphs.</item>
               <item>Describe the motion of the object from the graphs.</item>
             </list>
-
-            <para>The next environment is a linked-concept environment.</para>
-            <linked-concepts>
-              <concept><text>Units and unit conversions</text><subject>science</subject><grade>10</grade><chapter>science skills</chapter></concept>
-              <concept><text>Rectilinear motion</text><subject>science</subject><grade>10</grade><chapter>TODO</chapter></concept>
-              <concept><text>Linear equations</text><subject>maths</subject><grade>10</grade><chapter>TODO</chapter></concept>
-              <concept><text>Quadratic equations</text><subject>maths</subject><grade>10</grade><chapter>TODO</chapter></concept>
-            </linked-concepts>
 
           </teachers-guide>
         </section> <!-- end subsection -->
