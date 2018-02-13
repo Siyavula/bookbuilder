@@ -54,7 +54,7 @@ if __name__ == "__main__":
     elif arguments['build']:
         print("Building book")
         formats = arguments['<format>']
-        supported_formats = ['tex', 'html', 'xhtml', 'mobile']
+        supported_formats = ['tex', 'html', 'xhtml', 'mobile', 'html5']
         for form in formats:
             if form not in supported_formats:
                 print __doc__

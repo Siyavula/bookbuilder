@@ -1,4 +1,1 @@
-lxml
-docopt
-termcolor
--e git+https://github.com/Siyavula/cnxml-validator.git#egg=cnxml-validator
+-e git+https://github.com/Siyavula/cnxml-validator.git@develop#egg=cnxml-validator

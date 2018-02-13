@@ -4,8 +4,10 @@ import shutil
 import multiprocessing
 from lxml import etree
 
+
 def mkdir_p(path):
-    ''' mkdir -p functionality
+    '''mkdir -p functionality
+
     from:
     http://stackoverflow.com/questions/600268/mkdir-p-functionality-in-python
     '''
@@ -77,13 +79,13 @@ class TOCBuilder(object):
         ol = etree.Element('ol')
 
         for entry in self.entries:
-            ol.append(entry.as_etree_element())
+            if entry.as_etree_element():
+                ol.append(entry.as_etree_element())
 
         return ol
 
     def add_entry(self, tocelement):
         ''' Add a new tocelement'''
-
 
         if tocelement.level > 2:
             return
@@ -123,7 +125,7 @@ class TOCBuilder(object):
         else:
             leveldiff = tocelement.level - self.previous_element.level
             parent = self.previous_element.parent
-            for i in range(leveldiff+1):
+            for i in range(leveldiff + 1):
                 parent = parent.parent
 
             parent.children.append(tocelement)
@@ -144,19 +146,23 @@ class TocElement(object):
 
     def as_etree_element(self):
         ''' Return object as etree element'''
-        li = etree.Element('li')
-        a = etree.Element('a')
-        a.attrib['href'] = '{}#{}'.format(self.filename,
+        try:
+            li = etree.Element('li')
+            a = etree.Element('a')
+            a.attrib['href'] = '{}#{}'.format(self.filename,
                                               self.element.attrib['id'])
-        a.text = self.element.text
-        li.append(a)
-        ol = etree.Element('ol')
-        for child in self.children:
-            ol.append(child.as_etree_element())
-        if len(ol) > 0:
-            li.append(ol)
+            a.text = self.element.text
+            li.append(a)
+            ol = etree.Element('ol')
+            for child in self.children:
+                ol.append(child.as_etree_element())
+            if len(ol) > 0:
+                li.append(ol)
 
-        return li
+            return li
+        except:
+            # some items must not be in the toc
+            return None
 
 
 def add_unique_ids(html):
@@ -168,6 +174,23 @@ def add_unique_ids(html):
     headings = ['h1', 'h2']
     for heading in headings:
         for htag in html.findall('.//div/{}'.format(heading)):
+            _class = htag.getparent().attrib.get('class')
+            if _class not in ['chapter', 'section', 'exercises']:
+                continue
+            current_id = htag.attrib.get('id')
+            if (current_id not in IDs) and (current_id is not None):
+                IDs.append(current_id)
+                continue
+
+            # it doesn't have an ID
+            new_id = "toc-id-{}".format(_id)
+            while new_id in IDs:
+                _id += 1
+                new_id = "toc-id-{}".format(_id)
+            IDs.append(new_id)
+            htag.attrib['id'] = new_id
+            _id += 1
+        for htag in html.findall('.//section/{}'.format(heading)):
             _class = htag.getparent().attrib.get('class')
             if _class not in ['chapter', 'section', 'exercises']:
                 continue

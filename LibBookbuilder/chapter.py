@@ -53,7 +53,8 @@ class chapter(object):
         self.conversion_success = {'tex': False,
                                    'html': False,
                                    'xhtml': False,
-                                   'mobile': False}
+                                   'mobile': False,
+                                   'html5': False}
 
         # set attributes from keyword arguments
         # This can be used to set precomputed values e.g. read from a cache
@@ -67,7 +68,8 @@ class chapter(object):
             self.render_problems = {'tex': True,
                                     'html': True,
                                     'xhtml': True,
-                                    'mobile': True}
+                                    'mobile': True,
+                                    'html5': True}
         # Parse the xml
         self.parse_cnxmlplus()
 
@@ -284,6 +286,21 @@ class chapter(object):
 
         return html
 
+    def __tohtml5(self):
+        ''' Convert this chapter to latex
+        '''
+        print_debug_msg("Entered __tohtml5 {f}".format(f=self.file))
+#       tohtmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+#                                 'tohtml.py')
+        myprocess = subprocess.Popen(["cnxmlplus2html5", self.file],
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
+        html, err = myprocess.communicate()
+        html = htmlutils.add_mathjax(html)
+        html = htmlutils.repair_equations(html)
+
+        return html
+
     def __toxhtml(self):
         ''' Convert this chapter to html'''
 
@@ -309,7 +326,8 @@ class chapter(object):
         conversion_functions = {'tex': self.__tolatex,
                                 'html': self.__tohtml,
                                 'xhtml': self.__toxhtml,
-                                'mobile': self.__tomobile}
+                                'mobile': self.__tomobile,
+                                'html5': self.__tohtml5}
 
         for outformat in output_format:
 
@@ -321,6 +339,8 @@ class chapter(object):
 
             if outformat == 'mobile':
                 output_path = output_path.replace(r'.mobile', '.html')
+            if outformat == 'html5':
+                output_path = output_path.replace(r'.html5', '.html')
 
             # only try this on valid cnxmlplus files
             if self.valid:
@@ -338,7 +358,7 @@ class chapter(object):
                     with open(output_path, 'w') as f_out:
                         # This is a bit of a hack, not quite sure why I need
                         # this
-                        if outformat == 'html':
+                        if outformat == 'html' or outformat == 'html5':
                             f_out.write(converted.encode('utf-8'))
                         else:
                             f_out.write(converted)
@@ -382,6 +402,12 @@ class chapter(object):
                                                            output_path)
                     rendered = self.__render_pstikz(output_path,
                                                     parallel=parallel)
+                elif outformat == 'html5':
+                    # copy images from html folder
+                    copy_success = self.__copy_html_images(build_folder,
+                                                           output_path)
+                    rendered = self.__render_pstikz(output_path,
+                                                    parallel=parallel)
                 if not (rendered and copy_success):
                     self.render_problems = True
                 else:
@@ -393,7 +419,7 @@ class chapter(object):
         first one contains the h1 element for the chapter too
         '''
         if formats is None:
-            formats = ['html', 'xhtml', 'mobile']
+            formats = ['html', 'xhtml', 'mobile', 'html5']
 
         for form in formats:
             if 'tex' in form:
@@ -414,23 +440,45 @@ class chapter(object):
             for bodychild in html_template.find('.//body'):
                 bodychild.getparent().remove(bodychild)
 
-            # build up a list of the sections
-            sections = []
-            chapter = [c.getparent() for c in html.findall('.//div[@class="section"]/h1')][0]
+            if form != 'html5':
+                # build up a list of the sections
+                sections = []
+                chapter = [c.getparent() for c in html.findall('.//div[@class="section"]/h1')][0]
 
-            thissection = []
-            for child in chapter:
-                if (child.tag != 'div'):
-                    thissection.append(child)
-                else:
-                    if len(child) == 0:
-                        pass
-                    elif (child[0].tag == 'h2') or (child.attrib.get('class') == 'exercises'):
+                thissection = []
+                for child in chapter:
+                    if (child.tag != 'div'):
                         thissection.append(child)
-                        sections.append(thissection)
-                        thissection = []
                     else:
+                        if len(child) == 0:
+                            pass
+                        elif (child[0].tag == 'h2') or (child.attrib.get('class') == 'exercises'):
+                            thissection.append(child)
+                            sections.append(thissection)
+                            thissection = []
+                        else:
+                            thissection.append(child)
+            else:
+                # build up a list of the sections
+                sections = []
+                try:
+                    chapter = [c.getparent() for c in html.findall('.//section[@class="section"]/h1')][0]
+                except IndexError:
+                    continue
+
+                thissection = []
+                for child in chapter:
+                    if (child.tag != 'section'):
                         thissection.append(child)
+                    else:
+                        if len(child) == 0:
+                            pass
+                        elif (child[0].tag == 'h2'):
+                            thissection.append(child)
+                            sections.append(thissection)
+                            thissection = []
+                        else:
+                            thissection.append(child)
             #sections.append(thissection)
             # write each section to a separate file
             for num, section in enumerate(sections):
@@ -471,13 +519,13 @@ class chapter(object):
             for element in html.iter():
                 if element.tag in ['h1', 'h2']:
                     parent = element.getparent()
-                    if (parent.attrib.get('class') in ['exercises', 'section']) or (parent.tag == 'body'):
+                    if (parent.attrib.get('class') in ['section']) or (parent.tag == 'body'):
 
                         # exercises are special
-                        if parent.attrib.get('class') == 'exercises':
-                            ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
-                            element.text = "Exercises"
-                            element.tag = 'h{}'.format(ancestors)
+                        #if parent.attrib.get('class') == 'exercises':
+                            ##ancestors = len([a for a in element.iterancestors() if a.tag == 'div']) + 1
+                            #element.text = "Exercises"
+                            #element.tag = 'h{}'.format(ancestors)
 
                         toc.append((htmlfile, copy.deepcopy(element)))
 
